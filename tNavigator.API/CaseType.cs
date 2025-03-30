@@ -4,8 +4,17 @@ namespace tNavigator.API;
 
 public enum CaseType
 {
+/// <summary>
+/// model_designer
+/// </summary>
     MD,
+    /// <summary>
+    /// network_designer
+    /// </summary>
     ND,
+    /// <summary>
+    /// mba
+    /// </summary>
     MBA,
 
 }

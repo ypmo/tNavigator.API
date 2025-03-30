@@ -4,11 +4,29 @@ namespace tNavigator.API;
 
 public enum ProjectType
 {
+    /// <summary>
+    /// md
+    /// </summary>
     MD,
+    /// <summary>
+    /// gd
+    /// </summary>
     GD,
+    /// <summary>
+    /// nd
+    /// </summary>
     ND,
+    /// <summary>
+    /// rpd
+    /// </summary>
     RP,
+    /// <summary>
+    /// pvtd
+    /// </summary>
     PVTD,
+    /// <summary>
+    /// wd
+    /// </summary>
     WD,
 }
 public static class ProjectTypeEx
