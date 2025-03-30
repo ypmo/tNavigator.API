@@ -5,11 +5,11 @@ public class Project
     public void close_project()
     {
     }
-    public Project get_subproject_by_name(string name, string type = ProjectType.ND)
+    public Project get_subproject_by_name(string name, ProjectType type = ProjectType.ND)
     {
         throw new NotImplementedException();
     }
-    public List<string> get_list_of_subprojects(string type = ProjectType.ND)
+    public List<string> get_list_of_subprojects(ProjectType type = ProjectType.ND)
     {
         throw new NotImplementedException();
     }
