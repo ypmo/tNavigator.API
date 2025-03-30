@@ -7,8 +7,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+<ItemGroup>
+    <Content Include="Init_Data/*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+</ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="../tNavigator.API/tNavigator.API.csproj" />
   </ItemGroup>
+
+
 
 </Project>
