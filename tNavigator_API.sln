@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNavigator.API", "tNavigato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildNetworkExample", "BuildNetworkExample\BuildNetworkExample.csproj", "{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNavigator.API.Tests", "tNavigator.API.Tests\tNavigator.API.Tests.csproj", "{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
