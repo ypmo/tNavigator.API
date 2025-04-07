@@ -39,7 +39,7 @@ public class StreamReader
         return ret_value;
     }
 
-  public static string unpack_string(TextReader   stream)
+  public static string unpack_string(Stream   stream)
     {
         byte[] buffer = new byte[size_const.size_t];
         stream. Read(buffer, 0, size_const.size_t);
@@ -50,7 +50,7 @@ public class StreamReader
     }
 
 
-    static int unpack_int(Stream stream)
+   internal static int unpack_int(Stream stream)
     {
         byte[] buffer = new byte[size_const.integer];
         stream.Read(buffer, 0, size_const.size_t);

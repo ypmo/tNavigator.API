@@ -1,10 +1,12 @@
 namespace tNavigator.API.Tests;
 
-public class UnitTest1
+public class StreamReaderTests
 {
     [Fact]
     public void Test1()
     {
 
     }
+
+    
 }
