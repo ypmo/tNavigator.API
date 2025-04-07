@@ -1,11 +1,19 @@
 using System;
 using System.Data;
+using System.Reflection.PortableExecutable;
 
 namespace tNavigator.API;
 
 public class StreamParser
 {
-    public static object? unpack_data(StreamReader stream, string read_type = "")
+    public static object? unpack_data(StreamReader stream)
+    {
+        using var memstream = new MemoryStream();
+        stream.BaseStream.CopyTo(memstream);
+        return unpack_data(memstream);
+    }
+
+    public static object? unpack_data(Stream stream, string read_type = "")
     {
         object? ret_value;
         if (read_type == "")
@@ -15,7 +23,7 @@ public class StreamParser
         else if (read_type == "Int")
             ret_value = unpack_int(stream);
         else if (read_type == "bool")
-            ret_value = (unpack_int(stream)==1);
+            ret_value = (unpack_int(stream) == 1);
         else if (read_type == "Float")
             ret_value = unpack_double(stream);
         else if (read_type == "String")
@@ -39,10 +47,18 @@ public class StreamParser
         return ret_value;
     }
 
-  public static string unpack_string(StreamReader   stream)
+
+    public static string unpack_string(StreamReader stream)
+    {
+        using var memstream = new MemoryStream();
+        stream.BaseStream.CopyTo(memstream);
+        return unpack_string(memstream);
+    }
+
+    public static string unpack_string(Stream stream)
     {
         byte[] buffer = new byte[size_const.size_t];
-        stream. Read(buffer, 0, size_const.size_t);
+        stream.Read(buffer, 0, size_const.size_t);
         var size = BitConverter.ToInt32(buffer, 0);
         byte[] s_buffer = new byte[size];
         stream.Read(s_buffer, 0, size);
@@ -50,7 +66,7 @@ public class StreamParser
     }
 
 
-   internal static int unpack_int(StreamReader stream)
+    internal static int unpack_int(Stream stream)
     {
         byte[] buffer = new byte[size_const.integer];
         stream.Read(buffer, 0, size_const.size_t);
@@ -59,7 +75,7 @@ public class StreamParser
     }
 
 
-    static double unpack_double(StreamReader stream)
+    static double unpack_double(Stream stream)
     {
         byte[] buffer = new byte[size_const._double];
         stream.Read(buffer, 0, size_const.size_t);
@@ -68,7 +84,7 @@ public class StreamParser
     }
 
 
-    static object unpack_tuple(StreamReader stream)
+    static object unpack_tuple(Stream stream)
     {
         var length = unpack_int(stream);
         List<object> lst = [];
@@ -81,7 +97,7 @@ public class StreamParser
         return value;
     }
 
-    static List<object> unpack_list_and_len(StreamReader stream)
+    static List<object> unpack_list_and_len(Stream stream)
     {
         var length = unpack_int(stream);
         var value = unpack_list(stream, length);
@@ -89,7 +105,7 @@ public class StreamParser
     }
 
 
-    static Dictionary<object?, object?> unpack_dict(StreamReader stream)
+    static Dictionary<object?, object?> unpack_dict(Stream stream)
     {
         var length = unpack_int(stream);
         Dictionary<object, object?> dic = [];
@@ -102,7 +118,7 @@ public class StreamParser
         return dic;
     }
 
-    static List<object?> unpack_list(StreamReader stream, int length)
+    static List<object?> unpack_list(Stream stream, int length)
     {
         List<object?> lst = [];
         if (length == 0)
@@ -114,7 +130,7 @@ public class StreamParser
     }
 
 
-    static DataTable unpack_dataframe(StreamReader stream)
+    static DataTable unpack_dataframe(Stream stream)
     {
         var dt = new DataTable();
         var col_count = unpack_int(stream);
@@ -133,7 +149,7 @@ public class StreamParser
         var index = unpack_list(stream, row_count);
         return dt;
     }
-    static DateTime unpack_datetime(StreamReader stream)
+    static DateTime unpack_datetime(Stream stream)
     {
         var year = unpack_int(stream);
         var month = unpack_int(stream);
@@ -145,7 +161,7 @@ public class StreamParser
         return new DateTime(year, month, day, hour, minute, second, microsecond);
     }
 
-    static object?[] unpack_numpy_array(StreamReader stream)
+    static object?[] unpack_numpy_array(Stream stream)
     {
 
         var shape = unpack_list_and_len(stream);
