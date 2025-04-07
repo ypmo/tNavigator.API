@@ -3,9 +3,9 @@ using System.Data;
 
 namespace tNavigator.API;
 
-public class StreamReader
+public class StreamParser
 {
-    public static object? unpack_data(Stream stream, string read_type = "")
+    public static object? unpack_data(StreamReader stream, string read_type = "")
     {
         object? ret_value;
         if (read_type == "")
@@ -39,7 +39,7 @@ public class StreamReader
         return ret_value;
     }
 
-  public static string unpack_string(Stream   stream)
+  public static string unpack_string(StreamReader   stream)
     {
         byte[] buffer = new byte[size_const.size_t];
         stream. Read(buffer, 0, size_const.size_t);
@@ -50,7 +50,7 @@ public class StreamReader
     }
 
 
-   internal static int unpack_int(Stream stream)
+   internal static int unpack_int(StreamReader stream)
     {
         byte[] buffer = new byte[size_const.integer];
         stream.Read(buffer, 0, size_const.size_t);
@@ -59,7 +59,7 @@ public class StreamReader
     }
 
 
-    static double unpack_double(Stream stream)
+    static double unpack_double(StreamReader stream)
     {
         byte[] buffer = new byte[size_const._double];
         stream.Read(buffer, 0, size_const.size_t);
@@ -68,7 +68,7 @@ public class StreamReader
     }
 
 
-    static object unpack_tuple(Stream stream)
+    static object unpack_tuple(StreamReader stream)
     {
         var length = unpack_int(stream);
         List<object> lst = [];
@@ -81,7 +81,7 @@ public class StreamReader
         return value;
     }
 
-    static List<object> unpack_list_and_len(Stream stream)
+    static List<object> unpack_list_and_len(StreamReader stream)
     {
         var length = unpack_int(stream);
         var value = unpack_list(stream, length);
@@ -89,7 +89,7 @@ public class StreamReader
     }
 
 
-    static Dictionary<object?, object?> unpack_dict(Stream stream)
+    static Dictionary<object?, object?> unpack_dict(StreamReader stream)
     {
         var length = unpack_int(stream);
         Dictionary<object, object?> dic = [];
@@ -102,7 +102,7 @@ public class StreamReader
         return dic;
     }
 
-    static List<object?> unpack_list(Stream stream, int length)
+    static List<object?> unpack_list(StreamReader stream, int length)
     {
         List<object?> lst = [];
         if (length == 0)
@@ -114,7 +114,7 @@ public class StreamReader
     }
 
 
-    static DataTable unpack_dataframe(Stream stream)
+    static DataTable unpack_dataframe(StreamReader stream)
     {
         var dt = new DataTable();
         var col_count = unpack_int(stream);
@@ -133,7 +133,7 @@ public class StreamReader
         var index = unpack_list(stream, row_count);
         return dt;
     }
-    static DateTime unpack_datetime(Stream stream)
+    static DateTime unpack_datetime(StreamReader stream)
     {
         var year = unpack_int(stream);
         var month = unpack_int(stream);
@@ -145,7 +145,7 @@ public class StreamReader
         return new DateTime(year, month, day, hour, minute, second, microsecond);
     }
 
-    static object?[] unpack_numpy_array(Stream stream)
+    static object?[] unpack_numpy_array(StreamReader stream)
     {
 
         var shape = unpack_list_and_len(stream);
