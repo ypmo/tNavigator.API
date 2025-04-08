@@ -144,7 +144,9 @@ public class StreamParser
         }
         for (int r = 0; r < row_count; r++)
         {
-            dt.Rows.Add(data.Select(t => t[r]));
+            //  var row = dt.NewRow();
+          
+            dt.Rows.Add(data.Select(t => t[r]).ToArray());
         }
         var index = unpack_list(stream, row_count);
         return dt;
