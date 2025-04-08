@@ -69,7 +69,7 @@ public class StreamParser
     internal static int unpack_int(Stream stream)
     {
         byte[] buffer = new byte[size_const.integer];
-        stream.Read(buffer, 0, size_const.size_t);
+        stream.Read(buffer, 0, size_const.integer);
         var value = BitConverter.ToInt32(buffer, 0);
         return value;
     }
@@ -78,7 +78,7 @@ public class StreamParser
     static double unpack_double(Stream stream)
     {
         byte[] buffer = new byte[size_const._double];
-        stream.Read(buffer, 0, size_const.size_t);
+        stream.Read(buffer, 0, size_const._double);
         var value = BitConverter.ToDouble(buffer, 0);
         return value;
     }

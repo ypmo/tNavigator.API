@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 namespace tNavigator.API;
-public class Connection : NavBase
+public class Connection : NavBase, IConnection
 {
     List<string> cmd_args = [];
     string tNavigator_API_client_exe = "";

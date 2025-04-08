@@ -11,8 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNavigator.API.Tests", "tNa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "python", "python", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
 	ProjectSection(SolutionItems) = preProject
-		python\ND_builder.py = python\ND_builder.py
-		python\tNavigator_python_API.py = python\tNavigator_python_API.py
+		python\ND_builder.py1 = python\ND_builder.py1
+		python\tNavigator_python_API.py1 = python\tNavigator_python_API.py1
 	EndProjectSection
 EndProject
 Global
