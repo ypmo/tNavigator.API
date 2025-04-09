@@ -6,42 +6,42 @@ namespace tNav.Common;
 
 public static class StreamParser
 {
-    public static object? unpack_data(StreamReader stream, string read_type = "")
+    public static object? Unpack_data(StreamReader stream, string read_type = "")
     {
         object? ret_value;
         if (read_type == "")
-            read_type = unpack_string(stream);
+            read_type = Unpack_string(stream);
         if (read_type == "None")
             ret_value = null;
         else if (read_type == "Int")
-            ret_value = unpack_int(stream);
+            ret_value = Unpack_int(stream);
         else if (read_type == "bool")
-            ret_value = (unpack_int(stream) == 1);
+            ret_value = (Unpack_int(stream) == 1);
         else if (read_type == "Float")
-            ret_value = unpack_double(stream);
+            ret_value = Unpack_double(stream);
         else if (read_type == "String")
-            ret_value = unpack_string(stream);
+            ret_value = Unpack_string(stream);
         else if (read_type == "DataFrame")
-            ret_value = unpack_dataframe(stream);
+            ret_value = Unpack_dataframe(stream);
         else if (read_type == "datetime")
-            ret_value = unpack_datetime(stream);
+            ret_value = Unpack_datetime(stream);
         else if (read_type == "numpy.ndarray")
-            ret_value = unpack_numpy_array(stream);
+            ret_value = Unpack_numpy_array(stream);
         else if (read_type == "List")
-            ret_value = unpack_list_and_len(stream);
+            ret_value = Unpack_list_and_len(stream);
         else if (read_type == "Dict")
-            ret_value = unpack_dict(stream);
+            ret_value = Unpack_dict(stream);
         else if (read_type == "Tuple")
-            ret_value = unpack_tuple(stream);
+            ret_value = Unpack_tuple(stream);
         else if (read_type == "Error")
-            throw new InvalidOperationException(unpack_string(stream));
+            throw new InvalidOperationException(Unpack_string(stream));
         else
             throw new NotImplementedException($"Unsupported type {read_type}");
         return ret_value;
     }
 
 
-    public static string unpack_string(StreamReader stream)
+    public static string Unpack_string(StreamReader stream)
     {
         var buffer = stream.ReadAsBytes(Sizes.Text);     
         var size = BitConverter.ToInt32(buffer, 0);
@@ -50,7 +50,7 @@ public static class StreamParser
     }
      
 
-    internal static int unpack_int(StreamReader stream)
+    static int Unpack_int(StreamReader stream)
     {
         byte[] buffer = stream.ReadAsBytes(Sizes.Integer);
         var value = BitConverter.ToInt32(buffer, 0);
@@ -58,7 +58,7 @@ public static class StreamParser
     }
 
 
-    static double unpack_double(StreamReader stream)
+    static double Unpack_double(StreamReader stream)
     {
         byte[] buffer = stream.ReadAsBytes(Sizes.Double);  
         var value = BitConverter.ToDouble(buffer, 0);
@@ -66,63 +66,67 @@ public static class StreamParser
     }
 
 
-    static object unpack_tuple(StreamReader stream)
+    static object Unpack_tuple(StreamReader stream)
     {
-        var length = unpack_int(stream);
-        List<object> lst = [];
+        var length = Unpack_int(stream);
+        List<object?> lst = [];
         for (int i = 0; i < length; i++)
         {
-            lst.Add(unpack_data(stream));
+            lst.Add(Unpack_data(stream));
         }
         var value = Tuple.Create(lst);
 
         return value;
     }
 
-    static List<object> unpack_list_and_len(StreamReader stream)
+    static List<object?> Unpack_list_and_len(StreamReader stream)
     {
-        var length = unpack_int(stream);
-        var value = unpack_list(stream, length);
+        var length = Unpack_int(stream);
+        var value = Unpack_list(stream, length);
         return value;
     }
 
 
-    static Dictionary<object?, object?> unpack_dict(StreamReader stream)
+    static Dictionary<object, object?> Unpack_dict(StreamReader stream)
     {
-        var length = unpack_int(stream);
+        var length = Unpack_int(stream);
         Dictionary<object, object?> dic = [];
         for (int i = 0; i < length; i++)
         {
-            var key = unpack_data(stream);
-            var value = unpack_data(stream);
+            var key = Unpack_data(stream);
+            if (key == null)
+            {
+                throw new InvalidOperationException("Пустой ключ" );
+            }
+            var value = Unpack_data(stream);
             dic.Add(key, value);
         }
         return dic;
     }
 
-    static List<object?> unpack_list(StreamReader stream, int length)
+    static List<object?> Unpack_list(StreamReader stream, int length)
     {
         List<object?> lst = [];
         if (length == 0)
             return lst;
-        var read_type = unpack_string(stream);
+        var read_type = Unpack_string(stream);
         for (int i = 0; i < length; i++)
-            lst.Add(unpack_data(stream, read_type));
+            lst.Add(Unpack_data(stream, read_type));
         return lst;
     }
 
 
-    static DataTable unpack_dataframe(StreamReader stream)
+    static DataTable Unpack_dataframe(StreamReader stream)
     {
         var dt = new DataTable();
-        var col_count = unpack_int(stream);
-        var row_count = unpack_int(stream);
+        var col_count = Unpack_int(stream);
+        var row_count = Unpack_int(stream);
         List<List<object?>> data = [];
         for (int i = 0; i < col_count; i++)
         {
-            var column_name = unpack_string(stream);
+            var column_name = Unpack_string(stream);
             dt.Columns.Add(column_name, typeof(object));
-            data.Add(unpack_list(stream, row_count));
+            data.Add(Unpack_list(stream, row_count));
         }
         for (int r = 0; r < row_count; r++)
         {
@@ -130,26 +134,26 @@ public static class StreamParser
           
             dt.Rows.Add(data.Select(t => t[r]).ToArray());
         }
-        var index = unpack_list(stream, row_count);
+        var index = Unpack_list(stream, row_count);
         return dt;
     }
-    static DateTime unpack_datetime(StreamReader stream)
+    static DateTime Unpack_datetime(StreamReader stream)
     {
-        var year = unpack_int(stream);
-        var month = unpack_int(stream);
-        var day = unpack_int(stream);
-        var hour = unpack_int(stream);
-        var minute = unpack_int(stream);
-        var second = unpack_int(stream);
-        var microsecond = unpack_int(stream);
+        var year = Unpack_int(stream);
+        var month = Unpack_int(stream);
+        var day = Unpack_int(stream);
+        var hour = Unpack_int(stream);
+        var minute = Unpack_int(stream);
+        var second = Unpack_int(stream);
+        var microsecond = Unpack_int(stream);
         return new DateTime(year, month, day, hour, minute, second, microsecond);
     }
 
-    static object?[] unpack_numpy_array(StreamReader stream)
+    static object?[] Unpack_numpy_array(StreamReader stream)
     {
 
-        var shape = unpack_list_and_len(stream);
-        var lst = unpack_list(stream, shape.Count);
+        var shape = Unpack_list_and_len(stream);
+        var lst = Unpack_list(stream, shape.Count);
         return lst.ToArray();
     }
 }

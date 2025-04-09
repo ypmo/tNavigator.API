@@ -21,7 +21,7 @@ public class StreamParserTests
 
         using var stream = GenerateStreamFromString(indata);
         using var reader = new StreamReader(stream);
-        var parsed = StreamParser.unpack_data(reader);
+        var parsed = StreamParser.Unpack_data(reader);
         // Assert.Equal(parsed, outdata);
         // Assert.Equal(parsed, outdata);
     }

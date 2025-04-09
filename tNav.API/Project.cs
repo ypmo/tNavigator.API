@@ -52,7 +52,7 @@ public class Project : NavBase
 
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";
         process_message(process, save_command);
-        var result = StreamParser.unpack_string(process.StandardOutput);
+        var result = StreamParser.Unpack_string(process.StandardOutput);
     }
 
 }

@@ -14,7 +14,7 @@ public class StreamParserTests
         var response = lastTest.Responses.Last().Data ?? "";
       using   var stream = GenerateStreamFromString(response);
         using var reader = new StreamReader(stream);
-        var parsed = StreamParser.unpack_data(reader);
+        var parsed = StreamParser.Unpack_data(reader);
         var table = parsed as DataTable;
         Assert.NotNull(table);
         using var testOut = File.CreateText("testout.csv");
