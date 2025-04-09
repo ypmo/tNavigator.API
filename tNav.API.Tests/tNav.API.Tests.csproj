@@ -25,10 +25,4 @@
   <ItemGroup>
     <ProjectReference Include="..\tNav.API\tNav.API.csproj" />
   </ItemGroup>
-
-<ItemGroup>
-    <Content Include="log.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-</ItemGroup>
 </Project>
