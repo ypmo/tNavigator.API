@@ -2,7 +2,7 @@ using System;
 
 namespace tNav.FakeConsole;
 
-public partial class LogParser
+public class LogParser
 {
     readonly string startWord = "***INPUT***";
     readonly string endWord = "***END***";
@@ -53,7 +53,6 @@ public partial class LogParser
         }
         ;
     }
-
     string? GetQuery(TextReader reader)
     {
         string? result = null;
@@ -78,5 +77,29 @@ public partial class LogParser
             result += line + "\n";
         }
         ;
+    }
+
+    enum Position
+    {
+        Begin,
+        End,
+        Request,
+    }
+
+    public class Seans
+    {
+        public string? Query { get; set; }
+        public List<Response> Responses { get; set; } = [];
+
+    }
+    public class Response
+    {
+        public ResponseType ResponseType { get; set; }
+        public string? Data { get; set; }
+    }
+    public enum ResponseType
+    {
+        Str,
+        Byte
     }
 }
