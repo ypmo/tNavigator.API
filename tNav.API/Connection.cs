@@ -6,7 +6,12 @@ public class Connection : IConnection
     List<string> cmd_args = [];
     string tNavigator_API_client_exe = "";
     readonly Process process;
-    public Connection(string? path_to_exe, ConnectionOptions connection_options)
+    public Connection(
+        string? path_to_exe = null,
+        ConnectionOptions? connection_options = null,
+        string? minimum_required_version = null,
+        int? license_wait_time_limit__secs = null
+        )
     {
         connection_options ??= new();
         if (path_to_exe == null)
@@ -39,7 +44,7 @@ public class Connection : IConnection
         var command = $"create_project (path = \"{path}\", case = \"{case_type.tNavValue()}\", type = \"{project_type.tNavValue()}\")\n";
         Processes.process_message(process, command);
         int.TryParse(Processes.readline(process), out int project_id);
-        var parent_id = ProjectID.invalid;
+        var parent_id = ProjectID.Invalid;
         return new Project(
             process, project_id, parent_id, project_type, save_on_close: true);
     }
@@ -54,7 +59,7 @@ public class Connection : IConnection
         var command = $"open_project (path = \"{path}\", type=\"{project_type}\")\n";
         Processes.process_message(process, command);
         int.TryParse(Processes.readline(process), out int project_id);
-        var parent_id = ProjectID.invalid;
+        var parent_id = ProjectID.Invalid;
         return new Project(process, project_id, parent_id, project_type, save_on_close);
     }
     public string GetVersionString()

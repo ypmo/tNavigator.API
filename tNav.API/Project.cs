@@ -13,8 +13,8 @@ public class Project : IProject
 
     public Project(
         Process process,
-        int project_id = ProjectID.invalid,
-        int parent_id = ProjectID.invalid,
+        int project_id = ProjectID.Invalid,
+        int parent_id = ProjectID.Invalid,
         ProjectType project_type = ProjectType.MD,
         bool save_on_close = false)
     {
@@ -51,7 +51,7 @@ public class Project : IProject
     public void SaveProject()
     {
         var id_to_save = parent_id;
-        if (id_to_save == ProjectID.invalid)
+        if (id_to_save == ProjectID.Invalid)
             id_to_save = project_id;
 
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";

@@ -25,7 +25,7 @@ var conn = new tnav.Connection(path_to_exe: tNpath, new tnav.ConnectionOptions
 {
      
 });
-var snp_new = conn.create_project(path: "SNP/API_BuildND.snp", case_type: tnav.CaseType.MD, project_type: tnav.ProjectType.MD);
-snp_new.close_project();
-var MD_proj = conn.open_project(path: "SNP/API_BuildND.snp", save_on_close: false);
+var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tnav.CaseType.MD, project_type: tnav.ProjectType.MD);
+snp_new.CloseProject();
+var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: false);
 Console.WriteLine("Done");
