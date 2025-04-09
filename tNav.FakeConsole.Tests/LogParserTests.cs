@@ -46,6 +46,7 @@ public class LogParserTests
                 new Response{Data="OK\n"}
                 ]},
         ];
+
     [Fact]
     public void ParserCanRead()
     {

@@ -77,29 +77,5 @@ public class LogParser
             result += line + "\n";
         }
         ;
-    }
-
-    enum Position
-    {
-        Begin,
-        End,
-        Request,
-    }
-
-    public class Seans
-    {
-        public string? Query { get; set; }
-        public List<Response> Responses { get; set; } = [];
-
-    }
-    public class Response
-    {
-        public ResponseType ResponseType { get; set; }
-        public string? Data { get; set; }
-    }
-    public enum ResponseType
-    {
-        Str,
-        Byte
-    }
+    }  
 }
