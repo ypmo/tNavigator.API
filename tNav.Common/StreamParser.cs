@@ -119,6 +119,7 @@ public static class StreamParser
     static DataTable UnpackDataFrame(StreamReader stream)
     {
         var dt = new DataTable();
+        dt.Columns.Add("NONAME", typeof(object));// добавление колоники индекса
         var col_count = UnpackInt(stream);
         var row_count = UnpackInt(stream);
         List<List<object?>> data = [];
@@ -128,13 +129,12 @@ public static class StreamParser
             dt.Columns.Add(column_name, typeof(object));
             data.Add(UnpackList(stream, row_count));
         }
-        for (int r = 0; r < row_count; r++)
-        {
-            //  var row = dt.NewRow();
-          
-            dt.Rows.Add(data.Select(t => t[r]).ToArray());
-        }
         var index = UnpackList(stream, row_count);
+        data.Insert(0, index);
+        for (int r = 0; r < row_count; r++)
+        {  
+            dt.Rows.Add(data.Select(t => t[r]).ToArray());
+        }        
         return dt;
     }
     static DateTime UnpackDatetime(StreamReader stream)
