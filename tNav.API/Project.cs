@@ -3,13 +3,14 @@ using tNav.Common;
 
 namespace tNav.API;
 
-public class Project : NavBase
+public class Project : IProject
 {
     int project_id;
     int parent_id;
     ProjectType type;
     Process process;
     bool save_on_close;
+
     public Project(
         Process process,
         int project_id = ProjectID.invalid,
@@ -23,36 +24,38 @@ public class Project : NavBase
         this.process = process;
         this.save_on_close = save_on_close;
     }
-    public void close_project()
+
+    public void CloseProject()
     {
         if (save_on_close)
-            save_project();
+            SaveProject();
         var command = $"close_project (id = \"{project_id}\")\n";
-        process_message(process, command);
+        Processes.process_message(process, command);
     }
-    public Project get_subproject_by_name(string name, ProjectType type = ProjectType.ND)
-    {
-        throw new NotImplementedException();
-    }
-    public List<string> get_list_of_subprojects(ProjectType type = ProjectType.ND)
+
+    public Project GetSubProjectByName(string name, ProjectType type = ProjectType.ND)
     {
         throw new NotImplementedException();
     }
 
-    public object run_py_code(string? file = null, List<string>? files = null, int? code = null, bool save = false)
+    public List<string> GetListOfSubProjects(ProjectType type = ProjectType.ND)
     {
         throw new NotImplementedException();
     }
 
-    void save_project()
+    public object RunPyCode(string? file = null, List<string>? files = null, int? code = null, bool save = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SaveProject()
     {
         var id_to_save = parent_id;
         if (id_to_save == ProjectID.invalid)
             id_to_save = project_id;
 
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";
-        process_message(process, save_command);
+        Processes.process_message(process, save_command);
         var result = StreamParser.UnpackString(process.StandardOutput);
     }
-
 }

@@ -1,2 +1,2 @@
 using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleTo("tNavigator.API.Tests")]
+[assembly:InternalsVisibleTo("tNav.API.Tests")]

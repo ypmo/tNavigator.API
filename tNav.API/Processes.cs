@@ -1,11 +1,15 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace tNav.API;
 
-public class NavBase
+internal static class Processes
 {
-    protected void process_message(Process process, string message)
+    public static void process_message(Process process, string message)
     {
         process.StandardInput.Write(message);
         process.StandardInput.Flush();
@@ -22,7 +26,7 @@ public class NavBase
         }
     }
 
-    protected string? readline(Process process)
+    public static string? readline(Process process)
     {
         return process.StandardOutput.ReadLine();
     }

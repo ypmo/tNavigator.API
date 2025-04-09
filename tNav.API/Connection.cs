@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 namespace tNav.API;
-public class Connection : NavBase, IConnection
+public class Connection : IConnection
 {
     List<string> cmd_args = [];
     string tNavigator_API_client_exe = "";
@@ -24,46 +24,45 @@ public class Connection : NavBase, IConnection
         //process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => { Console.WriteLine(e.Data); });
 
         var started = process.Start();
-        if (!string.IsNullOrEmpty(connection_options.minimum_required_version))
+        if (!string.IsNullOrEmpty(connection_options.MinimumRequiredVersion))
         {
-            var command = $"minimum_required_version (major=\"{connection_options.minimum_required_version[0]}\", minor=\"{connection_options.minimum_required_version[1]}\"";
-            if (connection_options.minimum_required_version?.Length > 2)
-                command += $", update=\"{connection_options.minimum_required_version[2]}\"";
+            var command = $"minimum_required_version (major=\"{connection_options.MinimumRequiredVersion[0]}\", minor=\"{connection_options.MinimumRequiredVersion[1]}\"";
+            if (connection_options.MinimumRequiredVersion?.Length > 2)
+                command += $", update=\"{connection_options.MinimumRequiredVersion[2]}\"";
             command += ")\n";
-            process_message(process, command);
+            Processes.process_message(process, command);
         }
     }
-    public Project create_project(string path, CaseType case_type, ProjectType project_type)
+    public Project CreateProject(string path, CaseType case_type, ProjectType project_type)
     {
 
         var command = $"create_project (path = \"{path}\", case = \"{case_type.tNavValue()}\", type = \"{project_type.tNavValue()}\")\n";
-        process_message(process, command);
-        int.TryParse(readline(process), out int project_id);
+        Processes.process_message(process, command);
+        int.TryParse(Processes.readline(process), out int project_id);
         var parent_id = ProjectID.invalid;
         return new Project(
             process, project_id, parent_id, project_type, save_on_close: true);
-
     }
 
-    public List<string> get_list_of_projects()
+    public List<string> GetListOfProjects()
     {
         throw new NotImplementedException();
     }
 
-    public Project open_project(string path, ProjectType project_type = ProjectType.MD, bool save_on_close = false)
+    public Project OpenProject(string path, ProjectType project_type = ProjectType.MD, bool save_on_close = false)
     {
         var command = $"open_project (path = \"{path}\", type=\"{project_type}\")\n";
-        process_message(process, command);
-        int.TryParse(readline(process), out int project_id);
+        Processes.process_message(process, command);
+        int.TryParse(Processes.readline(process), out int project_id);
         var parent_id = ProjectID.invalid;
         return new Project(process, project_id, parent_id, project_type, save_on_close);
     }
-    public string get_version_string()
+    public string GetVersionString()
     {
         throw new NotImplementedException();
     }
 
-    public void stop()
+    public void Stop()
     {
         throw new NotImplementedException();
     }
@@ -73,9 +72,9 @@ public class Connection : NavBase, IConnection
         cmd_args = [];
         if (path_to_exe == tNavigator_API_client_exe)
         {
-            if (!string.IsNullOrEmpty(conn_opts.api_server_url))
+            if (!string.IsNullOrEmpty(conn_opts.ApiServerUrl))
             {
-                parse_dispatcher_ip_and_port(conn_opts.api_server_url);
+                parse_dispatcher_ip_and_port(conn_opts.ApiServerUrl);
             }
             else
             {
@@ -86,7 +85,7 @@ public class Connection : NavBase, IConnection
         {
 
 
-            if (!string.IsNullOrEmpty(conn_opts.api_server_url))
+            if (!string.IsNullOrEmpty(conn_opts.ApiServerUrl))
             {
                 cmd_args.Add("--api-client");
             }
@@ -94,32 +93,32 @@ public class Connection : NavBase, IConnection
             {
                 cmd_args.Add("--api-server");
             }
-            if (!string.IsNullOrEmpty(conn_opts.api_server_url))
+            if (!string.IsNullOrEmpty(conn_opts.ApiServerUrl))
             {
-                parse_dispatcher_ip_and_port(conn_opts.api_server_url);
+                parse_dispatcher_ip_and_port(conn_opts.ApiServerUrl);
             }
         }
-        if (conn_opts.license_wait_time_limit__secs.HasValue)
+        if (conn_opts.LicenseWaitTimeLimitSecs.HasValue)
             cmd_args.Add(
-                $"--license-wait-time-limit={conn_opts.license_wait_time_limit__secs}"
+                $"--license-wait-time-limit={conn_opts.LicenseWaitTimeLimitSecs}"
             );
 
-        if (!string.IsNullOrEmpty(conn_opts.license_settings) || !string.IsNullOrEmpty(conn_opts.license_server_url))
+        if (!string.IsNullOrEmpty(conn_opts.LicenseSettings) || !string.IsNullOrEmpty(conn_opts.LicenseServerUrl))
         {
-            conn_opts.license_type = "network";
-            cmd_args.Add($"--license-type={conn_opts.license_type}");
-            if (!string.IsNullOrEmpty(conn_opts.license_settings))
+            conn_opts.LicenseType = "network";
+            cmd_args.Add($"--license-type={conn_opts.LicenseType}");
+            if (!string.IsNullOrEmpty(conn_opts.LicenseSettings))
             {
-                cmd_args.Add($"--license-settings={conn_opts.license_settings}");
+                cmd_args.Add($"--license-settings={conn_opts.LicenseSettings}");
             }
-            else if (!string.IsNullOrEmpty(conn_opts.license_server_url))
+            else if (!string.IsNullOrEmpty(conn_opts.LicenseServerUrl))
             {
-                cmd_args.Add($"--server-url={conn_opts.license_server_url}");
+                cmd_args.Add($"--server-url={conn_opts.LicenseServerUrl}");
             }
         }
-        else if (conn_opts.license_type != null)
+        else if (conn_opts.LicenseType != null)
         {
-            cmd_args.Add($"--license-type={conn_opts.license_type}");
+            cmd_args.Add($"--license-type={conn_opts.LicenseType}");
         }
     }
 

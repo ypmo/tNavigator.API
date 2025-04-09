@@ -4,9 +4,9 @@ namespace tNav.API;
 
 public enum CaseType
 {
-/// <summary>
-/// model_designer
-/// </summary>
+    /// <summary>
+    /// model_designer
+    /// </summary>
     MD,
     /// <summary>
     /// network_designer
