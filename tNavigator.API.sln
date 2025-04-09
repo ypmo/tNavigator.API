@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNavigator.API", "tNavigator.API\tNavigator.API.csproj", "{93FB68B4-45A6-4078-8B05-02E48CF9FC9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.API", "tNav.API\tNav.API.csproj", "{93FB68B4-45A6-4078-8B05-02E48CF9FC9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildNetworkExample", "BuildNetworkExample\BuildNetworkExample.csproj", "{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNavigator.API.Tests", "tNavigator.API.Tests\tNavigator.API.Tests.csproj", "{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.API.Tests", "tNav.API.Tests\tNav.API.Tests.csproj", "{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "python", "python", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
-	ProjectSection(SolutionItems) = preProject
-		python\ND_builder.py1 = python\ND_builder.py1
-		python\tNavigator_python_API.py1 = python\tNavigator_python_API.py1
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.FakeConsole", "tNavFakeConsole\tNav.FakeConsole.csproj", "{58142B20-520F-402A-AE5F-5E2BD54740DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common", "tNav.Common\tNav.Common.csproj", "{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common.Tests", "tNav.Common.Tests\tNav.Common.Tests.csproj", "{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +33,18 @@ Global
 		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58142B20-520F-402A-AE5F-5E2BD54740DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58142B20-520F-402A-AE5F-5E2BD54740DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58142B20-520F-402A-AE5F-5E2BD54740DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58142B20-520F-402A-AE5F-5E2BD54740DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

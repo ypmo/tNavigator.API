@@ -1,6 +1,6 @@
 using System;
 
-namespace tNavigator.API.Tests;
+namespace tNav.API.Tests;
 
 public class LogParser
 {

@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace tNavigator.API.Tests;
+namespace tNav.API.Tests;
 
 public class StreamParserTests
 {

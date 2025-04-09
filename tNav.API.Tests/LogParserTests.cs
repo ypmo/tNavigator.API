@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using static tNavigator.API.Tests.LogParser;
+using static tNav.API.Tests.LogParser;
 
 namespace tNavigator.API.Tests;
 

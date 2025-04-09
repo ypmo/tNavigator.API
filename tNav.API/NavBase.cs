@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace tNavigator.API;
+namespace tNav.API;
 
 public class NavBase
 {

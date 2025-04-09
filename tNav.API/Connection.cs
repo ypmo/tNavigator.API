@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-namespace tNavigator.API;
+namespace tNav.API;
 public class Connection : NavBase, IConnection
 {
     List<string> cmd_args = [];

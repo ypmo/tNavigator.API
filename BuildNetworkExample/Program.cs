@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 using Microsoft.VisualBasic;
-using tnav = tNavigator.API;
+using tnav = tNav.API;
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 string tNpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "tNavigator/tNavigator-con");
 

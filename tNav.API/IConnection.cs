@@ -1,6 +1,6 @@
 using System;
 
-namespace tNavigator.API;
+namespace tNav.API;
 
 public interface IConnection
 {

@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Reflection.PortableExecutable;
 
-namespace tNavigator.API;
+namespace tNav.API;
 
 public class StreamParser
 {
