@@ -12,7 +12,7 @@ public static class StreamReaderExtentions
     public static byte[] ReadAsBytes(this StreamReader stream, int size)
     {
         char[] buffer = new char[size];
-        stream.Read(buffer, 0, Sizes.Text);
+        stream.Read(buffer, 0, size);
         var data = System.Convert.FromHexString(buffer);
         return data;
     }

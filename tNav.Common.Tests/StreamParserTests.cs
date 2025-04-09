@@ -4,6 +4,16 @@ namespace tNav.Common.Tests;
 
 public class StreamParserTests
 {
+    static Stream GenerateStreamFromString(string s)
+    {
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+        writer.Write(s);
+        writer.Flush();
+        stream.Position = 0;
+        return stream;
+    }
+
     [Theory]
     [InlineData("04000000000000004e6f6e65", null)]
     public void ParseString(string indata, string? outdata)
@@ -16,13 +26,6 @@ public class StreamParserTests
         // Assert.Equal(parsed, outdata);
     }
 
-    static Stream GenerateStreamFromString(string s)
-    {
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
-        writer.Write(s);
-        writer.Flush();
-        stream.Position = 0;
-        return stream;
-    }
+
+
 }
