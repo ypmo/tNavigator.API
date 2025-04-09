@@ -1,6 +1,6 @@
 using System;
 
-namespace tNav.Common;
+namespace tNav.Common.Tests;
 public static class StreamFactory
 {
     public static Stream ASCII2ByteStream(string str)

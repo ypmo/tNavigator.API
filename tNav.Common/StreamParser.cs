@@ -4,7 +4,7 @@ using System.Reflection.PortableExecutable;
 
 namespace tNav.Common;
 
-public class StreamParser
+public static class StreamParser
 {
     public static object? unpack_data(StreamReader stream)
     {
@@ -57,8 +57,8 @@ public class StreamParser
 
     public static string unpack_string(Stream stream)
     {
-        byte[] buffer = new byte[size_const.size_t];
-        stream.Read(buffer, 0, size_const.size_t);
+        byte[] buffer = new byte[Sizes.Text];
+        stream.Read(buffer, 0, Sizes.Text);
         var size = BitConverter.ToInt32(buffer, 0);
         byte[] s_buffer = new byte[size];
         stream.Read(s_buffer, 0, size);
@@ -68,8 +68,8 @@ public class StreamParser
 
     internal static int unpack_int(Stream stream)
     {
-        byte[] buffer = new byte[size_const.integer];
-        stream.Read(buffer, 0, size_const.integer);
+        byte[] buffer = new byte[Sizes.Integer];
+        stream.Read(buffer, 0, Sizes.Integer);
         var value = BitConverter.ToInt32(buffer, 0);
         return value;
     }
@@ -77,8 +77,8 @@ public class StreamParser
 
     static double unpack_double(Stream stream)
     {
-        byte[] buffer = new byte[size_const._double];
-        stream.Read(buffer, 0, size_const._double);
+        byte[] buffer = new byte[Sizes.Double];
+        stream.Read(buffer, 0, Sizes.Double);
         var value = BitConverter.ToDouble(buffer, 0);
         return value;
     }
