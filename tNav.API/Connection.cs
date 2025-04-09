@@ -1,11 +1,25 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 namespace tNav.API;
 public class Connection : IConnection
 {
     List<string> cmd_args = [];
     string tNavigator_API_client_exe = "";
     readonly Process process;
+
+    /// <summary>
+    /// initialize connection with tNavigator
+    /// </summary>
+    /// <param name="path_to_exe">path to tNavigator-con.exe</param>
+    /// <param name="connection_options"></param>
+    /// <param name="minimum_required_version">tuple, optional 
+    ///     minimum required version of tNavigator.It can be tuple of two or three elements.
+    ///     If minimum required version is "23.3", then(23,3) should be passed.
+    ///     Third element should be used if some certain update level is required.                
+    ///     If v23.3-2724-g70d0cc8 or newer version is required, then(23,3,2724) should be passed</param>
+    /// <param name="license_wait_time_limit__secs">License wait time limit, in seconds. License wait time is unlimited by default.</param>
     public Connection(
         string? path_to_exe = null,
         ConnectionOptions? connection_options = null,
@@ -13,9 +27,13 @@ public class Connection : IConnection
         int? license_wait_time_limit__secs = null
         )
     {
+        Log.Write($"{DateTime.Now}\n");
         connection_options ??= new();
-        if (path_to_exe == null)
-        { path_to_exe = tNavigator_API_client_exe; }
+
+        if ( minimum_required_version != null ) connection_options.MinimumRequiredVersion = minimum_required_version;
+        if (license_wait_time_limit__secs!=null) connection_options.LicenseWaitTimeLimitSecs= license_wait_time_limit__secs;
+        path_to_exe ??= tNavigatorPath.tNavigator_API_client_exe();
+
 
         init_cmd_args_from_connection_options(path_to_exe, connection_options);
 
