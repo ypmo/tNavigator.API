@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+using Microsoft.Data.Analysis;
 using Microsoft.VisualBasic;
 using System.Data;
 using System.Linq;
@@ -27,7 +28,7 @@ if (!Path.Exists("Init_Data"))
 
 List<string> xls_list = ["Init_Data/WD_data.xlsx", "Init_Data/ND_data.xlsx"];
 
-var df_data = new Dictionary<string, object>();
+var df_data = new Dictionary<string, DataFrame>();
 foreach (var xls in xls_list)
 {
     df_data.update(pd.read_excel(xls, engine: "openpyxl", sheet_name: null, skiprows: 1, keep_default_na: false));

@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Reflection.PortableExecutable;
+using Microsoft.Data.Analysis;
 
 namespace tNav.Common;
 
@@ -43,12 +44,12 @@ public static class StreamParser
 
     public static string UnpackString(StreamReader stream)
     {
-        var buffer = stream.ReadAsBytes(Sizes.Text);     
+        var buffer = stream.ReadAsBytes(Sizes.Text);
         var size = BitConverter.ToInt32(buffer, 0);
         byte[] s_buffer = stream.ReadAsBytes(size);
         return System.Text.Encoding.UTF8.GetString(s_buffer);
     }
-     
+
 
     static int UnpackInt(StreamReader stream)
     {
@@ -60,7 +61,7 @@ public static class StreamParser
 
     static double UnpackDouble(StreamReader stream)
     {
-        byte[] buffer = stream.ReadAsBytes(Sizes.Double);  
+        byte[] buffer = stream.ReadAsBytes(Sizes.Double);
         var value = BitConverter.ToDouble(buffer, 0);
         return value;
     }
@@ -96,7 +97,7 @@ public static class StreamParser
             var key = Unpack_data(stream);
             if (key == null)
             {
-                throw new InvalidOperationException("Пустой ключ" );
+                throw new InvalidOperationException("Пустой ключ");
             }
             var value = Unpack_data(stream);
             dic.Add(key, value);
@@ -110,30 +111,35 @@ public static class StreamParser
         if (length == 0)
             return lst;
         var read_type = UnpackString(stream);
+        return (read_type) switch
+        {
+            
+        };
         for (int i = 0; i < length; i++)
             lst.Add(Unpack_data(stream, read_type));
         return lst;
     }
 
 
-    static DataTable UnpackDataFrame(StreamReader stream)
+    static DataFrame UnpackDataFrame(StreamReader stream)
     {
-        var dt = new DataTable();
-        dt.Columns.Add("NONAME", typeof(object));// добавление колоники индекса
+        var dt = new DataFrame();
         var col_count = UnpackInt(stream);
         var row_count = UnpackInt(stream);
         List<List<object?>> data = [];
         for (int i = 0; i < col_count; i++)
         {
             var column_name = UnpackString(stream);
-            dt.Columns.Add(column_name, typeof(object));
-            data.Add(UnpackList(stream, row_count));
-        }
-        var index = UnpackList(stream, row_count);
-        data.Insert(0, index);
-        for (int r = 0; r < row_count; r++)
-        {  
-            dt.Rows.Add(data.Select(t => t[r]).ToArray());
+            var column_data = UnpackList(stream, row_count);
+            var collumn = column_data[0] switch
+            {
+                string _i => new StringDataFrameColumn(column_name, column_data.Select(t => (string)t)) as DataFrameColumn,
+                int _i => new Int32DataFrameColumn(column_name, column_data.Select(t => (int)t)) as DataFrameColumn,
+                double _i => new DoubleDataFrameColumn(column_name, column_data.Select(t => (double)t)) as DataFrameColumn,
+                DateTime _i => new DateTimeDataFrameColumn(column_name, column_data.Select(t => (DateTime)t)) as DataFrameColumn,
+                _ => throw new NotImplementedException()
+            };
+            dt.Columns.Add(collumn);
         }        
         return dt;
     }
