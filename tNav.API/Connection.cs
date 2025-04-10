@@ -5,58 +5,16 @@ using System.Xml.Linq;
 namespace tNav.API;
 public class Connection : IConnection
 {
-    List<string> cmd_args = [];
-    string tNavigator_API_client_exe = "";
+    public Connection(Process process)
+    {
+        this.process = process;
+    }
+    //string tNavigator_API_client_exe = "";
     readonly Process process;
 
-    /// <summary>
-    /// initialize connection with tNavigator
-    /// </summary>
-    /// <param name="path_to_exe">path to tNavigator-con.exe</param>
-    /// <param name="connection_options"></param>
-    /// <param name="minimum_required_version">tuple, optional 
-    ///     minimum required version of tNavigator.It can be tuple of two or three elements.
-    ///     If minimum required version is "23.3", then(23,3) should be passed.
-    ///     Third element should be used if some certain update level is required.                
-    ///     If v23.3-2724-g70d0cc8 or newer version is required, then(23,3,2724) should be passed</param>
-    /// <param name="license_wait_time_limit__secs">License wait time limit, in seconds. License wait time is unlimited by default.</param>
-    public Connection(
-        string? path_to_exe = null,
-        ConnectionOptions? connection_options = null,
-        string? minimum_required_version = null,
-        int? license_wait_time_limit__secs = null
-        )
-    {
-        Log.Write($"{DateTime.Now}\n");
-        connection_options ??= new();
 
-        if ( minimum_required_version != null ) connection_options.MinimumRequiredVersion = minimum_required_version;
-        if (license_wait_time_limit__secs!=null) connection_options.LicenseWaitTimeLimitSecs= license_wait_time_limit__secs;
-        path_to_exe ??= tNavigatorPath.tNavigator_API_client_exe();
-
-
-        init_cmd_args_from_connection_options(path_to_exe, connection_options);
-
-        process = new Process();
-        process.StartInfo.FileName = path_to_exe;
-        process.StartInfo.Arguments = string.Join(" ", cmd_args);
-        process.StartInfo.UseShellExecute = false;
-        process.StartInfo.RedirectStandardInput = true;
-        process.StartInfo.RedirectStandardOutput = true;
-        //process.StartInfo.RedirectStandardError = true;
-        //process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => { Console.WriteLine(e.Data); });
-
-        var started = process.Start();
-        if (!string.IsNullOrEmpty(connection_options.MinimumRequiredVersion))
-        {
-            var command = $"minimum_required_version (major=\"{connection_options.MinimumRequiredVersion[0]}\", minor=\"{connection_options.MinimumRequiredVersion[1]}\"";
-            if (connection_options.MinimumRequiredVersion?.Length > 2)
-                command += $", update=\"{connection_options.MinimumRequiredVersion[2]}\"";
-            command += ")\n";
-            Processes.process_message(process, command);
-        }
-    }
-    public Project CreateProject(string path, CaseType case_type, ProjectType project_type)
+  
+    public IProject CreateProject(string path, CaseType case_type, ProjectType project_type)
     {
 
         var command = $"create_project (path = \"{path}\", case = \"{case_type.tNavValue()}\", type = \"{project_type.tNavValue()}\")\n";
@@ -89,74 +47,4 @@ public class Connection : IConnection
     {
         throw new NotImplementedException();
     }
-
-    void init_cmd_args_from_connection_options(string? path_to_exe, ConnectionOptions conn_opts)
-    {
-        cmd_args = [];
-        if (path_to_exe == tNavigator_API_client_exe)
-        {
-            if (!string.IsNullOrEmpty(conn_opts.ApiServerUrl))
-            {
-                parse_dispatcher_ip_and_port(conn_opts.ApiServerUrl);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Could not launch {path_to_exe} without api_server_url. Please, specify at least api_server_url in ConnectionOptions");
-            }
-        }
-        else
-        {
-
-
-            if (!string.IsNullOrEmpty(conn_opts.ApiServerUrl))
-            {
-                cmd_args.Add("--api-client");
-            }
-            else
-            {
-                cmd_args.Add("--api-server");
-            }
-            if (!string.IsNullOrEmpty(conn_opts.ApiServerUrl))
-            {
-                parse_dispatcher_ip_and_port(conn_opts.ApiServerUrl);
-            }
-        }
-        if (conn_opts.LicenseWaitTimeLimitSecs.HasValue)
-            cmd_args.Add(
-                $"--license-wait-time-limit={conn_opts.LicenseWaitTimeLimitSecs}"
-            );
-
-        if (!string.IsNullOrEmpty(conn_opts.LicenseSettings) || !string.IsNullOrEmpty(conn_opts.LicenseServerUrl))
-        {
-            conn_opts.LicenseType = "network";
-            cmd_args.Add($"--license-type={conn_opts.LicenseType}");
-            if (!string.IsNullOrEmpty(conn_opts.LicenseSettings))
-            {
-                cmd_args.Add($"--license-settings={conn_opts.LicenseSettings}");
-            }
-            else if (!string.IsNullOrEmpty(conn_opts.LicenseServerUrl))
-            {
-                cmd_args.Add($"--server-url={conn_opts.LicenseServerUrl}");
-            }
-        }
-        else if (conn_opts.LicenseType != null)
-        {
-            cmd_args.Add($"--license-type={conn_opts.LicenseType}");
-        }
-    }
-
-    void parse_dispatcher_ip_and_port(string? api_server_url)
-    {
-        var network_data = api_server_url?.Split(":") ?? [];
-        if (network_data.Length != 2)
-        {
-            throw new InvalidOperationException("Wrong parameter: api_server_url. Use api_server_url=\"hostname:port\"");
-        }
-        var (host, port) = (network_data[0], network_data[1]);
-        cmd_args.Add($"--dispatcher-ip={host}");
-        cmd_args.Add($"--dispatcher-task-port={port}");
-    }
-
-
-
 }

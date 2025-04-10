@@ -4,7 +4,7 @@ namespace tNav.API;
 
 public class ConnectionOptions
 {
-    public string? MinimumRequiredVersion { get; set; }
+    public (int major, int minor, int? update)? MinimumRequiredVersion { get; set; }
     public int? LicenseWaitTimeLimitSecs { get; set; }
     public string? LicenseSettings { get; set; }
     public string? LicenseServerUrl { get; set; }

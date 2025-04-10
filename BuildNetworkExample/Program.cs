@@ -21,8 +21,8 @@ List<string> xls_list = ["Init_Data/WD_data.xlsx", "Init_Data/ND_data.xlsx"];
 Console.WriteLine("Running script");
 Console.Write("Creating and opening snp project...");
 
-var conn = new tnav.Connection(path_to_exe: tNpath, new tnav.ConnectionOptions
-{
+var conn = new tnav.Connection(path_to_exe: tNpath,  new tnav.ConnectionOptions
+{  
      
 });
 var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tnav.CaseType.MD, project_type: tnav.ProjectType.MD);
