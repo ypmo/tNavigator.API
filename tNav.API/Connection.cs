@@ -34,9 +34,8 @@ public class Connection : IConnection
         { throw new InvalidCastException("Ќе удалось получить количество проектов"); }
         for (int i = 0; i < count_str; i++)
         {
-            projects.Add(process.StandardOutput.ReadLine()?.Trim() ?? "");
+            projects.Add(process.StandardOutput.ReadLine()!.Trim());
         }
-
         return projects;
     }
 

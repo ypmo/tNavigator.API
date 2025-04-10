@@ -78,5 +78,5 @@ public interface IProject : IDisposable
     /// <param name="code">string with python code for workflow</param>
     /// <param name="save">whether to save the project after execution of the code.</param>
     /// <returns>he function returns an object passed to 'return' instruction inside the given code</returns>
-    object RunPyCode(string? file = null, string[]? files = null, string? code = null, bool save = false);
+    object? RunPyCode(string? file = null, string[]? files = null, string? code = null, bool save = false);
 }
