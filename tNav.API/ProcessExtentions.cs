@@ -7,27 +7,22 @@ using System.Threading.Tasks;
 
 namespace tNav.API;
 
-internal static class Processes
+internal static class ProcessExtentions
 {
-    public static void process_message(Process process, string message)
+    public static void process_message(this Process process, string message)
     {
         process.StandardInput.Write(message);
         process.StandardInput.Flush();
 
-        var err_res = readline(process);
+        var err_res = process.StandardOutput.ReadLine();
         if (err_res != "OK")
         {
-            int.TryParse(readline(process), out int count_str);
+            int.TryParse(process.StandardOutput.ReadLine(), out int count_str);
             string msg = "";
             for (int i = 0; i < count_str; i++)
             {
-                msg += readline(process);
+                msg += process.StandardOutput.ReadLine();
             }
         }
-    }
-
-    public static string? readline(Process process)
-    {
-        return process.StandardOutput.ReadLine();
     }
 }

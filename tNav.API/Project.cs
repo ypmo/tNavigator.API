@@ -30,7 +30,7 @@ public class Project : IProject
         if (save_on_close)
             SaveProject();
         var command = $"close_project (id = \"{project_id}\")\n";
-        Processes.process_message(process, command);
+        process.process_message(command);
     }
 
     public Project GetSubProjectByName(string name, ProjectType type = ProjectType.ND)
@@ -55,7 +55,7 @@ public class Project : IProject
             id_to_save = project_id;
 
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";
-        Processes.process_message(process, save_command);
+        process.process_message(save_command);
         var result = StreamParser.UnpackString(process.StandardOutput);
     }
 }

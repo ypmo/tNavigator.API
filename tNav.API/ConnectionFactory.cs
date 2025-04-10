@@ -11,12 +11,12 @@ public static class ConnectionFactory
 {
     /// <summary>
     /// Инициализирует соединение с tNavigator
-    /// </summary>
     /// <example>Например:
     /// <code>
     /// GetConnection (path_to_exe='C:\\Program Files\\tNavigator-23.3\\tNavigator.exe', minimum_required_version=(23,3))
     /// </code>
     /// </example>
+    /// </summary>
     /// <param name="path_to_exe">path to tNavigator-con.exe</param>
     /// <param name="connection_options"></param>
     /// <param name="minimum_required_version">tuple, optional 
@@ -53,9 +53,9 @@ public static class ConnectionFactory
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
         };
-        var process =Process.Start(startInfo);
+        var process = Process.Start(startInfo);
 
-        if (process==null)
+        if (process == null)
         {
             throw new InvalidOperationException($"Не удалось запустить приложение  {path_to_exe}");
         }
@@ -66,7 +66,7 @@ public static class ConnectionFactory
             if (connection_options.MinimumRequiredVersion.Value.update != null)
                 command += $", update=\"{connection_options.MinimumRequiredVersion.Value.update}\"";
             command += ")\n";
-            Processes.process_message(process, command);
+            process.process_message(command);
         }
         return new Connection(process);
     }
