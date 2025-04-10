@@ -30,7 +30,7 @@ public class Connection : IConnection
         throw new NotImplementedException();
     }
 
-    public Project OpenProject(string path, ProjectType project_type = ProjectType.MD, bool save_on_close = false)
+    public IProject OpenProject(string path, ProjectType project_type = ProjectType.MD, bool save_on_close = false)
     {
         var command = $"open_project (path = \"{path}\", type=\"{project_type}\")\n";
         Processes.process_message(process, command);
