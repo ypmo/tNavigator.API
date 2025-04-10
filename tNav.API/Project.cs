@@ -11,7 +11,7 @@ public class Project : IProject
     Process process;
     bool save_on_close;
 
-    public Project(
+    internal Project(
         Process process,
         int project_id = ProjectID.Invalid,
         int parent_id = ProjectID.Invalid,
@@ -57,5 +57,13 @@ public class Project : IProject
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";
         process.process_message(save_command);
         var result = StreamParser.UnpackString(process.StandardOutput);
+    }
+
+    public void Dispose()
+    {
+        if (parent_id==ProjectID.Invalid)
+        {
+            CloseProject();
+        }
     }
 }
