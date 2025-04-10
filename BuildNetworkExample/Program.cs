@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 using Microsoft.VisualBasic;
+using System.Data;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Xml.Linq;
@@ -330,7 +331,9 @@ else
 Console.WriteLine("Done");
 
 Console.Write("Saving to file...");
-df_nd_results.to_csv("Result_Tables/pipes_table_results.csv");
+var table = df_nd_results as DataTable;
+var csv = Utils.DataTableToCSV(table);
+File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
 Console.WriteLine("Done");
 
 Console.Write("Closing project...");
