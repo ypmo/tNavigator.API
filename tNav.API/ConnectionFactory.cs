@@ -10,8 +10,13 @@ namespace tNav.API;
 public static class ConnectionFactory
 {
     /// <summary>
-    /// initialize connection with tNavigator
+    /// Инициализирует соединение с tNavigator
     /// </summary>
+    /// <example>Например:
+    /// <code>
+    /// GetConnection (path_to_exe='C:\\Program Files\\tNavigator-23.3\\tNavigator.exe', minimum_required_version=(23,3))
+    /// </code>
+    /// </example>
     /// <param name="path_to_exe">path to tNavigator-con.exe</param>
     /// <param name="connection_options"></param>
     /// <param name="minimum_required_version">tuple, optional 
@@ -20,6 +25,9 @@ public static class ConnectionFactory
     ///     Third element should be used if some certain update level is required.                
     ///     If v23.3-2724-g70d0cc8 or newer version is required, then(23,3,2724) should be passed</param>
     /// <param name="license_wait_time_limit__secs">License wait time limit, in seconds. License wait time is unlimited by default.</param>
+    /// <returns>tNav.API.IConnection 
+    ///     class for sending commands via connection with tNavigator API server
+    /// </returns>
     public static IConnection GetConnection(
        string? path_to_exe = null,
        ConnectionOptions? connection_options = null,
