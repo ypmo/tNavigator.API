@@ -49,11 +49,11 @@ public class Connection : IConnection
         var parent_id = ProjectID.Invalid;
         return new Project(process, project_id, parent_id, project_type, save_on_close);
     }
+
     public string GetVersionString()
     {
-        throw new NotImplementedException();
+        return process.StandardOutput.ReadLine()!.TrimEnd();
     }
-
 
     void Stop()
     {
@@ -62,9 +62,6 @@ public class Connection : IConnection
 
     public void Dispose()
     {
-
+        Stop();
     }
-
-
-
 }
