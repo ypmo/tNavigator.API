@@ -264,13 +264,13 @@ ND_proj.RunPyCode(code: $"nd_objects_adjust_well (create_objects=True, events_ta
 src = df_data["Adjust Rates"];
 for (int n = 0; n < src.Rows.Count; n++)
     ND_proj.RunPyCode(code: $"""
-nd_object_adjust_surface_volume_rate (object=find_nd_object (name="{src.iloc[n, 0]}", 
-      type = "{src.iloc[n, 1]}"), 
-      hydrocarbon_param = "{src.iloc[n, 2]}", 
-      hydrocarbon_value ={src.iloc[n, 3]}, 
-      water_param = "{src.iloc[n, 4]}", 
-      water_value ={src.iloc[n, 5]}, 
-      event_date = datetime({src.iloc[n, 6].strftime(time_format)}))
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name="{src.Rows[n][0]}", 
+      type = "{src.Rows[n][1]}"), 
+      hydrocarbon_param = "{src.Rows[n][2]}", 
+      hydrocarbon_value ={src.Rows[n][3]}, 
+      water_param = "{src.Rows[n][4]}", 
+      water_value ={src.Rows[n][5]}, 
+      event_date = datetime({((DateTime)src.Rows[n][6]).ToString(time_format)}))
 """);
 
 ND_proj.RunPyCode(code: $"nd_objects_adjust_pump (create_objects=True, events_table=[{obj(df_data["Pump"])}])");
@@ -291,18 +291,18 @@ nd_select_pvt_for_nd (use_pvt_variant=True,
 """);
 
 src = df_data["Wells"];
-for (int n = 0; n < range(src.shape[0]); i++)
+for (int n = 0; n < src.Rows.Count; n++)
 {
     ND_proj.RunPyCode(code: $"""
  nd_object_select_vfp_table ( 
-   object = find_nd_object(name = "{src.iloc[n, 0]}", type = "well"), 
+   object = find_nd_object(name = "{src.Rows[n][0]}", type = "well"), 
    use_vfp = True, 
    well_project = "Well_Project", 
    vfp = "VFP1")
  """);
     ND_proj.RunPyCode(code: $"""
 nd_object_select_ipr_table ( \
-  object = find_nd_object(name = "{src.iloc[n, 0]}", type = "well"), \
+  object = find_nd_object(name = "{src.Rows[n][0]}", type = "well"), \
   use_ipr = True, \
   well_project = "Well_Project", \
   ipr = "IPR1")'
@@ -319,7 +319,7 @@ Console.Write("Creating dataframe with result...");
 var df_nd_results = ND_proj.RunPyCode(code: $"""
 from datetime import datetime
 import pandas as pd
-date = datetime({pd.to_datetime(timestamps[1]).strftime(time_format)})
+date = datetime({timestamps[1].ToString(time_format)})
 pipes = get_objects_by_type(type='pipe')
 available_results = pipes[0].get_available_extended_results()
 pipeline_results = pd.DataFrame()
