@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using Microsoft.Data.Analysis;
+using System.Data;
+using System.Globalization;
 using tNav.Common;
 
 namespace tNav.FakeConsole.Tests;
@@ -15,11 +17,11 @@ public class StreamParserTests
         using var stream = GenerateStreamFromString(response);
         using var reader = new StreamReader(stream);
         var parsed = StreamParser.Unpack_data(reader);
-        var table = parsed as DataTable;
+        var table = parsed as DataFrame;
         Assert.NotNull(table);
-        using var testOut = File.CreateText("testout.csv");
-        var csv = Utils.DataTableToCSV(table);
-        testOut.Write(csv);
+        using var testOut = File.OpenWrite("testout.csv");
+        DataFrame.SaveCsv(dataFrame: table, csvStream: testOut, separator: ',', encoding: System.Text.Encoding.UTF8, cultureInfo: CultureInfo.InvariantCulture); ;
+       
         testOut.Close();
     }
 
