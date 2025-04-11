@@ -139,8 +139,8 @@ public static class StreamParser
             dt.Columns.Add(collumn);
         }
         var index_data = UnpackList(stream, row_count);
-        var indexColumn = new Int32DataFrameColumn(column_name, column_data.Select(t => (int)t));
-        dt.Columns.Insert()
+        var indexColumn = new Int32DataFrameColumn("index", index_data.Select(t => (int)t));
+        dt.Columns.Insert(0, indexColumn);
         return dt;
     }
     static DateTime UnpackDatetime(StreamReader stream)

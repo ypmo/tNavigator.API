@@ -21,7 +21,7 @@ public class StreamParserTests
         Assert.NotNull(table);
         using var testOut = File.OpenWrite("testout.csv");
         DataFrame.SaveCsv(dataFrame: table, csvStream: testOut, separator: ',', encoding: System.Text.Encoding.UTF8, cultureInfo: CultureInfo.InvariantCulture); ;
-        table.
+       
         testOut.Close();
     }
 
