@@ -24,14 +24,21 @@ namespace tNav.Common;
                 if (!sheetNames.Any() || sheetNames.Contains(worksheet.Name))
                 {
                     var sb = new StringBuilder();
-
+                    bool firstRead=true;
+                    int ncols=0;
                     foreach (var row in worksheet.RowsUsed())
-                    {
+                    {   
                         if (row.RowNumber() > firstRow)
                         {
-                            var text = string.Join(",", row.Cells(1, row.LastCellUsed().Address.ColumnNumber)
-                                .Select(cell => cell.Value.ToString(CultureInfo.InvariantCulture)));
+                            if (firstRead)
+                            {
+                                ncols=row.LastCellUsed().Address.ColumnNumber;
+                            }
+                            var text = string.Join(",", row.Cells(1, ncols)
+                                .Select(cell => cell.Value.ToString(CultureInfo.InvariantCulture).Trim()));
                             sb.AppendLine(text);
+
+                            firstRead=false;
                         }
                     }
                     result.Add((worksheet.Name, sb.ToString()));
