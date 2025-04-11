@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+using BuildNetworkExample;
 using Microsoft.Data.Analysis;
 using Microsoft.VisualBasic;
 using System.Data;
@@ -31,9 +32,15 @@ List<string> xls_list = ["Init_Data/WD_data.xlsx", "Init_Data/ND_data.xlsx"];
 var df_data = new Dictionary<string, DataFrame>();
 foreach (var xls in xls_list)
 {
-    df_data.update(pd.read_excel(xls, engine: "openpyxl", sheet_name: null, skiprows: 1, keep_default_na: false));
+    var cvses = ExcelHelprer.ExcelToCSV(xls, [], 1);
+    foreach (var (name, content) in cvses)
+    {
+        var frame = DataFrame.LoadCsvFromString(content, separator: ',', header: true, cultureInfo: System.Globalization.CultureInfo.InvariantCulture);
+        df_data.Add(name, frame);
+    }
+    //df_data.update(pd.read_excel(xls, engine: "openpyxl", sheet_name: null, skiprows: 1, keep_default_na: false));
 }
-df_data["VFP Correlation Plotting Points"] = pd.read_excel("Init_Data/WD_data.xlsx", engine: "openpyxl", sheet_name: "VFP Correlation Plotting Points", skiprows: 1);
+//df_data["VFP Correlation Plotting Points"] = pd.read_excel("Init_Data/WD_data.xlsx", engine: "openpyxl", sheet_name: "VFP Correlation Plotting Points", skiprows: 1);
 
 List<string> quoted_names = ["name", "perforation_status", "poro_system", "status",
                "type", "type_out", "name_out", "type_in", "name_in", "object",
