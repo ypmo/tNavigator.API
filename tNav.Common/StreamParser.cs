@@ -111,15 +111,12 @@ public static class StreamParser
         if (length == 0)
             return lst;
         var read_type = UnpackString(stream);
-        return (read_type) switch
-        {
-            
-        };
+
         for (int i = 0; i < length; i++)
             lst.Add(Unpack_data(stream, read_type));
+
         return lst;
     }
-
 
     static DataFrame UnpackDataFrame(StreamReader stream)
     {
@@ -140,7 +137,10 @@ public static class StreamParser
                 _ => throw new NotImplementedException()
             };
             dt.Columns.Add(collumn);
-        }        
+        }
+        var index_data = UnpackList(stream, row_count);
+        var indexColumn = new Int32DataFrameColumn(column_name, column_data.Select(t => (int)t));
+        dt.Columns.Insert()
         return dt;
     }
     static DateTime UnpackDatetime(StreamReader stream)
