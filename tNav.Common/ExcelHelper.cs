@@ -1,13 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BuildNetworkExample
-{
-    internal static class ExcelHelprer
+namespace tNav.Common;
+    public static class ExcelHelper
     {
         /// <summary>
         /// КОНВЕРТИРОВАНИЕ xlsx в scv
@@ -27,10 +27,10 @@ namespace BuildNetworkExample
 
                     foreach (var row in worksheet.RowsUsed())
                     {
-                        if (row.RowNumber() >= firstRow)
+                        if (row.RowNumber() > firstRow)
                         {
-                            var text = string.Join(";", row.Cells(1, row.LastCellUsed().Address.ColumnNumber)
-                                .Select(cell => cell.GetValue<string>()));
+                            var text = string.Join(",", row.Cells(1, row.LastCellUsed().Address.ColumnNumber)
+                                .Select(cell => cell.Value.ToString(CultureInfo.InvariantCulture)));
                             sb.AppendLine(text);
                         }
                     }
@@ -40,4 +40,4 @@ namespace BuildNetworkExample
             return result;
         }
     }
-}
+
