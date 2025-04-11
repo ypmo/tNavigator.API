@@ -50,13 +50,14 @@ List<string> quoted_names = ["name", "perforation_status", "poro_system", "statu
 List<string> datetime_names = ["time_step", "event_date"];
 
 List<DateTime> timestamps = [];
-foreach (var df in df_data.values())
+foreach (var df in df_data.Values)
 {
-    foreach (var i in datetime_names)
+    foreach (var colName in datetime_names)
     {
-        if (df.columns.Contains(i))
+        if (df.Columns.Any(t => t.Name == colName))
         {
-            timestamps.AddRange(df[i].Distinct());
+            var values = df[colName].Cast<DateTime>().Distinct();
+            timestamps.AddRange(values);
         }
         timestamps = timestamps.OrderBy(t => t).ToList();
     }
@@ -75,24 +76,25 @@ else
 
 string time_format = $"year=%Y,month=%{fmt}m, day=%{fmt}d";
 
-string obj(sheet)
+string obj(DataFrame sheet)
 {
     List<string> line = [];
-    for (int i = 0; i < range(sheet.shape[0]); i++)
+    for (int i = 0; i < sheet.Rows.Count; i++)
     {
         List<string> token = [];
-        foreach (var col in sheet.columns)
+        foreach (var col in sheet.Columns)
         {
-            if (quoted_names.Contains(col))
-                token.Add($" \"{col}\" : \"{sheet.iloc[i][col]}\" ");
-            else if (datetime_names.Contains(col))
-                token.Add($" \"{col}\" : datetime ({sheet.iloc[i][col].strftime(time_format)}) ");
+
+            if (quoted_names.Contains(col.Name))
+                token.Add($" \"{col}\" : \"{sheet.Rows[i][col.Name]}\" ");
+            else if (datetime_names.Contains(col.Name))
+                token.Add($" \"{col}\" : datetime ( {((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
             else
-                token.Add($" \"{col}\" : {sheet.iloc[i][col]} ");
+                token.Add($" \"{col}\" : {sheet.Rows[i][col.Name]} ");
         }
         line.Add("{" + "," + string.Join(null, token) + "}");
     }
-    var obj = " , " + string.Join(line);
+    var obj = " , " + string.Join("", line);
     return obj;
 }
 
@@ -177,7 +179,8 @@ vfp_table_adjust_correlation_parameters (table=[
 """);
 
 var src = df_data["VFP Correlation Plotting Points"];
-List<string> vfp_points = src.columns.Select(col => "[" + string.Join(", ", src.loc[src[col].notnull()][col].ToList()) + "]");
+List<string> vfp_points = src.Columns.Select(col => "[" + string.Join(", ", col.DropNulls().Cast<string>()) + "]").ToList();
+//List<string> vfp_points = src.columns.Select(col => "[" + string.Join(", ", src.loc[src[col].notnull()][col].ToList()) + "]");
 WD_proj.RunPyCode(code: $"""
 vfp_adjust_correlation_plotting_points (table_name="VFP1", 
   thp ={vfp_points[0]}, 
@@ -196,7 +199,7 @@ WD_proj.RunPyCode(code: "wd_create_ipr_curve (ipr=\"IPR1\", ignore_if_exists=Tru
 WD_proj.RunPyCode(code: $"""
 wd_adjust_ipr_well_test_data (ipr="IPR1", \
   use_date = False, \
-  date = datetime({pd.to_datetime(timestamps[0]).strftime(time_format)}), \
+  date = datetime({timestamps[0].ToString(time_format)}), \
   change_ipr_base = True, ipr_base = "gas", change_model = True, use_well_test_data = True, \
   well_test_data_type = "multipoint", \
   well_test_data = [{obj(df_data["IPR Well Test Data"])}])
@@ -227,13 +230,13 @@ nd_settings_solver_parameters (temperature_options_widget=True,
 foreach (var t in timestamps)
 {
     ND_proj.RunPyCode(code: $"""
-nd_timestep_add ( \
-  first_date = datetime({pd.to_datetime(t).strftime(time_format)}), \
+nd_timestep_add ( 
+  first_date = datetime({t.ToString(time_format)}), 
   step_length = "Single Step", custom_step_length = 1, custom_step_type = "Second")
 """);
 }
 
-var nd_obj = obj(df_data["Objects List"][["type", "'name"]]);
+var nd_obj = obj(new DataFrame(df_data["Objects List"].Columns.Where(t => t.Name == "type" || t.Name == "name")));
 
 ND_proj.RunPyCode(code: $"nd_object_create (objects=[{nd_obj}])");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_3d_coordinates (adjust_on_scheme=False, coordinates_table=[{obj(df_data["Objects List"])}])");
@@ -244,14 +247,14 @@ ND_proj.RunPyCode(code: $"nd_objects_adjust_choke (create_objects=True, events_t
 ND_proj.RunPyCode(code: $"nd_objects_adjust_pipe (events_table=[{obj(df_data["Pipes"])}])");
 
 src = df_data["Adjust Pipe Geometry"];
-for (int n = 0; n < range(src.shape[0]); i++)
+for (int n = 0; n < src.Rows.Count; n++)
     ND_proj.RunPyCode(code: $"""
 nd_object_adjust_pipe_geometry_simple ( 
-  event_date = datetime({src.iloc[n, 0].strftime(time_format)}), 
-  object= find_nd_object(name = "{src.iloc[n, 1]}", 
-  type = "{src.iloc[n, 2]}"), 
-  length={src.iloc[n, 3]}, 
-  height_diff ={src.iloc[n, 4]})
+  event_date = datetime({((DateTime)src.Rows[n][0]).ToString(time_format)}), 
+  object= find_nd_object(name = "{src.Rows[n][1]}", 
+  type = "{src.Rows[n][2]}"), 
+  length={src.Rows[n][3]}, 
+  height_diff ={src.Rows[n][4]})
 """);
 
 ND_proj.RunPyCode(code: $"nd_objects_adjust_source (create_objects=True, events_table=[{obj(df_data["Source"])}])");
@@ -259,7 +262,7 @@ ND_proj.RunPyCode(code: $"nd_objects_adjust_sink (create_objects=True, events_ta
 ND_proj.RunPyCode(code: $"nd_objects_adjust_well (create_objects=True, events_table=[{obj(df_data["Wells"])}])");
 
 src = df_data["Adjust Rates"];
-for (int n = 0; n < range(src.shape[0]); i++)
+for (int n = 0; n < src.Rows.Count; n++)
     ND_proj.RunPyCode(code: $"""
 nd_object_adjust_surface_volume_rate (object=find_nd_object (name="{src.iloc[n, 0]}", 
       type = "{src.iloc[n, 1]}"), 
