@@ -13,6 +13,8 @@ using tnav = tNav.API;
 
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
 string tNpath = Console.ReadLine() ?? "";
+if (string.IsNullOrEmpty(tNpath))
+    tNpath = "../../../../tNavFakeConsole/bin/Debug/net8.0/tNav.FakeConsole";
 
 if (!Path.Exists(tNpath))
 {
