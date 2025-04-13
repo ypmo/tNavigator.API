@@ -4,9 +4,9 @@ namespace tNav.FakeConsole;
 
 public class LogParser
 {
-    readonly string startWord = "***INPUT***";
-    readonly string endWord = "***END***";
-    public List<Seans> Parse(string log)
+    const string startWord = "***INPUT***";
+    const string endWord = "***END***";
+    public static List<Seans> Parse(string log)
     {
         List<Seans> result = [];
         TextReader reader = new StringReader(log);
@@ -22,10 +22,11 @@ public class LogParser
 
             S.Responses = GetResponses(reader);
             result.Add(S);
-        };
+        }
+        ;
     }
 
-    List<Response> GetResponses(TextReader reader)
+    static List<Response> GetResponses(TextReader reader)
     {
         List<Response> result = [];
         while (true)
@@ -38,7 +39,7 @@ public class LogParser
                 int index = line.IndexOf(startWord);
                 if (index < 0)
                 {
-                    throw new InvalidOperationException("Строка не найдена");
+                    throw new InvalidOperationException("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 }
                 else if (index > 0)
                 {
@@ -48,12 +49,12 @@ public class LogParser
                 }
                 return result;
             }
-            response.Data = line+"\n";
+            response.Data = line + "\n";
             result.Add(response);
         }
-        ;
+           ;
     }
-    string? GetQuery(TextReader reader)
+    static string? GetQuery(TextReader reader)
     {
         string? result = null;
         while (true)
@@ -65,7 +66,7 @@ public class LogParser
                 int index = line.IndexOf(endWord);
                 if (index < 0)
                 {
-                    throw new InvalidOperationException("Строка не найдена");
+                    throw new InvalidOperationException("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 }
                 else if (index > 0)
                 {
@@ -76,6 +77,6 @@ public class LogParser
             }
             result += line + "\n";
         }
-        ;
-    }  
+          ;
+    }
 }
