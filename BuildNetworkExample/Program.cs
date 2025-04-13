@@ -1,16 +1,12 @@
-﻿#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
-using Microsoft.Data.Analysis;
-using Microsoft.VisualBasic;
+﻿using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Xml.Linq;
 using tNav.API;
 using tNav.Common;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using tnav = tNav.API;
-#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 
+System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
 string tNpath = Console.ReadLine() ?? "";
 if (string.IsNullOrEmpty(tNpath))
@@ -36,7 +32,7 @@ foreach (var xls in xls_list)
     var cvses = ExcelHelper.ExcelToCSV(xls, [], 1);
     foreach (var (name, content) in cvses)
     {
-        var frame = DataFrame.LoadCsvFromString(content, separator: ',', header: true, cultureInfo: System.Globalization.CultureInfo.InvariantCulture);
+        var frame = DataFrame.LoadCsvFromString(content, separator: ',', header: true);
         df_data.Add(name, frame);
     }
     //df_data.update(pd.read_excel(xls, engine: "openpyxl", sheet_name: null, skiprows: 1, keep_default_na: false));
@@ -51,13 +47,14 @@ List<string> quoted_names = ["name", "perforation_status", "poro_system", "statu
 List<string> datetime_names = ["time_step", "event_date"];
 
 List<DateTime> timestamps = [];
-foreach (var df in df_data.Values)
+foreach (var df_par in df_data)
 {
+    var df = df_par.Value;
     foreach (var colName in datetime_names)
     {
         if (df.Columns.Any(t => t.Name == colName))
         {
-            var values = df[colName].Cast<DateTime>().Distinct();
+            var values = df.Columns[colName].Cast<DateTime>().Distinct().ToArray();
             timestamps.AddRange(values);
         }
         timestamps = timestamps.OrderBy(t => t).ToList();
