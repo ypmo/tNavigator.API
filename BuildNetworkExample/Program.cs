@@ -54,11 +54,11 @@ foreach (var df_par in df_data)
     {
         if (df.Columns.Any(t => t.Name == colName))
         {
-            var values = df.Columns[colName].Cast<DateTime>().Distinct().ToArray();
+            var values = df.Columns[colName].Cast<DateTime>().ToArray();
             timestamps.AddRange(values);
-        }
-        timestamps = timestamps.OrderBy(t => t).ToList();
+        }        
     }
+    timestamps =  timestamps.Distinct().OrderBy(t => t).ToList();
 }
 
 string fmt = "";
