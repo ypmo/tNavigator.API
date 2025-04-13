@@ -15,6 +15,7 @@ foreach (var query in queries)
     //using var sr = new StreamReader(Console.OpenStandardInput(), Console.InputEncoding);
     //using var sw = new StreamWriter(Console.OpenStandardOutput(), Console.OutputEncoding);
     var input = Console.ReadLine();
+    log.Info("***Получили***", input);
     if (!string.Equals(query.Query.Trim('\n'), input))
     {
         List<string> content = [];
@@ -29,6 +30,7 @@ foreach (var query in queries)
     foreach (var responce in query.Responses)
     {
         ///Console.OpenStandardOutput().Write(responce.Data)
+         log.Info("***ОТВЕТ***", responce.Data);
         Console.Write(responce.Data);
 
         //Console.WriteLine(responce);
