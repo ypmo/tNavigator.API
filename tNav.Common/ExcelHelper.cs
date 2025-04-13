@@ -1,13 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BuildNetworkExample
-{
-    internal static class ExcelHelprer
+namespace tNav.Common;
+    public static class ExcelHelper
     {
         /// <summary>
         /// КОНВЕРТИРОВАНИЕ xlsx в scv
@@ -24,14 +24,21 @@ namespace BuildNetworkExample
                 if (!sheetNames.Any() || sheetNames.Contains(worksheet.Name))
                 {
                     var sb = new StringBuilder();
-
+                    bool firstRead=true;
+                    int ncols=0;
                     foreach (var row in worksheet.RowsUsed())
-                    {
-                        if (row.RowNumber() >= firstRow)
+                    {   
+                        if (row.RowNumber() > firstRow)
                         {
-                            var text = string.Join(";", row.Cells(1, row.LastCellUsed().Address.ColumnNumber)
-                                .Select(cell => cell.GetValue<string>()));
+                            if (firstRead)
+                            {
+                                ncols=row.LastCellUsed().Address.ColumnNumber;
+                            }
+                            var text = string.Join(",", row.Cells(1, ncols)
+                                .Select(cell => cell.Value.ToString(CultureInfo.InvariantCulture).Trim()));
                             sb.AppendLine(text);
+
+                            firstRead=false;
                         }
                     }
                     result.Add((worksheet.Name, sb.ToString()));
@@ -40,4 +47,4 @@ namespace BuildNetworkExample
             return result;
         }
     }
-}
+
