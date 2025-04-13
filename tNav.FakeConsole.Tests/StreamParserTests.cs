@@ -11,7 +11,7 @@ public class StreamParserTests
     public void ParseDataFrame()
     {
         var log = File.ReadAllText("../../../../BuildNetworkExample/out/log.txt");
-        var testsData = new LogParser().Parse(log);
+        var testsData = LogParser.Parse(log);
         var lastTest = testsData[70];
         var response = lastTest.Responses.Last().Data ?? "";
         using var stream = GenerateStreamFromString(response);
@@ -21,7 +21,7 @@ public class StreamParserTests
         Assert.NotNull(table);
         using var testOut = File.OpenWrite("testout.csv");
         DataFrame.SaveCsv(dataFrame: table, csvStream: testOut, separator: ',', cultureInfo: CultureInfo.InvariantCulture); ;
-       
+
         testOut.Close();
     }
 

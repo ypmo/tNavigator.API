@@ -50,8 +50,7 @@ public class LogParserTests
     [Fact]
     public void ParserCanRead()
     {
-        var parser = new LogParser();
-        var log = parser.Parse(TestData);
+        var log = LogParser.Parse(TestData);
         Assert.NotNull(log);
         Assert.True(log.Count() == 3);
         var test = JsonConvert.SerializeObject(log);
