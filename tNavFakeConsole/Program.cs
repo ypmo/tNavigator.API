@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using tNav.FakeConsole;
 
 
@@ -12,48 +13,51 @@ var queries = LogParser.Parse(logText);
 
 foreach (var query in queries)
 {
-    List<string> lines = [];
+    ReadInput(query.Query);
 
+
+
+    PushOut(query.Responses);
+
+}
+
+void ReadInput(string? original)
+{
     log.Info("начинаем чтение строки");
-    bool firstLine = true;
-    bool endFinded = true;
-    while (firstLine || !endFinded)
+    byte[] buffer = new byte[4096];
+
+    StringBuilder sb = new();
+    bool hasValue = true;
+
+    while (hasValue)
     {
-        var line = Console.ReadLine();
-        if (firstLine && line.EndsWith("= \""))
+        int readed = Console.Read();
+        hasValue = readed >= 0;
+        if (hasValue)
         {
-            endFinded = false;
+            log. InfoSimbol(((char)readed).ToString());
+            sb.Append((char)readed);
         }
-        else if (!firstLine && line.EndsWith("\")"))
-        {
-            endFinded = true;
-        }
-        firstLine = false;
-        log.Info($"Считали {line}");
-        lines.Add(line);
     }
+    var input = sb.ToString();
     log.Info("Закончили чтение");
-    var input = string.Join('\n', lines);
     log.Info("***Получили***", input);
-    if (!string.Equals(query.Query.Trim('\n'), input.Trim('\n')))
+    if (!string.Equals(original?.Trim('\n'), input.Trim('\n')))
     {
         List<string> content = [];
         content.Add("***ожидалось***");
-        content.Add(query.Query);
+        content.Add(original ?? "");
         content.Add("***получили***");
         content.Add(input);
         log.Error(content.ToArray());
-        //throw new Exception("Not equals");
-    }
-    foreach (var responce in query.Responses)
-    {
-        ///Console.OpenStandardOutput().Write(responce.Data)
-        log.Info("***ОТВЕТ***", responce.Data);
-        Console.Write(responce.Data);
-
-        //Console.WriteLine(responce);
-        // sw.Flush();
     }
 }
 
-
+void PushOut(IEnumerable<string> input)
+{
+    foreach (var data in input)
+    {
+        log.Info("***ОТВЕТ***", data);
+        Console.Write(data);
+    }
+}

@@ -15,6 +15,10 @@ public class Logger
             File.WriteAllText(outlog,"");
     }
 
+    public void InfoSimbol(  string content)
+    {
+        File.AppendAllText(outlog, content);
+    }
     public void Info(params string[] content)
     {
         File.AppendAllLines(outlog, content);

@@ -6,16 +6,16 @@ public class LogParser
 {
     const string startWord = "***INPUT***";
     const string endWord = "***END***";
-    public static List<Seans> Parse(string log)
+    public static List<Session> Parse(string log)
     {
-        List<Seans> result = [];
+        List<Session> result = [];
         TextReader reader = new StringReader(log);
         reader.ReadLine();
         reader.ReadLine();
 
         while (true)
         {
-            Seans S = new();
+            Session S = new();
             var query = GetQuery(reader);
             if (query == null) return result;
             S.Query = query;
@@ -26,12 +26,12 @@ public class LogParser
         ;
     }
 
-    static List<Response> GetResponses(TextReader reader)
+    static List<string> GetResponses(TextReader reader)
     {
-        List<Response> result = [];
+        List<string> result = [];
         while (true)
         {
-            Response response = new Response();
+            string response;
             var line = reader.ReadLine();
             if (line == null) { return result; }
             if (line.Contains(startWord))
@@ -44,12 +44,12 @@ public class LogParser
                 else if (index > 0)
                 {
                     var subresult = line.Substring(0, index);
-                    response.Data = subresult;
+                    response = subresult;
                     result.Add(response);
                 }
                 return result;
             }
-            response.Data = line + "\n";
+            response = line + "\n";
             result.Add(response);
         }
            ;
