@@ -44,7 +44,10 @@ public static class ConnectionFactory
 
 
         var cmd_args = init_cmd_args_from_connection_options(path_to_exe, connection_options);
-
+        if (!File.Exists(path_to_exe))
+        {
+            throw new FileNotFoundException("", path_to_exe);
+        }
         var startInfo = new ProcessStartInfo
         {
             FileName = path_to_exe,

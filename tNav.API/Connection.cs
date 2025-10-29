@@ -31,7 +31,7 @@ public class Connection : IConnection
         process.process_message(command);
         List<string> projects = [];
         if (!int.TryParse(process.StandardOutput.ReadLine() ?? "", out int count_str))
-        { throw new InvalidCastException("Не удалось получить количество проектов"); }
+        { throw new InvalidCastException("РђР±СЂР°РєР°РґР°Р±СЂР°"); }
         for (int i = 0; i < count_str; i++)
         {
             projects.Add(process.StandardOutput.ReadLine()!.Trim());
@@ -42,7 +42,7 @@ public class Connection : IConnection
     public IProject OpenProject(string path, ProjectType project_type = ProjectType.MD, bool save_on_close = false)
     {
         var escaped_path = path.Replace("\\", "\\\\");
-        var command = $"open_project (path = \"{escaped_path}\", type=\"{project_type}\")\n";
+        var command = $"open_project (path = \"{escaped_path}\", type=\"{project_type.tNavValue()}\")\n";
         process.process_message(command);
         int.TryParse(process.StandardOutput.ReadLine(), out int project_id);
         var parent_id = ProjectID.Invalid;

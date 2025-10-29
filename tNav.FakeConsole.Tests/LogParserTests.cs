@@ -27,20 +27,20 @@ public class LogParserTests
   "***END***\n" +
   "OK\n";
 
-    static List<Seans> ActualData = [
-        new Seans(){
+    static List<Session> ActualData = [
+        new Session(){
             Query="create_project(path = \"SNP/API_BuildND.snp\", case = \"model_designer\", type = \"md\")\n",
             Responses=[
                 new Response{Data="OK\n"},
                 new Response{Data="0\n"},
                 ]},
-                new Seans(){
+                new Session(){
             Query="run_py_code(code = \"save_project ()\", id = \"0\")\n",
             Responses=[
                 new Response{Data="OK\n"},
                 new Response{Data="04000000000000004e6f6e65"},
                 ]},
-                new Seans(){
+                new Session(){
             Query="close_project(id = \"0\")\n",
             Responses=[
                 new Response{Data="OK\n"}
@@ -50,8 +50,7 @@ public class LogParserTests
     [Fact]
     public void ParserCanRead()
     {
-        var parser = new LogParser();
-        var log = parser.Parse(TestData);
+        var log = LogParser.Parse(TestData);
         Assert.NotNull(log);
         Assert.True(log.Count() == 3);
         var test = JsonConvert.SerializeObject(log);

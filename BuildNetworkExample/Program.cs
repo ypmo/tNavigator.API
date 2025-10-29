@@ -177,7 +177,7 @@ vfp_table_adjust_correlation_parameters (table=[
 """);
 
 var src = df_data["VFP Correlation Plotting Points"];
-List<string> vfp_points = src.Columns.Select(col => "[" + string.Join(", ", col.DropNulls().Cast<string>()) + "]").ToList();
+List<string> vfp_points = src.Columns.Select(col => "[" + string.Join(", ", col.DropNulls().Cast<Single>()) + "]").ToList();
 //List<string> vfp_points = src.columns.Select(col => "[" + string.Join(", ", src.loc[src[col].notnull()][col].ToList()) + "]");
 WD_proj.RunPyCode(code: $"""
 vfp_adjust_correlation_plotting_points (table_name="VFP1", 

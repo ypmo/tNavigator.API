@@ -1,39 +1,64 @@
 ﻿
+using System.Text;
 using tNav.FakeConsole;
-string outlog = "error.txt";
+
+
+Logger log = new();
+log.Clear();
+log.Info(DateTime.Now.ToString());
 string pathToLog = "../../../../BuildNetworkExample/out/log.txt";
 var logText = File.ReadAllText(pathToLog);
 var queries = LogParser.Parse(logText);
-if(File.Exists(outlog))
-{
-File.Delete(outlog);
-}
+
+var listener = new StreamListener(Console.OpenStandardInput());
 
 foreach (var query in queries)
 {
-    using var sr = new StreamReader(Console.OpenStandardInput(), Console.InputEncoding);
-    using var sw = new StreamWriter(Console.OpenStandardOutput(), Console.OutputEncoding);
-    var input = sr.ReadToEnd();
-    if (!string.Equals(query.Query, input))
+    ReadInput(query.Query);
+    PushOut(query.Responses);
+}
+
+void ReadInput(string? original)
+{
+    log.Info("начинаем чтение строки mark_02");
+    var input = ReadStandardInput();
+    log.Info("Закончили чтение");
+    log.Info("***Получили***", $"{input} {string.Join("", Encoding.ASCII.GetBytes(input))}");
+    if (!string.Equals(original?.Trim('\n'), input.Trim('\n')))
     {
         List<string> content = [];
         content.Add("***ожидалось***");
-        content.Add(query.Query);
+        content.Add(original ?? "");
         content.Add("***получили***");
         content.Add(input);
-        await File.AppendAllLinesAsync(outlog, content);
-        throw new Exception("Not equals");
-
-    }
-    foreach (var responce in query.Responses)
-    {
-        sw.Write(responce);
-        sw.Flush();
+        log.Error(content.ToArray());
     }
 }
 
-
-while (true)
+string? ReadStandardInput()
 {
+    bool dataResived = false;
+    string result = "";
+    while (!dataResived || string.IsNullOrEmpty(result))
+    {
+        if (listener.Age > 100)
+        {
+            result = listener.GetString();
+            dataResived = true;
+        }
+        else
+        {
+            System.Threading.Thread.Sleep(100);
+        }
+    }
+    return result;
+}
 
+void PushOut(IEnumerable<string> input)
+{
+    foreach (var data in input)
+    {
+        log.Info("***ОТВЕТ***", data);
+        Console.Write(data);
+    }
 }

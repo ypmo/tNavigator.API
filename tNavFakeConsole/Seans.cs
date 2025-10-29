@@ -1,8 +1,8 @@
 ﻿namespace tNav.FakeConsole;
 
-public class Seans
+public class Session
 {
     public string? Query { get; set; }
-    public List<Response> Responses { get; set; } = [];
+    public List<string> Responses { get; set; } = [];
 
 }
