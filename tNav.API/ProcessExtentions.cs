@@ -23,6 +23,8 @@ internal static class ProcessExtentions
             {
                 msg += process.StandardOutput.ReadLine();
             }
+            throw new Exception($"tNav Сообщает об ошибке\n Отправлено:{message}\nОтвет:{msg}");
+            
         }
     }
 }

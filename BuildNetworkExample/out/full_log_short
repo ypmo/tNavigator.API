@@ -1,0 +1,394 @@
+2025-03-31 23:43:29.151357
+***INPUT***
+create_project (path = "SNP/API_BuildND.snp", case = "model_designer", type = "md")
+***END***
+OK
+0
+***INPUT***
+run_py_code (code = "save_project ()", id = "0")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+close_project (id = "0")
+***END***
+OK
+***INPUT***
+open_project (path = "SNP/API_BuildND.snp", type="md")
+***END***
+OK
+1
+***INPUT***
+run_py_code (code = "
+request_license_features (requested_features=[     {\"feature\" : \"FEAT_MODEL_DESIGNER\"},     {\"feature\" : \"FEAT_NETWORK_DESIGNER\"},     {\"feature\" : \"FEAT_WELL_DESIGNER\"},     {\"feature\" : \"FEAT_PVT_DESIGNER\"}])", id = "1")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+pvt_import_e1_format (file_name=\"../Init_Data/Blackoil.inc\",     region_count=1,     units=\"METRIC\",     clear_tables=True)", id = "1")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+project_manager_create_project (projects_table=[     {\"project_type\" : \"vfp_project\", \"project_name\" : \"Well_Project\"},         {\"project_type\" : \"nd_project\", \"project_name\" : \"standalone_network\"}])", id = "1")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+get_subproject_by_name (id = "1", name = "Well_Project", type = "wd")
+***END***
+OK
+2
+***INPUT***
+run_py_code (code = "
+well_designer_adjust_basic_data (name=\"Well\",       group_name=\"\", object=\"well\", well_type=\"producer\", current_vfp=\"\",       preferred_phase=\"1*\", reference_depth_mode=\"auto\", user_tvd=0,       inflow_equation=\"STD\", instructions=\"SHUT\", density_type=\"SEG\",       drainage_radius=0, crossflow_ability=True, use_fluid_esp_heating=False,       max_deviation_angle=5, use_segment_model=False, flow_model=False,       suppress_annular_segments=False, use_segment_params=False,       min_segment_length=0, max_segment_length=1000, use_thermal_parameters=False,       thickness=0, thermal_conductivity=0, link_segment_nodes=False,       well_head_x=0, well_head_y=0, well_head_z=0, sc_pressure=0,       sc_temperature=0, use_concentric_tubings=False,       use_segment_graph=False, use_bottomhole_depth_unification=False)", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+wd_trajectories_import (imported_object=\"well\",       format=\"Well Path / Deviation Text\", file_names=[\"../../../../../../Init_Data/Well.dev\"],       input_data_type=\"wid_md_x_y_z\", las_header_1=\"\", las_header_2=\"\", las_header_3=\"\",       las_header_4=\"\", method=\"tangent\", units_system_xy=\"METRIC\", units_system_z=\"METRIC\",       use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True,       txt_table_format=TableFormat (separator=\"all spaces\", comment=\"#\",       skip_lines=1, columns=[\"md\", \"x\", \"y\", \"z\"]), gwtd_table_format=TableFormat (separator=\"all spaces\",       comment=\"#\", skip_lines=0, columns=[\"md\", \"x\", \"y\", \"z\"]),       vert_well_table_format=TableFormat (separator=\"all spaces\", comment=\"\", skip_lines=1,       columns=[\"well\", \"x\", \"y\", \"kb\", \"last_point_md\", \"last_point_tvdss\", \"well_code\"]),       well_name=None, wellbore_name=None, dst_branch_num=0)", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+well_designer_object_casing (branch_num=0, objects_table=[{ \"name\" : \"Casing 1\" , \"top_depth\" : 0 , \"bottom_depth\" : 1780 , \"diameter_in\" : 0.1158 , \"diameter_out\" : 0.127 , \"roughness_in\" : 2e-05 , \"openhole\" : False , \"liner\" : False , \"wall_thermal_capacity\" : 0 , \"wall_thermal_conductivity\" : 0 , \"wellbore_diameter\" : 0.137 , \"cement_thermal_conductivity\" : 0 } , { \"name\" : \"Casing 2\" , \"top_depth\" : 1780 , \"bottom_depth\" : 1936 , \"diameter_in\" : 0.1158 , \"diameter_out\" : 0.127 , \"roughness_in\" : 2e-05 , \"openhole\" : True , \"liner\" : False , \"wall_thermal_capacity\" : 0 , \"wall_thermal_conductivity\" : 0 , \"wellbore_diameter\" : 0.137 , \"cement_thermal_conductivity\" : 0 }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+well_designer_object_tubing (branch_num=0, objects_table=[{ \"name\" : \"Tubing 1\" , \"bottom_depth\" : 1700 , \"diameter_in\" : 0.100533 , \"diameter_out\" : 0.1143 , \"roughness_in\" : 1.524e-05 , \"roughness_out\" : 1.524e-05 , \"wall_thermal_conductivity\" : 0 , \"wall_thermal_capacity\" : 0 , \"annulus_material_thermal_conductivity\" : 0 , \"insulation_thickness\" : None , \"insulation_thermal_conductivity\" : None , \"insulation_heat_capacity\" : None , \"bull_plug\" : False , \"use_concentric_tubings\" : False }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+well_designer_object_perforation (branch_num=0, objects_table=[{ \"name\" : \"Perforation 1\" , \"top_depth\" : 1300 , \"bottom_depth\" : 1700 , \"skin\" : 0 , \"multiplier\" : 1 , \"perforation_status\" : \"open\" , \"poro_system\" : \"matrix\" }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+well_designer_object_packer (branch_num=0, objects_table=[{ \"name\" : \"Packer 1\" , \"depth\" : 1200 , \"status\" : \"active\" , \"length\" : 3 }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+well_designer_object_bottom_hole (branch_num=0, objects_table=[{ \"name\" : \"Bottomhole 1\" , \"depth\" : 1936 , \"status\" : \"active\" , \"tvd\" : 1956.098 , \"ref_tvd\" : 1956.098 }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+well_designer_object_pressure_gauge (branch_num=0, objects_table=[{ \"name\" : \"Gauge 1\" , \"depth\" : 1695 , \"status\" : \"active\" }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+
+vfp_table_create_select_pvt (table=[
+    {\"vfp_table\" : \"VFP1\", \"pvt_project\" : \"PVT Data\", \"variant_type\" : \"blackoil\",
+    \"variant_name\" : \"Blackoil.inc 1\", \"compos_name\" : \"\"}])
+
+vfp_table_adjust_correlation_parameters (table=[
+    {\"vfp_table\" : \"VFP1\", \"vertical_deviated_swap_angle\" : 5, \"horizontal_deviated_swap_angle\" : 5,
+    \"single_phase_corr\" : \"moody\", \"liq_vap_flow\" : 0.001, \"use_tubing_correlations\" : True,
+    \"vertical_corr\" : \"Hagedorn-Brown\", \"deviated_corr\" : \"Beggs-Brill\", \"horizontal_corr\" : \"Beggs-Brill\",
+    \"frict_tubing\" : 1, \"hydro_tubing\" : 1, \"use_annulus_correlations\" : False,
+    \"use_same_as_tubing_correlations\" : False, \"vertical_annulus_corr\" : \"Hagedorn-Brown\",
+    \"deviated_annulus_corr\" : \"Beggs-Brill\", \"horizontal_annulus_corr\" : \"Beggs-Brill\",\"frict_annulus\" : 1,
+    \"hydro_annulus\" : 1, \"use_acceleration_component\" : False}])
+", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+vfp_adjust_correlation_plotting_points (table_name=\"VFP1\",   thp=[5.0, 14.5, 24.0, 33.5, 43.0, 52.5, 62.0, 71.5, 81.0, 90.5, 100.0],   flo_type=\"OIL\",   flo=[1.0, 10.0, 100.0],   wfr_type=\"WCT\",   wfr=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],   gfr_type=\"GOR\",   gfr=[1.0, 10.0, 100.0, 1000.0, 10000.0],   alq_type=\"GRAT\",   alq=[0.0])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+wd_create_ipr_curve (ipr=\"IPR1\", ignore_if_exists=True)", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+wd_adjust_ipr_well_test_data (ipr=\"IPR1\",   use_date=False,   date= datetime(year=2024,month=3, day=14),   change_ipr_base=True, ipr_base=\"gas\", change_model=True, use_well_test_data=True,   well_test_data_type=\"multipoint\",   well_test_data=[{ \"volume_rate\" : 0.0 , \"bhp\" : 250.0 , \"reservoir_pressure\" : 0.0 } , { \"volume_rate\" : 261566.0 , \"bhp\" : 235.0 , \"reservoir_pressure\" : 0.0 } , { \"volume_rate\" : 486035.0 , \"bhp\" : 195.0 , \"reservoir_pressure\" : 0.0 } , { \"volume_rate\" : 764061.0 , \"bhp\" : 100.0 , \"reservoir_pressure\" : 0.0 } , { \"volume_rate\" : 827501.0 , \"bhp\" : 50.0 , \"reservoir_pressure\" : 0.0 } , { \"volume_rate\" : 848763.0 , \"bhp\" : 1.0135 , \"reservoir_pressure\" : 0.0 }])", id = "2")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+get_subproject_by_name (id = "1", name = "standalone_network", type = "nd")
+***END***
+OK
+3
+***INPUT***
+run_py_code (code = "
+nd_settings_solver_parameters (temperature_options_widget=True,   use_temperature_equation=True, use_heat_balance_equation=True,   use_iterative_method=True, initial_approximation_options_widget=True,   use_initial_approximation=False, use_directed_graph_for_initial_rate_approximation=True,   use_constraints_for_initial_rate_approximation=False,   wells_uterations_chop_settings_widget=True, wells_chop_coefficient=0.5,   use_limit_chop_well_solution=False, chop_well_solution_max_count=50,   newton_iterations_widget=True, use_newton_step_mult=False,   newt_step_mult_start_iteration=2, verification_widget=True,   enable_verification=True, linear_solver_settings_widget=True,   solver_type=\"iterative\", newton_iter=50, solver_max_it=400,   tolerance_widget=True, newton_rhs_tol=0.001, newton_diff_tol=1e-8,   double_newton_relaxation=1, use_separate_tol_for_object_pressure_rhs=False,   object_pressure_equations_tol=0.001, differentiation_widget=True,   enable_automatic_differentiation=False)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_timestep_add (       first_date=datetime (year=2024,month=3, day=14),       step_length=\"Single Step\", custom_step_length=1, custom_step_type=\"Second\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_timestep_add (       first_date=datetime (year=2024,month=4, day=22),       step_length=\"Single Step\", custom_step_length=1, custom_step_type=\"Second\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_create (objects=[{ \"type\" : \"source\" , \"name\" : \"Source\" } , { \"type\" : \"sink\" , \"name\" : \"Gas_Sale\" } , { \"type\" : \"sink\" , \"name\" : \"Inj_Well\" } , { \"type\" : \"sink\" , \"name\" : \"Oil_Tank\" } , { \"type\" : \"well\" , \"name\" : \"Well_A1\" } , { \"type\" : \"well\" , \"name\" : \"Well_A2\" } , { \"type\" : \"well\" , \"name\" : \"Well_A3\" } , { \"type\" : \"well\" , \"name\" : \"Well_A4\" } , { \"type\" : \"well\" , \"name\" : \"Well_A5\" } , { \"type\" : \"well\" , \"name\" : \"Well_B1\" } , { \"type\" : \"well\" , \"name\" : \"Well_B2\" } , { \"type\" : \"well\" , \"name\" : \"Well_B3\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 7\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 8\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 4\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 5\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 6\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 1\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 2\" } , { \"type\" : \"choke\" , \"name\" : \"Choke 3\" } , { \"type\" : \"pump\" , \"name\" : \"Pump\" } , { \"type\" : \"compressor\" , \"name\" : \"Compressor\" } , { \"type\" : \"three-phase separator\" , \"name\" : \"3-phase Separator\" } , { \"type\" : \"joint\" , \"name\" : \"Joint 5\" } , { \"type\" : \"joint\" , \"name\" : \"Joint 3\" } , { \"type\" : \"joint\" , \"name\" : \"Joint 1\" } , { \"type\" : \"joint\" , \"name\" : \"Joint 4\" } , { \"type\" : \"joint\" , \"name\" : \"Joint 2\" } , { \"type\" : \"joint\" , \"name\" : \"Joint 6\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_3d_coordinates (adjust_on_scheme=False, coordinates_table=[{ \"type\" : \"source\" , \"name\" : \"Source\" , \"x\" : -250.876011 , \"y\" : 343.829261 , \"z\" : 0 } , { \"type\" : \"sink\" , \"name\" : \"Gas_Sale\" , \"x\" : 883.221024 , \"y\" : 261.320755 , \"z\" : 0 } , { \"type\" : \"sink\" , \"name\" : \"Inj_Well\" , \"x\" : 917.318059 , \"y\" : 427.412399 , \"z\" : 0 } , { \"type\" : \"sink\" , \"name\" : \"Oil_Tank\" , \"x\" : 898.045822 , \"y\" : 343.829261 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_A1\" , \"x\" : 264.658844 , \"y\" : 427.868852 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_A2\" , \"x\" : 264.658844 , \"y\" : 504.53655 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_A3\" , \"x\" : 264.658844 , \"y\" : 650.500052 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_A4\" , \"x\" : -258.787032 , \"y\" : 678.513249 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_A5\" , \"x\" : -258.787032 , \"y\" : 582.678627 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_B1\" , \"x\" : -258.787032 , \"y\" : 239.148366 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_B2\" , \"x\" : -258.787032 , \"y\" : 103.505516 , \"z\" : 0 } , { \"type\" : \"well\" , \"name\" : \"Well_B3\" , \"x\" : 119.623463 , \"y\" : 103.505516 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 7\" , \"x\" : 194.77816 , \"y\" : 427.868852 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 8\" , \"x\" : 194.77816 , \"y\" : 504.53655 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 4\" , \"x\" : 194.77816 , \"y\" : 650.500052 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 5\" , \"x\" : -166.491789 , \"y\" : 678.513249 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 6\" , \"x\" : -166.491789 , \"y\" : 582.678627 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 1\" , \"x\" : -166.491789 , \"y\" : 239.148366 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 2\" , \"x\" : -166.491789 , \"y\" : 103.505516 , \"z\" : 0 } , { \"type\" : \"choke\" , \"name\" : \"Choke 3\" , \"x\" : 44.468765 , \"y\" : 103.505516 , \"z\" : 0 } , { \"type\" : \"pump\" , \"name\" : \"Pump\" , \"x\" : 705.32345 , \"y\" : 427.412399 , \"z\" : 0 } , { \"type\" : \"compressor\" , \"name\" : \"Compressor\" , \"x\" : 684.568733 , \"y\" : 261.320755 , \"z\" : 0 } , { \"type\" : \"three-phase separator\" , \"name\" : \"3-phase Separator\" , \"x\" : 675.673854 , \"y\" : 343.829261 , \"z\" : 0 } , { \"type\" : \"joint\" , \"name\" : \"Joint 5\" , \"x\" : 101.164414 , \"y\" : 427.868852 , \"z\" : 0 } , { \"type\" : \"joint\" , \"name\" : \"Joint 3\" , \"x\" : -12.226884 , \"y\" : 554.665429 , \"z\" : 0 } , { \"type\" : \"joint\" , \"name\" : \"Joint 1\" , \"x\" : -12.226884 , \"y\" : 239.148366 , \"z\" : 0 } , { \"type\" : \"joint\" , \"name\" : \"Joint 4\" , \"x\" : -12.226884 , \"y\" : 427.868852 , \"z\" : 0 } , { \"type\" : \"joint\" , \"name\" : \"Joint 2\" , \"x\" : -12.226884 , \"y\" : 343.829261 , \"z\" : 0 } , { \"type\" : \"joint\" , \"name\" : \"Joint 6\" , \"x\" : 101.164414 , \"y\" : 343.829261 , \"z\" : 0 }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_create_link (skip_incompatible_object_linking=False, objects=[{ \"type_out\" : \"well\" , \"name_out\" : \"Well_A1\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 7\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_A2\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 8\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_A3\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 4\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_A4\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 5\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_A5\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 6\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_B1\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 1\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_B2\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 2\" } , { \"type_out\" : \"well\" , \"name_out\" : \"Well_B3\" , \"type_in\" : \"choke\" , \"name_in\" : \"Choke 3\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_create_pipe (skip_incompatible_object_linking=False, objects=[{ \"name\" : \"Pipe 11\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 7\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 5\" } , { \"name\" : \"Pipe 12\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 8\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 5\" } , { \"name\" : \"Pipe 4\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 4\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 3\" } , { \"name\" : \"Pipe 5\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 5\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 3\" } , { \"name\" : \"Pipe 6\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 6\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 3\" } , { \"name\" : \"Pipe 1\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 1\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 1\" } , { \"name\" : \"Pipe 2\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 2\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 1\" } , { \"name\" : \"Pipe 3\" , \"type_out\" : \"choke\" , \"name_out\" : \"Choke 3\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 1\" } , { \"name\" : \"Pipe 8\" , \"type_out\" : \"joint\" , \"name_out\" : \"Joint 5\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 4\" } , { \"name\" : \"Pipe 9\" , \"type_out\" : \"joint\" , \"name_out\" : \"Joint 3\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 4\" } , { \"name\" : \"Pipe 7\" , \"type_out\" : \"joint\" , \"name_out\" : \"Joint 1\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 2\" } , { \"name\" : \"Pipe 10\" , \"type_out\" : \"joint\" , \"name_out\" : \"Joint 4\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 2\" } , { \"name\" : \"Pipe 20\" , \"type_out\" : \"source\" , \"name_out\" : \"Source\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 2\" } , { \"name\" : \"Pipe 13\" , \"type_out\" : \"joint\" , \"name_out\" : \"Joint 2\" , \"type_in\" : \"joint\" , \"name_in\" : \"Joint 6\" } , { \"name\" : \"Pipe 14\" , \"type_out\" : \"joint\" , \"name_out\" : \"Joint 6\" , \"type_in\" : \"three-phase separator\" , \"name_in\" : \"3-phase Separator\" } , { \"name\" : \"Comp_line\" , \"type_out\" : \"three-phase separator\" , \"name_out\" : \"3-phase Separator\" , \"type_in\" : \"compressor\" , \"name_in\" : \"Compressor\" } , { \"name\" : \"Pump_line\" , \"type_out\" : \"three-phase separator\" , \"name_out\" : \"3-phase Separator\" , \"type_in\" : \"pump\" , \"name_in\" : \"Pump\" } , { \"name\" : \"Oil_line\" , \"type_out\" : \"three-phase separator\" , \"name_out\" : \"3-phase Separator\" , \"type_in\" : \"sink\" , \"name_in\" : \"Oil_Tank\" } , { \"name\" : \"Export_line\" , \"type_out\" : \"compressor\" , \"name_out\" : \"Compressor\" , \"type_in\" : \"sink\" , \"name_in\" : \"Gas_Sale\" } , { \"name\" : \"Inj_line\" , \"type_out\" : \"pump\" , \"name_out\" : \"Pump\" , \"type_in\" : \"sink\" , \"name_in\" : \"Inj_Well\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_set_coordinates_from_map ()", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_choke (create_objects=True, events_table=[{ \"object\" : \"Choke 1\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 2\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 3\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 4\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 5\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 6\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 7\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" } , { \"object\" : \"Choke 8\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"choke_control_type\" : \"bean_diameter\" , \"choke_control_value\" : 0.04 , \"pipe_diameter\" : 0.2 , \"critical_corr\" : \"MECHANISTIC\" , \"subcritical_corr\" : \"MECHANISTIC\" , \"critical_pressure_ratio\" : \"not_exists\" , \"discharge_coef\" : 0.8 , \"gas_flow_coef\" : \"not_exists\" , \"liquid_flow_coef\" : \"not_exists\" , \"heat_capacity_ratio\" : \"not_exists\" , \"well_project\" : \"\" , \"vfp\" : \"\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_pipe (events_table=[{ \"object\" : \"Pipe 11\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 12\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 4\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 5\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 6\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 1\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 2\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 3\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 8\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.3 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 9\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.3 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 7\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.3 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 10\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.4 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 20\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.2 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 13\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.4 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Comp_line\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.5 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pump_line\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.1 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Export_line\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.4 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Oil_line\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.15 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Inj_line\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.1 , \"thermal_conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" } , { \"object\" : \"Pipe 14\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"roughness\" : \"not_exists\" , \"diameter\" : 0.4 , \"thermal_
+conductivity\" : \"not_exists\" , \"heat_transfer_coeff\" : \"not_exists\" , \"wall_thickness\" : \"not_exists\" , \"burial_depth\" : \"not_exists\" , \"corr_type\" : \"Beggs-Brill\" , \"hydrostatic_factor\" : \"not_exists\" , \"friction_factor\" : \"not_exists\" , \"buried_method\" : \"not_exists\" , \"max_velocity\" : \"not_exists\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_pipe_geometry_simple (       event_date=datetime (year=2024,month=3, day=14),       object=find_nd_object (name=\"Oil_line\",       type=\"pipe\"),       length=250,       height_diff=0)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_pipe_geometry_simple (       event_date=datetime (year=2024,month=3, day=14),       object=find_nd_object (name=\"Comp_line\",       type=\"pipe\"),       length=120,       height_diff=0)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_pipe_geometry_simple (       event_date=datetime (year=2024,month=3, day=14),       object=find_nd_object (name=\"Export_line\",       type=\"pipe\"),       length=2500,       height_diff=0)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_pipe_geometry_simple (       event_date=datetime (year=2024,month=3, day=14),       object=find_nd_object (name=\"Pump_line\",       type=\"pipe\"),       length=300,       height_diff=25)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_pipe_geometry_simple (       event_date=datetime (year=2024,month=3, day=14),       object=find_nd_object (name=\"Inj_line\",       type=\"pipe\"),       length=1500,       height_diff=0)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_source (create_objects=True, events_table=[{ \"object\" : \"Source\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"pressure\" : \"not_exists\" , \"rate_type\" : \"mixture_mass_rate\" , \"rate\" : 339800 , \"temperature\" : 30 , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Source\" , \"time_step\" : datetime (year=2024,month=4, day=22) , \"status\" : \"inactive\" , \"pressure\" : \"unset\" , \"rate_type\" : \"mixture_mass_rate\" , \"rate\" : \"unset\" , \"temperature\" : 30 , \"salt_concentration\" : \"not_exists\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_sink (create_objects=True, events_table=[{ \"object\" : \"Gas_Sale\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"pressure\" : 15 , \"rate_type\" : \"mixture_mass_rate\" , \"rate\" : \"not_exists\" } , { \"object\" : \"Inj_Well\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"pressure\" : 100 , \"rate_type\" : \"mixture_mass_rate\" , \"rate\" : \"not_exists\" } , { \"object\" : \"Oil_Tank\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"pressure\" : 4 , \"rate_type\" : \"mixture_mass_rate\" , \"rate\" : \"not_exists\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_well (create_objects=True, events_table=[{ \"object\" : \"Well_A1\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 25 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_A2\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 25 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_A3\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 25 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_A4\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 25 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_A5\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 25 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_B1\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 20 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_B2\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 20 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" } , { \"object\" : \"Well_B3\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"temperature\" : 20 , \"esp_frequency\" : \"not_exists\" , \"wefac_mult\" : \"not_exists\" , \"min_bhp\" : \"not_exists\" , \"salt_concentration\" : \"not_exists\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Source\",       type=\"source\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=5000,       water_param=\"WCUT\",       water_value=0.5,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_A1\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=5300,       water_param=\"WCUT\",       water_value=0.6,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_A2\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=5300,       water_param=\"WCUT\",       water_value=0.6,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_A3\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=5300,       water_param=\"WCUT\",       water_value=0.6,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_A4\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=5300,       water_param=\"WCUT\",       water_value=0.6,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_A5\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=5300,       water_param=\"WCUT\",       water_value=0.6,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_B1\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=4000,       water_param=\"WCUT\",       water_value=0.3,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_B2\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=4000,       water_param=\"WCUT\",       water_value=0.3,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_adjust_surface_volume_rate (object=find_nd_object (name=\"Well_B3\",       type=\"well\"),       hydrocarbon_param=\"GOR\",       hydrocarbon_value=4000,       water_param=\"WCUT\",       water_value=0.3,       event_date=datetime (year=2024,month=3, day=14))", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_pump (create_objects=True, events_table=[{ \"object\" : \"Pump\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"discharged_pressure\" : \"not_exists\" , \"pressure_ratio\" : \"not_exists\" , \"pressure_diff\" : 100 , \"power\" : \"not_exists\" , \"efficiency\" : 0.8 , \"minimum_allowed_intake_pressure\" : \"not_exists\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_compressor (create_objects=True, events_table=[{ \"object\" : \"Compressor\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"data_type\" : \"standard\" , \"compressor_route\" : \"default\" , \"operating_frequency\" : \"not_exists\" , \"slippage_factor\" : \"not_exists\" , \"number_of_stages\" : None , \"head_derating_factor\" : \"not_exists\" , \"rate_derating_factor\" : \"not_exists\" , \"discharged_pressure\" : \"not_exists\" , \"pressure_ratio\" : \"not_exists\" , \"pressure_diff\" : 13 , \"power\" : \"not_exists\" , \"efficiency\" : 0.8 , \"minimum_allowed_intake_pressure\" : \"not_exists\" }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_objects_adjust_three_phase_separator (create_objects=True, events_table=[{ \"object\" : \"3-phase Separator\" , \"time_step\" : datetime (year=2024,month=3, day=14) , \"status\" : \"active\" , \"pressure\" : 40 , \"gas_efficiency\" : 0.96 , \"water_efficiency\" : 0.98 } , { \"object\" : \"3-phase Separator\" , \"time_step\" : datetime (year=2024,month=4, day=22) , \"status\" : \"active\" , \"pressure\" : 40 , \"gas_efficiency\" : 0.9 , \"water_efficiency\" : 0.98 }])", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_change_three_phase_separation_objects (object=find_nd_object (name=\"3-phase Separator\",   type=\"three-phase separator\"),   gas_separation_obj=\"Comp_line\",   water_separation_obj=\"Pump_line\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_select_pvt_for_nd (use_pvt_variant=True,   pvt_project=\"PVT Data\",   variant_type=\"blackoil\",   variant_name=\"Blackoil.inc 1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_A1\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_A1\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_A2\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_A2\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_A3\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_A3\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_A4\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_A4\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_A5\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_A5\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_B1\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_B1\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_B2\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_B2\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_vfp_table (       object=find_nd_object (name=\"Well_B3\", type=\"well\"),       use_vfp=True,       well_project=\"Well_Project\",       vfp=\"VFP1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+nd_object_select_ipr_table (       object=find_nd_object (name=\"Well_B3\", type=\"well\"),       use_ipr=True,       well_project=\"Well_Project\",       ipr=\"IPR1\")", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+run_network_model_calculations (result=\"Result\", replace_if_exists=True)", id = "3")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "
+
+from datetime import datetime
+import pandas as pd
+date = datetime(year=2024,month=4, day=22)
+pipes = get_objects_by_type(type='pipe')
+available_results = pipes[0].get_available_extended_results()
+pipeline_results = pd.DataFrame()
+for p in pipes:
+    print(p.name())
+    results = p.get_extended_result_values(result_name='Result', type='pipe_segment', parameter_names=available_results, date=date)
+    results['pipe_name'] = p.name()
+    pipeline_results = pd.concat([pipeline_results, results], ignore_index=True)
+pipeline_results.columns = pipeline_results.columns.str.replace(' ', '_')
+return pipeline_results", id = "3")
+***END***
+OK
+***
+run_py_code (code = "
+save_project ()", id = "1")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+run_py_code (code = "save_project ()", id = "1")
+***END***
+OK
+0400000000000000<None>4e6f6e65***INPUT***
+close_project (id = "1")
+***END***
+OK

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Xml.Linq;
 using tNav.API;
 using tNav.Common;
-using tnav = tNav.API;
+using TNav = tNav.API;
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
-string tNpath = Console.ReadLine() ?? "";
+string tNpath = "/home/s_ilyin@ygd.gazprom.ru/tNavigator/tNavigator-con";//Console.ReadLine();
 if (string.IsNullOrEmpty(tNpath))
     tNpath = "../../../../tNavFakeConsole/bin/Debug/net8.0/tNav.FakeConsole";
 
@@ -101,7 +101,7 @@ Console.Write("Creating and opening snp project...");
 
 var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
 
-var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tnav.CaseType.MD, project_type: tnav.ProjectType.MD);
+var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: TNav.CaseType.MD, project_type: TNav.ProjectType.MD);
 snp_new.CloseProject();
 var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
 Console.WriteLine("Done");
@@ -129,6 +129,7 @@ Console.WriteLine("Done");
 
 Console.Write("Running WD calculations...");
 var WD_proj = MD_proj.GetSubProjectByName(type: ProjectType.WD, name: "Well_Project");
+Console.Write("well_designer_adjust_basic_data...");
 WD_proj.RunPyCode(code: "well_designer_adjust_basic_data (name=\"Well\", " +
       "group_name = \"\", object = \"well\", well_type = \"producer\", current_vfp = \"\", " +
       "preferred_phase = \"1*\", reference_depth_mode = \"auto\", user_tvd = 0, " +
@@ -141,18 +142,21 @@ WD_proj.RunPyCode(code: "well_designer_adjust_basic_data (name=\"Well\", " +
       "well_head_x = 0, well_head_y = 0, well_head_z = 0, sc_pressure = 0, " +
       "sc_temperature = 0, use_concentric_tubings = False, " +
       "use_segment_graph = False, use_bottomhole_depth_unification = False)");
+Console.Write("wd_trajectories_import...");
 
+//WD_proj.CloseProject();
+//MD_proj.CloseProject();
 WD_proj.RunPyCode(code: "wd_trajectories_import (imported_object=\"well\", " +
-      "format = \"Well Path / Deviation Text\", file_names = [\".. / .. / .. / .. / .. / .. / Init_Data / Well.dev\"], " +
-      "input_data_type = \"wid_md_x_y_z\", las_header_1 = \"\", las_header_2 = \"\", las_header_3 = \"\", " +
-      "las_header_4 = \"\", method = \"tangent\", units_system_xy = \"METRIC\", units_system_z = \"METRIC\", " +
-      "use_oem_encoding = False, add_md_zero_point = False, invert_z = True, use_keywords = True, " +
-      "txt_table_format = TableFormat(separator = \"all spaces\", comment = \"#\", " +
-      "skip_lines = 1, columns = [\"md\", \"x\", \"y\", \"z\"]), gwtd_table_format = TableFormat(separator = \"all spaces\", " +
-      "comment = \"#\", skip_lines = 0, columns = [\"md\", \"x\", \"y\", \"z\"]), " +
-      "vert_well_table_format = TableFormat(separator = \"all spaces\", comment = \"\", skip_lines = 1, " +
-      "columns = [\"well\", \"x\", \"y\", \"kb\", \"last_point_md\", \"last_point_tvdss\", \"well_code\"]), " +
-      "well_name = None, wellbore_name = None, dst_branch_num = 0)");
+      "format=\"Well Path / Deviation Text\",  file_names=[\"../../../../../../Init_Data/Well.dev\"], " +
+      "input_data_type=\"wid_md_x_y_z\", las_header_1=\"\", las_header_2=\"\", las_header_3=\"\", " +
+      "las_header_4=\"\", method=\"tangent\", units_system_xy=\"METRIC\", units_system_z=\"METRIC\", " +
+      "use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True, " +
+      "txt_table_format= TableFormat (separator=\"all spaces\", comment=\"#\", " +
+      "skip_lines=1, columns=[\"md\", \"x\", \"y\", \"z\"]), gwtd_table_format=TableFormat (separator=\"all spaces\", " +
+      "comment=\"#\", skip_lines=0, columns=[\"md\", \"x\", \"y\", \"z\"]), " +
+      "vert_well_table_format=TableFormat (separator=\"all spaces\", comment=\"\", skip_lines=1, " +
+      "columns=[\"well\", \"x\", \"y\", \"kb\", \"last_point_md\", \"last_point_tvdss\", \"well_code\"]), " +
+      "well_name=None, wellbore_name=None, dst_branch_num=0)");
 
 WD_proj.RunPyCode(code: $"well_designer_object_casing (branch_num=0, objects_table=[{obj(df_data["Casing"])}])");
 WD_proj.RunPyCode(code: $"well_designer_object_tubing (branch_num=0, objects_table=[{obj(df_data["Tubing"])}])");
@@ -176,6 +180,7 @@ vfp_table_adjust_correlation_parameters (table=[
     "hydro_annulus" : 1, "use_acceleration_component" : False}])
 """);
 
+Console.Write("VFP Correlation Plotting Points...");
 var src = df_data["VFP Correlation Plotting Points"];
 List<string> vfp_points = src.Columns.Select(col => "[" + string.Join(", ", col.DropNulls().Cast<Single>()) + "]").ToList();
 //List<string> vfp_points = src.columns.Select(col => "[" + string.Join(", ", src.loc[src[col].notnull()][col].ToList()) + "]");

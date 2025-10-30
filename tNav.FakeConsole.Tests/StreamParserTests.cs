@@ -13,7 +13,7 @@ public class StreamParserTests
         var log = File.ReadAllText("../../../../BuildNetworkExample/out/log.txt");
         var testsData = LogParser.Parse(log);
         var lastTest = testsData[70];
-        var response = lastTest.Responses.Last().Data ?? "";
+        var response = lastTest.Responses.Last() ?? "";
         using var stream = GenerateStreamFromString(response);
         using var reader = new StreamReader(stream);
         var parsed = StreamParser.Unpack_data(reader);

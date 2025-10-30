@@ -11,8 +11,9 @@ namespace tNav.Common;
 
 public static class Utils
 {
-    public static string DataTableToCSV(DataTable table)
+    public static string? DataTableToCSV(DataTable? table)
     {
+        if (table==null)return null;
         StringBuilder sb = new StringBuilder();
         bool firstStep = true;
         for (int i = 0; i < table.Columns.Count; i++)
