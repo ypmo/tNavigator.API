@@ -17,14 +17,14 @@ internal static class ProcessExtentions
         var err_res = process.StandardOutput.ReadLine();
         if (err_res != "OK")
         {
-            int.TryParse(process.StandardOutput.ReadLine(), out int count_str);
+            _ = int.TryParse(process.StandardOutput.ReadLine(), out int count_str);
             string msg = "";
             for (int i = 0; i < count_str; i++)
             {
                 msg += process.StandardOutput.ReadLine();
             }
             throw new Exception($"tNav Сообщает об ошибке\n Отправлено:{message}\nОтвет:{msg}");
-            
+
         }
     }
 }

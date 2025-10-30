@@ -56,9 +56,9 @@ foreach (var df_par in df_data)
         {
             var values = df.Columns[colName].Cast<DateTime>().ToArray();
             timestamps.AddRange(values);
-        }        
+        }
     }
-    timestamps =  timestamps.Distinct().OrderBy(t => t).ToList();
+    timestamps = timestamps.Distinct().OrderBy(t => t).ToList();
 }
 
 string fmt = "";
@@ -84,15 +84,15 @@ string obj(DataFrame sheet)
         {
 
             if (quoted_names.Contains(col.Name))
-                token.Add($" \"{col}\" : \"{sheet.Rows[i][col.Name]}\" ");
+                token.Add($" \"{col.Name}\" : \"{sheet.Rows[i][col.Name]}\" ");
             else if (datetime_names.Contains(col.Name))
-                token.Add($" \"{col}\" : datetime ( {((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
+                token.Add($" \"{col.Name}\" : datetime ( {((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
             else
-                token.Add($" \"{col}\" : {sheet.Rows[i][col.Name]} ");
+                token.Add($" \"{col.Name}\" : {sheet.Rows[i][col.Name]} ");
         }
-        line.Add("{" + "," + string.Join(null, token) + "}");
+        line.Add("{" + string.Join(",", token) + "}");
     }
-    var obj = " , " + string.Join("", line);
+    var obj = string.Join(" , ", line);
     return obj;
 }
 
@@ -144,8 +144,6 @@ WD_proj.RunPyCode(code: "well_designer_adjust_basic_data (name=\"Well\", " +
       "use_segment_graph = False, use_bottomhole_depth_unification = False)");
 Console.Write("wd_trajectories_import...");
 
-//WD_proj.CloseProject();
-//MD_proj.CloseProject();
 WD_proj.RunPyCode(code: "wd_trajectories_import (imported_object=\"well\", " +
       "format=\"Well Path / Deviation Text\",  file_names=[\"../../../../../../Init_Data/Well.dev\"], " +
       "input_data_type=\"wid_md_x_y_z\", las_header_1=\"\", las_header_2=\"\", las_header_3=\"\", " +
