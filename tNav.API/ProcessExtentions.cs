@@ -17,7 +17,8 @@ internal static class ProcessExtentions
         var err_res = process.StandardOutput.ReadLine();
         if (err_res != "OK")
         {
-            _ = int.TryParse(process.StandardOutput.ReadLine(), out int count_str);
+            Console.WriteLine($"tNav: {err_res}");
+            _ = int.TryParse(process.StandardOutput.ReadLine(), out int count_str);            
             string msg = "";
             for (int i = 0; i < count_str; i++)
             {

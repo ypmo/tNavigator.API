@@ -72,7 +72,7 @@ else
     Environment.Exit(1);
 }
 
-string time_format = $"year=%Y,month=%{fmt}m, day=%{fmt}d";
+string time_format = @"'year='yyyy',month='%M', day='%d";
 
 string obj(DataFrame sheet)
 {
@@ -82,13 +82,26 @@ string obj(DataFrame sheet)
         List<string> token = [];
         foreach (var col in sheet.Columns)
         {
-
             if (quoted_names.Contains(col.Name))
                 token.Add($" \"{col.Name}\" : \"{sheet.Rows[i][col.Name]}\" ");
             else if (datetime_names.Contains(col.Name))
-                token.Add($" \"{col.Name}\" : datetime ( {((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
+                token.Add($" \"{col.Name}\" : datetime ({((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
             else
-                token.Add($" \"{col.Name}\" : {sheet.Rows[i][col.Name]} ");
+            {
+                var valueString = sheet.Rows[i][col.Name]?.ToString();
+                if (valueString == "None")
+                {
+                    token.Add($" \"{col.Name}\" : {sheet.Rows[i][col.Name]} ");
+                }
+                else if (!double.TryParse(valueString, out double _) && !bool.TryParse(valueString, out bool _))
+                {
+                    token.Add($" \"{col.Name}\" : \"{sheet.Rows[i][col.Name]}\" ");
+                }
+                else
+                {
+                    token.Add($" \"{col.Name}\" : {sheet.Rows[i][col.Name]} ");
+                }
+            }
         }
         line.Add("{" + string.Join(",", token) + "}");
     }
@@ -198,11 +211,11 @@ vfp_adjust_correlation_plotting_points (table_name="VFP1",
 WD_proj.RunPyCode(code: "wd_create_ipr_curve (ipr=\"IPR1\", ignore_if_exists=True)");
 
 WD_proj.RunPyCode(code: $"""
-wd_adjust_ipr_well_test_data (ipr="IPR1", \
-  use_date = False, \
-  date = datetime({timestamps[0].ToString(time_format)}), \
-  change_ipr_base = True, ipr_base = "gas", change_model = True, use_well_test_data = True, \
-  well_test_data_type = "multipoint", \
+wd_adjust_ipr_well_test_data (ipr="IPR1", 
+  use_date = False, 
+  date = datetime({timestamps[0].ToString(time_format)}), 
+  change_ipr_base = True, ipr_base = "gas", change_model = True, use_well_test_data = True, 
+  well_test_data_type = "multipoint", 
   well_test_data = [{obj(df_data["IPR Well Test Data"])}])
 """);
 Console.WriteLine("Done");
@@ -243,7 +256,7 @@ ND_proj.RunPyCode(code: $"nd_object_create (objects=[{nd_obj}])");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_3d_coordinates (adjust_on_scheme=False, coordinates_table=[{obj(df_data["Objects List"])}])");
 ND_proj.RunPyCode(code: $"nd_object_create_link (skip_incompatible_object_linking=False, objects=[{obj(df_data["Create Link"])}])");
 ND_proj.RunPyCode(code: $"nd_object_create_pipe (skip_incompatible_object_linking=False, objects=[{obj(df_data["Create Pipe"])}])");
-ND_proj.RunPyCode(code: $"d_set_coordinates_from_map ()");
+ND_proj.RunPyCode(code: $"nd_set_coordinates_from_map ()");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_choke (create_objects=True, events_table=[{obj(df_data["Chokes"])}])");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_pipe (events_table=[{obj(df_data["Pipes"])}])");
 
@@ -302,11 +315,11 @@ for (int n = 0; n < src.Rows.Count; n++)
    vfp = "VFP1")
  """);
     ND_proj.RunPyCode(code: $"""
-nd_object_select_ipr_table ( \
+nd_object_select_ipr_table ( 
   object = find_nd_object(name = "{src.Rows[n][0]}", type = "well"), \
-  use_ipr = True, \
-  well_project = "Well_Project", \
-  ipr = "IPR1")'
+  use_ipr = True, 
+  well_project = "Well_Project", 
+  ipr = "IPR1")
 """);
 }
 
