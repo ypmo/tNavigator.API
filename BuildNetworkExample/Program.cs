@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Analysis;
+﻿using BuildNetworkExample;
+using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
 using System.Xml.Linq;
@@ -7,6 +8,11 @@ using tNav.Common;
 using TNav = tNav.API;
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+if (true)
+{
+    var tst = new TestRead();
+    tst.ReadFrame();
+}
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
 string tNpath = "/home/s_ilyin@ygd.gazprom.ru/tNavigator/tNavigator-con";//Console.ReadLine();
 if (string.IsNullOrEmpty(tNpath))

@@ -6,22 +6,9 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<Content Include="Init_Data/*">
+		<Content Include="dataframe.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="python/*">
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Result_Tables/*">
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Include="out\log.txt">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="ClosedXML" Version="0.104.2" />

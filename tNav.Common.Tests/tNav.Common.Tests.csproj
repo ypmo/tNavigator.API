@@ -9,12 +9,8 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
+
   <ItemGroup>
-    <Content Include="log.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-    <ItemGroup>
     <Content Include="ExcelData.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
