@@ -100,7 +100,7 @@ public class Project : IProject
             SaveProject();
         return ret_value;
     }
-    void SaveProject()
+  public  void SaveProject()
     {
         var id_to_save = parent_id;
         if (id_to_save == ProjectID.Invalid)

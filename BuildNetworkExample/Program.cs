@@ -362,13 +362,13 @@ else
 Console.WriteLine("Done");
 
 Console.Write("Saving to file...");
-var table = df_nd_results as DataTable;
+var table = (df_nd_results as DataFrame)?.ToTable();
 var csv = Utils.DataTableToCSV(table);
 File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
 Console.WriteLine("Done");
 
 Console.Write("Closing project...");
-MD_proj.RunPyCode(code: "save_project ()");
+//MD_proj.SaveProject();
 MD_proj.CloseProject();
 Console.WriteLine("Done");
 
