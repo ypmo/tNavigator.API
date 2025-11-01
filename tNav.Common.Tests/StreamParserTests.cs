@@ -31,7 +31,7 @@ public class StreamParserTests
     }
 
         [Theory]
-    [InlineData("04000000000000004e6f6e65", "None")]
+    [InlineData("04000000000000004e6f6e65", null)]
     [InlineData("0300000000000000496e7404000000",  4)]
     [InlineData("0300000000000000496e74a00f0000", 4000)]
     public void Unpack_data(string indata, object? outdata)

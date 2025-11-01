@@ -21,7 +21,7 @@ public static class StreamParser
         byte[] buffer = new byte[4096]; // A reasonable buffer size
         int bytesRead;
 
-        // Read from the BaseStream until the end
+        // Read from thelBaseStream until the end
         while ((bytesRead = baseStream.Read(buffer, 0, buffer.Length)) > 0)
         {
             outputBytes.Write(buffer, 0, bytesRead);
@@ -29,7 +29,7 @@ public static class StreamParser
 
         // Get the complete byte array
         byte[] allOutputBytes = outputBytes.ToArray();
-
+        outputBytes.Position = 0;
         using StreamReader streamReader = new StreamReader(outputBytes);
         return Unpack_data(streamReader, "");
     }
