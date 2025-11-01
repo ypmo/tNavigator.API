@@ -1,13 +1,40 @@
 using System;
 using System.Data;
 using System.Reflection.PortableExecutable;
+using System.Text;
 using Microsoft.Data.Analysis;
 
 namespace tNav.Common;
 
 public static class StreamParser
 {
-    public static object? Unpack_data(StreamReader stream, string read_type = "")
+    public static object? Unpack_data(StreamReader stream)
+    {
+
+
+        // Access the BaseStream for byte-level reading
+        Stream baseStream = stream.BaseStream;
+
+        // Use a MemoryStream to accumulate all bytes
+        using MemoryStream outputBytes = new MemoryStream();
+
+        byte[] buffer = new byte[4096]; // A reasonable buffer size
+        int bytesRead;
+
+        // Read from the BaseStream until the end
+        while ((bytesRead = baseStream.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            outputBytes.Write(buffer, 0, bytesRead);
+        }
+
+        // Get the complete byte array
+        byte[] allOutputBytes = outputBytes.ToArray();
+
+        using StreamReader streamReader = new StreamReader(outputBytes);
+        return Unpack_data(streamReader, "");
+    }
+
+    internal static object? Unpack_data(StreamReader stream, string read_type = "")
     {
         object? ret_value;
         if (read_type == "")
@@ -42,7 +69,7 @@ public static class StreamParser
     }
 
 
-    public static string UnpackString(StreamReader stream)
+    static string UnpackString(StreamReader stream)
     {
         var buffer = stream.ReadAsBytes(Sizes.Text);
         var size = BitConverter.ToInt32(buffer, 0);
@@ -123,18 +150,18 @@ public static class StreamParser
         var dt = new DataFrame();
         var col_count = UnpackInt(stream);
         var row_count = UnpackInt(stream);
-        
+
         List<List<object?>> data = [];
         for (int i = 0; i < col_count; i++)
-        {    
+        {
             var column_name = UnpackString(stream);
             var column_data = UnpackList(stream, row_count);
             var collumn = column_data[0] switch
             {
-                string _i => new StringDataFrameColumn(column_name, column_data.Select(t => (string)(t??""))) as DataFrameColumn,
-                int _i => new Int32DataFrameColumn(column_name, column_data.Select(t => (int)(t??0))) as DataFrameColumn,
-                double _i => new DoubleDataFrameColumn(column_name, column_data.Select(t => (double)(t??0d))) as DataFrameColumn,
-                DateTime _i => new DateTimeDataFrameColumn(column_name, column_data.Select(t => (DateTime)(t??(new DateTime())))) as DataFrameColumn,
+                string _i => new StringDataFrameColumn(column_name, column_data.Select(t => (string)(t ?? ""))) as DataFrameColumn,
+                int _i => new Int32DataFrameColumn(column_name, column_data.Select(t => (int)(t ?? 0))) as DataFrameColumn,
+                double _i => new DoubleDataFrameColumn(column_name, column_data.Select(t => (double)(t ?? 0d))) as DataFrameColumn,
+                DateTime _i => new DateTimeDataFrameColumn(column_name, column_data.Select(t => (DateTime)(t ?? (new DateTime())))) as DataFrameColumn,
                 _ => throw new NotImplementedException()
             };
 
