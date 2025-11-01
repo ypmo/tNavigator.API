@@ -123,23 +123,12 @@ public static class StreamParser
         var dt = new DataFrame();
         var col_count = UnpackInt(stream);
         var row_count = UnpackInt(stream);
-        var cur_row_count = 4000;
-        var max_row_count = 4000;
+        
         List<List<object?>> data = [];
         for (int i = 0; i < col_count; i++)
-        {
-            if (i == 3)
-            {
-                cur_row_count = 3800;
-            }
-            
+        {    
             var column_name = UnpackString(stream);
-            var column_data = UnpackList(stream, cur_row_count);
-            while (column_data.Count < max_row_count)
-            {
-                column_data.Add(default);
-            }
-            column_data = column_data.Take(max_row_count).ToList();
+            var column_data = UnpackList(stream, row_count);
             var collumn = column_data[0] switch
             {
                 string _i => new StringDataFrameColumn(column_name, column_data.Select(t => (string)(t??""))) as DataFrameColumn,
