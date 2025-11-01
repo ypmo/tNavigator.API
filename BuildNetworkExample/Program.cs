@@ -1,14 +1,20 @@
-﻿using Microsoft.Data.Analysis;
+﻿using BuildNetworkExample;
+using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
 using System.Xml.Linq;
 using tNav.API;
 using tNav.Common;
-using tnav = tNav.API;
+using TNav = tNav.API;
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+if (true)
+{
+    var tst = new TestRead();
+    tst.ReadFrame();
+}
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
-string tNpath = Console.ReadLine() ?? "";
+string tNpath = "/home/s_ilyin@ygd.gazprom.ru/tNavigator/tNavigator-con";//Console.ReadLine();
 if (string.IsNullOrEmpty(tNpath))
     tNpath = "../../../../tNavFakeConsole/bin/Debug/net8.0/tNav.FakeConsole";
 
@@ -56,9 +62,9 @@ foreach (var df_par in df_data)
         {
             var values = df.Columns[colName].Cast<DateTime>().ToArray();
             timestamps.AddRange(values);
-        }        
+        }
     }
-    timestamps =  timestamps.Distinct().OrderBy(t => t).ToList();
+    timestamps = timestamps.Distinct().OrderBy(t => t).ToList();
 }
 
 string fmt = "";
@@ -72,7 +78,7 @@ else
     Environment.Exit(1);
 }
 
-string time_format = $"year=%Y,month=%{fmt}m, day=%{fmt}d";
+string time_format = @"'year='yyyy',month='%M', day='%d";
 
 string obj(DataFrame sheet)
 {
@@ -82,17 +88,30 @@ string obj(DataFrame sheet)
         List<string> token = [];
         foreach (var col in sheet.Columns)
         {
-
             if (quoted_names.Contains(col.Name))
-                token.Add($" \"{col}\" : \"{sheet.Rows[i][col.Name]}\" ");
+                token.Add($" \"{col.Name}\" : \"{sheet.Rows[i][col.Name]}\" ");
             else if (datetime_names.Contains(col.Name))
-                token.Add($" \"{col}\" : datetime ( {((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
+                token.Add($" \"{col.Name}\" : datetime ({((DateTime)sheet.Rows[i][col.Name]).ToString(time_format)}) ");
             else
-                token.Add($" \"{col}\" : {sheet.Rows[i][col.Name]} ");
+            {
+                var valueString = sheet.Rows[i][col.Name]?.ToString();
+                if (valueString == "None")
+                {
+                    token.Add($" \"{col.Name}\" : {sheet.Rows[i][col.Name]} ");
+                }
+                else if (!double.TryParse(valueString, out double _) && !bool.TryParse(valueString, out bool _))
+                {
+                    token.Add($" \"{col.Name}\" : \"{sheet.Rows[i][col.Name]}\" ");
+                }
+                else
+                {
+                    token.Add($" \"{col.Name}\" : {sheet.Rows[i][col.Name]} ");
+                }
+            }
         }
-        line.Add("{" + "," + string.Join(null, token) + "}");
+        line.Add("{" + string.Join(",", token) + "}");
     }
-    var obj = " , " + string.Join("", line);
+    var obj = string.Join(" , ", line);
     return obj;
 }
 
@@ -101,7 +120,7 @@ Console.Write("Creating and opening snp project...");
 
 var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
 
-var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tnav.CaseType.MD, project_type: tnav.ProjectType.MD);
+var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: TNav.CaseType.MD, project_type: TNav.ProjectType.MD);
 snp_new.CloseProject();
 var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
 Console.WriteLine("Done");
@@ -129,6 +148,7 @@ Console.WriteLine("Done");
 
 Console.Write("Running WD calculations...");
 var WD_proj = MD_proj.GetSubProjectByName(type: ProjectType.WD, name: "Well_Project");
+Console.Write("well_designer_adjust_basic_data...");
 WD_proj.RunPyCode(code: "well_designer_adjust_basic_data (name=\"Well\", " +
       "group_name = \"\", object = \"well\", well_type = \"producer\", current_vfp = \"\", " +
       "preferred_phase = \"1*\", reference_depth_mode = \"auto\", user_tvd = 0, " +
@@ -141,18 +161,19 @@ WD_proj.RunPyCode(code: "well_designer_adjust_basic_data (name=\"Well\", " +
       "well_head_x = 0, well_head_y = 0, well_head_z = 0, sc_pressure = 0, " +
       "sc_temperature = 0, use_concentric_tubings = False, " +
       "use_segment_graph = False, use_bottomhole_depth_unification = False)");
+Console.Write("wd_trajectories_import...");
 
 WD_proj.RunPyCode(code: "wd_trajectories_import (imported_object=\"well\", " +
-      "format = \"Well Path / Deviation Text\", file_names = [\".. / .. / .. / .. / .. / .. / Init_Data / Well.dev\"], " +
-      "input_data_type = \"wid_md_x_y_z\", las_header_1 = \"\", las_header_2 = \"\", las_header_3 = \"\", " +
-      "las_header_4 = \"\", method = \"tangent\", units_system_xy = \"METRIC\", units_system_z = \"METRIC\", " +
-      "use_oem_encoding = False, add_md_zero_point = False, invert_z = True, use_keywords = True, " +
-      "txt_table_format = TableFormat(separator = \"all spaces\", comment = \"#\", " +
-      "skip_lines = 1, columns = [\"md\", \"x\", \"y\", \"z\"]), gwtd_table_format = TableFormat(separator = \"all spaces\", " +
-      "comment = \"#\", skip_lines = 0, columns = [\"md\", \"x\", \"y\", \"z\"]), " +
-      "vert_well_table_format = TableFormat(separator = \"all spaces\", comment = \"\", skip_lines = 1, " +
-      "columns = [\"well\", \"x\", \"y\", \"kb\", \"last_point_md\", \"last_point_tvdss\", \"well_code\"]), " +
-      "well_name = None, wellbore_name = None, dst_branch_num = 0)");
+      "format=\"Well Path / Deviation Text\",  file_names=[\"../../../../../../Init_Data/Well.dev\"], " +
+      "input_data_type=\"wid_md_x_y_z\", las_header_1=\"\", las_header_2=\"\", las_header_3=\"\", " +
+      "las_header_4=\"\", method=\"tangent\", units_system_xy=\"METRIC\", units_system_z=\"METRIC\", " +
+      "use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True, " +
+      "txt_table_format= TableFormat (separator=\"all spaces\", comment=\"#\", " +
+      "skip_lines=1, columns=[\"md\", \"x\", \"y\", \"z\"]), gwtd_table_format=TableFormat (separator=\"all spaces\", " +
+      "comment=\"#\", skip_lines=0, columns=[\"md\", \"x\", \"y\", \"z\"]), " +
+      "vert_well_table_format=TableFormat (separator=\"all spaces\", comment=\"\", skip_lines=1, " +
+      "columns=[\"well\", \"x\", \"y\", \"kb\", \"last_point_md\", \"last_point_tvdss\", \"well_code\"]), " +
+      "well_name=None, wellbore_name=None, dst_branch_num=0)");
 
 WD_proj.RunPyCode(code: $"well_designer_object_casing (branch_num=0, objects_table=[{obj(df_data["Casing"])}])");
 WD_proj.RunPyCode(code: $"well_designer_object_tubing (branch_num=0, objects_table=[{obj(df_data["Tubing"])}])");
@@ -176,6 +197,7 @@ vfp_table_adjust_correlation_parameters (table=[
     "hydro_annulus" : 1, "use_acceleration_component" : False}])
 """);
 
+Console.Write("VFP Correlation Plotting Points...");
 var src = df_data["VFP Correlation Plotting Points"];
 List<string> vfp_points = src.Columns.Select(col => "[" + string.Join(", ", col.DropNulls().Cast<Single>()) + "]").ToList();
 //List<string> vfp_points = src.columns.Select(col => "[" + string.Join(", ", src.loc[src[col].notnull()][col].ToList()) + "]");
@@ -195,11 +217,11 @@ vfp_adjust_correlation_plotting_points (table_name="VFP1",
 WD_proj.RunPyCode(code: "wd_create_ipr_curve (ipr=\"IPR1\", ignore_if_exists=True)");
 
 WD_proj.RunPyCode(code: $"""
-wd_adjust_ipr_well_test_data (ipr="IPR1", \
-  use_date = False, \
-  date = datetime({timestamps[0].ToString(time_format)}), \
-  change_ipr_base = True, ipr_base = "gas", change_model = True, use_well_test_data = True, \
-  well_test_data_type = "multipoint", \
+wd_adjust_ipr_well_test_data (ipr="IPR1", 
+  use_date = False, 
+  date = datetime({timestamps[0].ToString(time_format)}), 
+  change_ipr_base = True, ipr_base = "gas", change_model = True, use_well_test_data = True, 
+  well_test_data_type = "multipoint", 
   well_test_data = [{obj(df_data["IPR Well Test Data"])}])
 """);
 Console.WriteLine("Done");
@@ -240,7 +262,7 @@ ND_proj.RunPyCode(code: $"nd_object_create (objects=[{nd_obj}])");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_3d_coordinates (adjust_on_scheme=False, coordinates_table=[{obj(df_data["Objects List"])}])");
 ND_proj.RunPyCode(code: $"nd_object_create_link (skip_incompatible_object_linking=False, objects=[{obj(df_data["Create Link"])}])");
 ND_proj.RunPyCode(code: $"nd_object_create_pipe (skip_incompatible_object_linking=False, objects=[{obj(df_data["Create Pipe"])}])");
-ND_proj.RunPyCode(code: $"d_set_coordinates_from_map ()");
+ND_proj.RunPyCode(code: $"nd_set_coordinates_from_map ()");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_choke (create_objects=True, events_table=[{obj(df_data["Chokes"])}])");
 ND_proj.RunPyCode(code: $"nd_objects_adjust_pipe (events_table=[{obj(df_data["Pipes"])}])");
 
@@ -299,11 +321,11 @@ for (int n = 0; n < src.Rows.Count; n++)
    vfp = "VFP1")
  """);
     ND_proj.RunPyCode(code: $"""
-nd_object_select_ipr_table ( \
+nd_object_select_ipr_table ( 
   object = find_nd_object(name = "{src.Rows[n][0]}", type = "well"), \
-  use_ipr = True, \
-  well_project = "Well_Project", \
-  ipr = "IPR1")'
+  use_ipr = True, 
+  well_project = "Well_Project", 
+  ipr = "IPR1")
 """);
 }
 
@@ -340,13 +362,13 @@ else
 Console.WriteLine("Done");
 
 Console.Write("Saving to file...");
-var table = df_nd_results as DataTable;
+var table = (df_nd_results as DataFrame)?.ToTable();
 var csv = Utils.DataTableToCSV(table);
 File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
 Console.WriteLine("Done");
 
 Console.Write("Closing project...");
-MD_proj.RunPyCode(code: "save_project ()");
+//MD_proj.SaveProject();
 MD_proj.CloseProject();
 Console.WriteLine("Done");
 

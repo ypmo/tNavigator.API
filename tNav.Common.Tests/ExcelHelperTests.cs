@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Microsoft.Data.Analysis;
 
 namespace tNav.Common.Tests;

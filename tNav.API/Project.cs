@@ -65,7 +65,7 @@ public class Project : IProject
         return subprojects;
     }
 
-  
+
 
     public object? RunPyCode(string? file = null, string[]? files = null, string? code = null, bool save = false)
     {
@@ -77,12 +77,14 @@ public class Project : IProject
             {
                 code_from_file += File.ReadAllText(script_with_code);
                 code_from_file += "\n";
-            };
+            }
+        ;
 
         if (code_from_file == "" && code == null)
         {
             throw new ArgumentNullException("run_py_code needs at least one argument");
-        };
+        }
+        ;
 
         var res_code = code_from_file;
 
@@ -100,7 +102,7 @@ public class Project : IProject
             SaveProject();
         return ret_value;
     }
-    void SaveProject()
+    public void SaveProject()
     {
         var id_to_save = parent_id;
         if (id_to_save == ProjectID.Invalid)
@@ -108,7 +110,8 @@ public class Project : IProject
 
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";
         process.process_message(save_command);
-        var result = StreamParser.UnpackString(process.StandardOutput);
+        var result = process.StandardOutput.ReadToEnd();
+        //var result = StreamParser.UnpackString(process.StandardOutput);
     }
 
     public void Dispose()

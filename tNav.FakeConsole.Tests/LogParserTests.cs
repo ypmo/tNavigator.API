@@ -31,19 +31,19 @@ public class LogParserTests
         new Session(){
             Query="create_project(path = \"SNP/API_BuildND.snp\", case = \"model_designer\", type = \"md\")\n",
             Responses=[
-                new Response{Data="OK\n"},
-                new Response{Data="0\n"},
+                "OK\n",
+                "0\n",
                 ]},
                 new Session(){
             Query="run_py_code(code = \"save_project ()\", id = \"0\")\n",
             Responses=[
-                new Response{Data="OK\n"},
-                new Response{Data="04000000000000004e6f6e65"},
+                "OK\n",
+                "04000000000000004e6f6e65",
                 ]},
                 new Session(){
             Query="close_project(id = \"0\")\n",
             Responses=[
-                new Response{Data="OK\n"}
+                "OK\n"
                 ]},
         ];
 

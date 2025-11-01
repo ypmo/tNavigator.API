@@ -55,6 +55,9 @@ public static class ConnectionFactory
             UseShellExecute = false,
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
+            //StandardInputEncoding = Encoding.UTF8,
+            //StandardOutputEncoding = Encoding.UTF8,
+            //StandardErrorEncoding = Encoding.UTF8,
         };
         var process = Process.Start(startInfo);
 

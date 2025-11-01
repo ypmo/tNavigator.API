@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace tNav.Common;
 
-public static class StreamReaderExtentions
+public static class StreamReaderExtentionsv
 {
     public static byte[] ReadAsBytes(this StreamReader stream, int size)
-    {
-        char[] buffer = new char[size * 2];
-        stream.Read(buffer, 0, size * 2);
-        var data = System.Convert.FromHexString(buffer);
-        return data;
+    {    
+
+        byte[] buffer = new byte[size];
+        stream.BaseStream.Read(buffer, 0, size); 
+        //var data=Encoding.UTF8.GetBytes(buffer );        
+        return buffer;
     }
 }
