@@ -8,7 +8,7 @@ namespace tNav.Common;
 
 public static class StreamParser
 {
-    public static object? Unpack_data(StreamReader stream)
+    static object? Get(StreamReader stream)
     {
 
 
@@ -34,7 +34,7 @@ public static class StreamParser
         return Unpack_data(streamReader, "");
     }
 
-    internal static object? Unpack_data(StreamReader stream, string read_type = "")
+    public static object? Unpack_data(StreamReader stream, string read_type = "")
     {
         object? ret_value;
         if (read_type == "")
@@ -124,7 +124,7 @@ public static class StreamParser
             var key = Unpack_data(stream);
             if (key == null)
             {
-                throw new InvalidOperationException("������ ����");
+                throw new InvalidOperationException("KeyNotFound");
             }
             var value = Unpack_data(stream);
             dic.Add(key, value);

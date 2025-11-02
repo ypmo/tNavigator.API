@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using tNav.Common;
 
 namespace tNav.API;
@@ -110,7 +111,7 @@ public class Project : IProject
 
         var save_command = $"run_py_code (code = \"save_project ()\", id = \"{id_to_save}\")\n";
         process.process_message(save_command);
-        var result = process.StandardOutput.ReadToEnd();
+        var result = StreamParser.Unpack_data(process.StandardOutput);
         //var result = StreamParser.UnpackString(process.StandardOutput);
     }
 

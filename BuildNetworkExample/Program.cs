@@ -2,19 +2,23 @@
 using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using tNav.API;
 using tNav.Common;
 using TNav = tNav.API;
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+string applicationPath = Path.GetDirectoryName(assemblyLocation);
+Directory.SetCurrentDirectory(applicationPath);
 if (true)
 {
     var tst = new TestRead();
     tst.ReadFrame();
 }
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
-string tNpath = "/home/s_ilyin@ygd.gazprom.ru/tNavigator/tNavigator-con";//Console.ReadLine();
+string tNpath = "/home/sergey/tNavigator/v25.2-4329-g14fa64fce903/tNavigator-con";//Console.ReadLine();
 if (string.IsNullOrEmpty(tNpath))
     tNpath = "../../../../tNavFakeConsole/bin/Debug/net8.0/tNav.FakeConsole";
 
@@ -126,24 +130,36 @@ var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true)
 Console.WriteLine("Done");
 
 Console.Write("Requesting licenses...");
-MD_proj.RunPyCode(code: "request_license_features (requested_features=[" +
-    "{\"feature\" : \"FEAT_MODEL_DESIGNER\"}, " +
-    "{\"feature\" : \"FEAT_NETWORK_DESIGNER\"}, " +
-    "{\"feature\" : \"FEAT_WELL_DESIGNER\"}, " +
-    "{\"feature\" : \"FEAT_PVT_DESIGNER\"}])");
+var input = """
+request_license_features (requested_features=[
+    {"feature" : "FEAT_MODEL_DESIGNER"}, 
+    {"feature" : "FEAT_NETWORK_DESIGNER"}, 
+    {"feature" : "FEAT_WELL_DESIGNER"}, 
+    {"feature" : "FEAT_PVT_DESIGNER"}])
+""";
+MD_proj.RunPyCode(code: input);
 Console.WriteLine("Done");
 
 Console.Write("Importing BO variant...");
-MD_proj.RunPyCode(code: "pvt_import_e1_format (file_name=\"../Init_Data/Blackoil.inc\", " +
-    "region_count = 1, " +
-    "units = \"METRIC\", " +
-    "clear_tables = True)");
+input = """
+pvt_import_e1_format (
+    file_name = "../Init_Data/Blackoil.inc", 
+    region_count = 1, 
+    units = "METRIC", 
+    clear_tables = True)
+""";
+MD_proj.RunPyCode(code: input);
 Console.WriteLine("Done");
 
 Console.Write("Creating Network Designer (ND) and Well Designer(WD) subprojects...");
-MD_proj.RunPyCode(code: "project_manager_create_project (projects_table=[ " +
-    "{ \"project_type\" : \"vfp_project\", \"project_name\" : \"Well_Project\"}, " +
-    "{ \"project_type\" : \"nd_project\", \"project_name\" : \"standalone_network\"}])");
+input = """
+project_manager_create_project (
+    projects_table = [ 
+        {"project_type" : "vfp_project", "project_name" : "Well_Project"}, 
+        {"project_type" : "nd_project", "project_name" : "standalone_network"}
+    ])
+""";
+MD_proj.RunPyCode(code: input);
 Console.WriteLine("Done");
 
 Console.Write("Running WD calculations...");
@@ -163,17 +179,10 @@ WD_proj.RunPyCode(code: "well_designer_adjust_basic_data (name=\"Well\", " +
       "use_segment_graph = False, use_bottomhole_depth_unification = False)");
 Console.Write("wd_trajectories_import...");
 
-WD_proj.RunPyCode(code: "wd_trajectories_import (imported_object=\"well\", " +
-      "format=\"Well Path / Deviation Text\",  file_names=[\"../../../../../../Init_Data/Well.dev\"], " +
-      "input_data_type=\"wid_md_x_y_z\", las_header_1=\"\", las_header_2=\"\", las_header_3=\"\", " +
-      "las_header_4=\"\", method=\"tangent\", units_system_xy=\"METRIC\", units_system_z=\"METRIC\", " +
-      "use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True, " +
-      "txt_table_format= TableFormat (separator=\"all spaces\", comment=\"#\", " +
-      "skip_lines=1, columns=[\"md\", \"x\", \"y\", \"z\"]), gwtd_table_format=TableFormat (separator=\"all spaces\", " +
-      "comment=\"#\", skip_lines=0, columns=[\"md\", \"x\", \"y\", \"z\"]), " +
-      "vert_well_table_format=TableFormat (separator=\"all spaces\", comment=\"\", skip_lines=1, " +
-      "columns=[\"well\", \"x\", \"y\", \"kb\", \"last_point_md\", \"last_point_tvdss\", \"well_code\"]), " +
-      "well_name=None, wellbore_name=None, dst_branch_num=0)");
+var importText = """
+wd_trajectories_import ( imported_object="well", format="Well Path / Deviation Text", file_names=["../../../../Init_Data/Well.dev"], input_data_type="wid_md_x_y_z", las_header_1="", las_header_2="", las_header_3="", las_header_4="", method="tangent", units_system_xy="METRIC", units_system_z="METRIC", use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True, txt_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=1, columns=["md", "x", "y", "z"]), gwtd_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=0, columns=["md", "x", "y", "z"]), vert_well_table_format=TableFormat (separator="all spaces", comment="", skip_lines=1, columns=["well", "x", "y", "kb", "last_point_md", "last_point_tvdss", "well_code"]), well_name=None, wellbore_name=None, dst_branch_num=0)
+""";
+WD_proj.RunPyCode(code: importText);
 
 WD_proj.RunPyCode(code: $"well_designer_object_casing (branch_num=0, objects_table=[{obj(df_data["Casing"])}])");
 WD_proj.RunPyCode(code: $"well_designer_object_tubing (branch_num=0, objects_table=[{obj(df_data["Tubing"])}])");
@@ -184,11 +193,13 @@ WD_proj.RunPyCode(code: $"well_designer_object_pressure_gauge (branch_num=0, obj
 
 WD_proj.RunPyCode(code: """
 vfp_table_create_select_pvt (table=[
-    {"vfp_table" : "VFP1", "pvt_project" : "PVT Data", "variant_type" : "blackoil",
+    {
+    "vfp_table" : "VFP1", "pvt_project" : "PVT Data", "variant_type" : "blackoil",
     "variant_name" : "Blackoil.inc 1", "compos_name" : ""}])
 
-vfp_table_adjust_correlation_parameters (table=[ 
-    {"vfp_table" : "VFP1", "vertical_deviated_swap_angle" : 5, "horizontal_deviated_swap_angle" : 5,
+vfp_table_adjust_correlation_parameters(table = [
+    {
+    "vfp_table" : "VFP1", "vertical_deviated_swap_angle" : 5, "horizontal_deviated_swap_angle" : 5,
     "single_phase_corr" : "moody", "liq_vap_flow" : 0.001, "use_tubing_correlations" : True,
     "vertical_corr" : "Hagedorn-Brown", "deviated_corr" : "Beggs-Brill", "horizontal_corr" : "Beggs-Brill",
     "frict_tubing" : 1, "hydro_tubing" : 1, "use_annulus_correlations" : False,
