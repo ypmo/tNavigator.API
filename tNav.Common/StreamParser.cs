@@ -1,6 +1,4 @@
-using System;
 using System.Data;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using Microsoft.Data.Analysis;
 
@@ -8,31 +6,6 @@ namespace tNav.Common;
 
 public static class StreamParser
 {
-    static object? Get(StreamReader stream)
-    {
-
-
-        // Access the BaseStream for byte-level reading
-        Stream baseStream = stream.BaseStream;
-
-        // Use a MemoryStream to accumulate all bytes
-        using MemoryStream outputBytes = new MemoryStream();
-
-        byte[] buffer = new byte[4096]; // A reasonable buffer size
-        int bytesRead;
-
-        // Read from thelBaseStream until the end
-        while ((bytesRead = baseStream.Read(buffer, 0, buffer.Length)) > 0)
-        {
-            outputBytes.Write(buffer, 0, bytesRead);
-        }
-
-        // Get the complete byte array
-        byte[] allOutputBytes = outputBytes.ToArray();
-        outputBytes.Position = 0;
-        using StreamReader streamReader = new StreamReader(outputBytes);
-        return Unpack_data(streamReader, "");
-    }
 
     public static object? Unpack_data(StreamReader stream, string read_type = "")
     {
@@ -68,15 +41,13 @@ public static class StreamParser
         return ret_value;
     }
 
-
     static string UnpackString(StreamReader stream)
     {
         var buffer = stream.ReadAsBytes(Sizes.Text);
         var size = BitConverter.ToInt32(buffer, 0);
         byte[] s_buffer = stream.ReadAsBytes(size);
-        return System.Text.Encoding.UTF8.GetString(s_buffer);
+        return Encoding.UTF8.GetString(s_buffer);
     }
-
 
     static int UnpackInt(StreamReader stream)
     {
@@ -85,14 +56,12 @@ public static class StreamParser
         return value;
     }
 
-
     static double UnpackDouble(StreamReader stream)
     {
         byte[] buffer = stream.ReadAsBytes(Sizes.Double);
         var value = BitConverter.ToDouble(buffer, 0);
         return value;
     }
-
 
     static object UnpackTuple(StreamReader stream)
     {
@@ -103,7 +72,6 @@ public static class StreamParser
             lst.Add(Unpack_data(stream));
         }
         var value = Tuple.Create(lst);
-
         return value;
     }
 
@@ -113,7 +81,6 @@ public static class StreamParser
         var value = UnpackList(stream, length);
         return value;
     }
-
 
     static Dictionary<object, object?> UnpackDict(StreamReader stream)
     {
@@ -133,15 +100,13 @@ public static class StreamParser
     }
 
     static List<object?> UnpackList(StreamReader stream, int length)
-    {
-        List<object?> lst = [];
-        if (length == 0)
-            return lst;
-        var read_type = UnpackString(stream);
+    {        
+        if (length == 0)return [];
 
+        var read_type = UnpackString(stream);
+        List<object?> lst = [];
         for (int i = 0; i < length; i++)
             lst.Add(Unpack_data(stream, read_type));
-
         return lst;
     }
 
@@ -172,6 +137,7 @@ public static class StreamParser
         dt.Columns.Insert(0, indexColumn);
         return dt;
     }
+
     static DateTime UnpackDatetime(StreamReader stream)
     {
         var year = UnpackInt(stream);
@@ -186,7 +152,6 @@ public static class StreamParser
 
     static object?[] Unpack_numpy_array(StreamReader stream)
     {
-
         var shape = UnpackListAndLen(stream);
         var lst = UnpackList(stream, shape.Count);
         return lst.ToArray();
