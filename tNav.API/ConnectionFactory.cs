@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tNav.Common;
 
 namespace tNav.API;
 
@@ -56,7 +57,7 @@ public static class ConnectionFactory
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
             //StandardInputEncoding = Encoding.UTF8,
-            //StandardOutputEncoding = Encoding.UTF8,
+            StandardOutputEncoding = new Custom256ByteEncoding(),
             //StandardErrorEncoding = Encoding.UTF8,
         };
         var process = Process.Start(startInfo);

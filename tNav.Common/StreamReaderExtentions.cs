@@ -9,12 +9,12 @@ namespace tNav.Common;
 
 public static class StreamReaderExtentionsv
 {
+    static Encoding Encoder = new Custom256ByteEncoding();
     public static byte[] ReadAsBytes(this StreamReader stream, int size)
     {
-
-        byte[] buffer = new byte[size]; 
-        Stream baseStream = stream.BaseStream;
-        var bytesRead = baseStream.Read(buffer, 0, buffer.Length);
-        return buffer;
+        char[] buffer = new char[size ];
+        stream.Read(buffer, 0, size );
+        var data =Encoder .GetBytes(buffer) ;        
+        return data ;
     }
 }
