@@ -10,7 +10,7 @@ public class TestRead
 
     public void ReadFrame()
     {
-        if (false) return;
+        if (true) return;
 
         var curdir = Directory.GetCurrentDirectory();
         if (!File.Exists("dataframe.txt"))

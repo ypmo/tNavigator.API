@@ -2,19 +2,23 @@
 using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using tNav.API;
 using tNav.Common;
 using TNav = tNav.API;
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+string applicationPath = Path.GetDirectoryName(assemblyLocation);
+Directory.SetCurrentDirectory(applicationPath);
 if (true)
 {
     var tst = new TestRead();
     tst.ReadFrame();
 }
 Console.Write("Путь к консоли tNavigator (tNavigator-con)");
-string tNpath = "/home/s_ilyin@ygd.gazprom.ru/tNavigator/tNavigator-con";//Console.ReadLine();
+string tNpath = "/home/sergey/tNavigator/v25.2-4329-g14fa64fce903/tNavigator-con";//Console.ReadLine();
 if (string.IsNullOrEmpty(tNpath))
     tNpath = "../../../../tNavFakeConsole/bin/Debug/net8.0/tNav.FakeConsole";
 
