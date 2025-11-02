@@ -8,12 +8,10 @@ public class StreamParserTests
     static Stream GenerateStreamFromString(string s)
     {
         var bytes = Convert.FromHexString(s);
-
         var stream = new MemoryStream(bytes);
         stream.Position = 0;
         return stream;
     }
-
 
     [Theory]
     [InlineData("04000000000000004e6f6e65", "String", "None")]
@@ -27,12 +25,11 @@ public class StreamParserTests
         using var reader = new StreamReader(stream, encoding: Encoding.UTF8, false);
         var parsed = StreamParser.Unpack_data(reader, format);
         Assert.Equal(parsed, outdata);
-        // Assert.Equal(parsed, outdata);
     }
 
-        [Theory]
+    [Theory]
     [InlineData("04000000000000004e6f6e65", null)]
-    [InlineData("0300000000000000496e7404000000",  4)]
+    [InlineData("0300000000000000496e7404000000", 4)]
     [InlineData("0300000000000000496e74a00f0000", 4000)]
     public void Unpack_data(string indata, object? outdata)
     {
@@ -40,8 +37,7 @@ public class StreamParserTests
         using var stream = GenerateStreamFromString(indata);
         using var reader = new StreamReader(stream, encoding: Encoding.UTF8, false);
         var parsed = StreamParser.Unpack_data(reader);
-        Assert.Equal(parsed, outdata);
-        // Assert.Equal(parsed, outdata);
+        Assert.Equal(parsed, outdata);;
     }
 
 
