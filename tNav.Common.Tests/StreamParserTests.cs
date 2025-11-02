@@ -5,6 +5,7 @@ namespace tNav.Common.Tests;
 
 public class StreamParserTests
 {
+    static Custom256ByteEncoding Encoding = new Custom256ByteEncoding();
     static Stream GenerateStreamFromString(string s)
     {
         var bytes = Convert.FromHexString(s);
@@ -22,7 +23,7 @@ public class StreamParserTests
     {
 
         using var stream = GenerateStreamFromString(indata);
-        using var reader = new StreamReader(stream, encoding: Encoding.UTF8, false);
+        using var reader = new StreamReader(stream, encoding: Encoding, false);
         var parsed = StreamParser.Unpack_data(reader, format);
         Assert.Equal(parsed, outdata);
     }
@@ -35,7 +36,7 @@ public class StreamParserTests
     {
 
         using var stream = GenerateStreamFromString(indata);
-        using var reader = new StreamReader(stream, encoding: Encoding.UTF8, false);
+        using var reader = new StreamReader(stream, encoding: Encoding, false);
         var parsed = StreamParser.Unpack_data(reader);
         Assert.Equal(parsed, outdata);;
     }
