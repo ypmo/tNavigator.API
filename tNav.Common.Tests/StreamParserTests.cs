@@ -42,15 +42,19 @@ public class StreamParserTests
     public void Unpack_dataGeneric()
     {
         Assert.Equal(4, UnpackGeneric<int>("0300000000000000496e7404000000"));
+        Assert.Null(UnpackGeneric<int?>("04000000000000004e6f6e65"));
     }
 
-     [Fact]
-    public void Unpack_dataGenericThrowsException()
-    {
+    [Fact]
+    public void Unpack_StringToIntThrowsException() =>
+       Assert.Throws<InvalidCastException>(() => UnpackGeneric<string>("0300000000000000496e7404000000"));
+
+    [Fact]
+    public void Unpack_IntToThrowsException() =>
         Assert.Throws<InvalidCastException>(() => UnpackGeneric<int>("0900000000000000446174614672616d65"));
-    }
 
-    T UnpackGeneric<T>(string indata)
+
+    T? UnpackGeneric<T>(string indata)
     {
         using var stream = GenerateStreamFromString(indata);
         var parsed = stream.Unpack_data<T>();

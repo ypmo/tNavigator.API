@@ -18,14 +18,16 @@ public static class StreamReaderExtentions
         return data;
     }
 
-    public static T Unpack_data<T>(this StreamReader stream)
+    public static T? Unpack_data<T>(this StreamReader stream)
     {
         var obj = StreamParser.Unpack_data(stream);
-       
+
+        if (obj == null) return default;  
         if (obj is T result)
         {
             return result;
-        }
+        }    
+        
         throw new InvalidCastException($"Не удалоль привести тип {obj?.GetType()} к {typeof(T)}");
     }
 }
