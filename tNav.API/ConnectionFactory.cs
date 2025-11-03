@@ -57,7 +57,7 @@ public static class ConnectionFactory
             RedirectStandardInput = true,
             RedirectStandardOutput = true,
             //StandardInputEncoding = Encoding.UTF8,
-            StandardOutputEncoding = new Custom256ByteEncoding(),
+            StandardOutputEncoding = new One2OneEncoding(),
             //StandardErrorEncoding = Encoding.UTF8,
         };
         var process = Process.Start(startInfo);
