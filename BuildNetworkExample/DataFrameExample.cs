@@ -7,12 +7,9 @@ namespace BuildNetworkExample;
 
 public class TestRead
 {
-
     public void ReadFrame()
     {
-        if (true) return;
-
-        var curdir = Directory.GetCurrentDirectory();
+        Console.WriteLine($"Текущая директория {Directory.GetCurrentDirectory()}");
         if (!File.Exists("dataframe.txt"))
         {
             throw new FileNotFoundException();
@@ -37,6 +34,5 @@ public class TestRead
             Directory.CreateDirectory("Result_Tables");
         File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
         Console.WriteLine("Done");
-        Environment.Exit(0);
     }
 }

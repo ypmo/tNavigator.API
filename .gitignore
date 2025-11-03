@@ -400,13 +400,10 @@ FodyWeavers.xsd
 *.sln.iml
 
 BuildNetworkExample/SNP/*
+BuildNetworkExample/Result_Tables/*
+BuildNetworkExample/out/*
 BuildNetworkExample/log.txt
 
 BuildNetworkExample/python/SNP/*
 BuildNetworkExample/python/Result_Tables/*
 BuildNetworkExample/python/log.txt
-
-BuildNetworkExample/out/*
-!BuildNetworkExample/out/log.txt
-
-BuildNetworkExample/Result_Tables/*
