@@ -5,10 +5,10 @@ using System.Text.Unicode;
 
 namespace tNav.Common;
 
-public class Custom256ByteEncoding : Encoding
+public class One2OneEncoding : Encoding
 {
     // Constructor, if needed, to set up any internal mappings
-    public Custom256ByteEncoding() : base(0) // 0 is a placeholder code page
+    public One2OneEncoding() : base(0) // 0 is a placeholder code page
     {
         // Initialize any character-to-byte or byte-to-character maps
     }
