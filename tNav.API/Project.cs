@@ -67,8 +67,9 @@ public class Project : IProject
     }
 
 
-
-    public object? RunPyCode(string? file = null, string[]? files = null, string? code = null, bool save = false)
+    public object? RunPyCode(string? file = null, string[]? files = null, string? code = null, bool save = false) =>
+        RunPyCode<object>(file, files, code, save);
+    public T? RunPyCode<T>(string? file = null, string[]? files = null, string? code = null, bool save = false)
     {
         var code_from_file = "";
         if (file != null)
@@ -97,12 +98,13 @@ public class Project : IProject
         var command = $"run_py_code (code = \"{res_code}\", id = \"{project_id}\")\n";
 
         process.process_message(command);
-        var ret_value = StreamParser.Unpack_data(process.StandardOutput);
+        var ret_value = process.StandardOutput.Unpack_data<T>();
 
         if (save)
             SaveProject();
         return ret_value;
     }
+    
     public void SaveProject()
     {
         var id_to_save = parent_id;
