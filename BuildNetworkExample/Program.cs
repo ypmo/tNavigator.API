@@ -4,9 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using tNav.API;
-using tNav.Common;
-using TNav = tNav.API;
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 string tNavPath = "/home/sergey/tNavigator/v25.2-4329-g14fa64fce903/tNavigator-con";

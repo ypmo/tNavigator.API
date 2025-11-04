@@ -6,6 +6,7 @@ using Microsoft.Data.Analysis;
 using tNav;
 using tNav.ProgectExtentions;
 using tNav.Common;
+using tNav.ProjectManager;
 
 namespace BuildNetworkExample;
 
@@ -109,7 +110,7 @@ public class LikePython1_3_NewAPI
 
         var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
 
-        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: TNav.CaseType.MD, project_type: TNav.ProjectType.MD);
+        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
         var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
         Console.WriteLine("Done");
@@ -134,13 +135,10 @@ public class LikePython1_3_NewAPI
 
         Console.Write("Creating Network Designer (ND) and Well Designer(WD) subprojects...");
 
-        MD_proj.RunPyCode(code: """
-project_manager_create_project (
-    projects_table = [ 
-        {"project_type" : "vfp_project", "project_name" : "Well_Project"}, 
-        {"project_type" : "nd_project", "project_name" : "standalone_network"}
-    ])
-""");
+        MD_proj.CreateProject(
+            (CreateProjectType.vfp_project, "Well_Project"),
+            (CreateProjectType.nd_project, "standalone_network"));
+
         Console.WriteLine("Done");
 
         Console.Write("Running WD calculations...");
