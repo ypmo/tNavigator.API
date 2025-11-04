@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tNav.API;
+namespace tNav;
 
 internal static class ProcessExtentions
 {

@@ -1,13 +1,11 @@
-using BuildNetworkExample;
-using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using tNav.API;
-using tNav.API.ProgectExtentions;
+using Microsoft.Data.Analysis;
+using tNav;
+using tNav.ProgectExtentions;
 using tNav.Common;
-using TNav = tNav.API;
 
 namespace BuildNetworkExample;
 
@@ -121,25 +119,17 @@ public class LikePython1_3_NewAPI
         MD_proj.RequestLicenseFeatures(
             LicenseFeature.ModelDesiner,
             LicenseFeature.NetworkDesigner,
-            LicenseFeature.WELL_DESIGNE,
-            LicenseFeature.PVT_DESIGNER);
-//         MD_proj.RunPyCode(code: """
-// request_license_features (requested_features=[
-//     {"feature" : "FEAT_MODEL_DESIGNER"}, 
-//     {"feature" : "FEAT_NETWORK_DESIGNER"}, 
-//     {"feature" : "FEAT_WELL_DESIGNER"}, 
-//     {"feature" : "FEAT_PVT_DESIGNER"}])
-// """);
+            LicenseFeature.WellDesigne,
+            LicenseFeature.PvtDesigner);
         Console.WriteLine("Done");
 
         Console.Write("Importing BO variant...");
-        MD_proj.RunPyCode(code: """
-pvt_import_e1_format (
-    file_name = "../Init_Data/Blackoil.inc", 
-    region_count = 1, 
-    units = "METRIC", 
-    clear_tables = True)
-""");
+        MD_proj.PvtImportElFoFormat(new()
+        {
+            FileName = "../Init_Data/Blackoil.inc",
+            RegionCount = 1,
+            ClearTables=true
+        });
         Console.WriteLine("Done");
 
         Console.Write("Creating Network Designer (ND) and Well Designer(WD) subprojects...");

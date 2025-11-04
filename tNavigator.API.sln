@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common", "tNav.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common.Tests", "tNav.Common.Tests\tNav.Common.Tests.csproj", "{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.API.Extentions", "tNav.API.Extentions\tNav.API.Extentions.csproj", "{7C855B53-12C5-468D-8752-D68F5A632791}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C855B53-12C5-468D-8752-D68F5A632791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C855B53-12C5-468D-8752-D68F5A632791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C855B53-12C5-468D-8752-D68F5A632791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C855B53-12C5-468D-8752-D68F5A632791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

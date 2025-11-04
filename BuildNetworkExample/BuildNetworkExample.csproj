@@ -20,6 +20,6 @@
 	  <PackageReference Include="Microsoft.Data.Analysis" Version="0.22.2" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\tNav.API\tNav.API.csproj" />
+		<ProjectReference Include="../tNav.API.Extentions/tNav.API.Extentions.csproj" />
 	</ItemGroup>
 </Project>

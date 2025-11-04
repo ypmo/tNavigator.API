@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Intrinsics.X86;
 
-namespace tNav.API;
+namespace tNav;
 
 public interface IProject : IDisposable
 {

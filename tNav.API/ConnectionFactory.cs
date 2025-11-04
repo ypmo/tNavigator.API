@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tNav.Common;
 
-namespace tNav.API;
+namespace tNav;
 
 public static class ConnectionFactory
 {

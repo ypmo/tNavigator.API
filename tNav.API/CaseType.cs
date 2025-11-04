@@ -1,6 +1,6 @@
 using System;
 
-namespace tNav.API;
+namespace tNav;
 
 public enum CaseType
 {
