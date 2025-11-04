@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Xml.Linq;
-namespace tNav.API;
+namespace tNav;
 public class Connection : IConnection
 {
     public Connection(Process process)

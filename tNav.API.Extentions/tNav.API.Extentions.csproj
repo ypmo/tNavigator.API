@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\tNav.Common\tNav.Common.csproj" />
+    <ProjectReference Include="../tNav.API/tNav.API.csproj" />
   </ItemGroup>
-
 </Project>

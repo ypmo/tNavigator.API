@@ -1,12 +1,12 @@
-using BuildNetworkExample;
-using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using tNav.API;
+using Microsoft.Data.Analysis;
+using tNav;
+using tNav.ProgectExtentions;
 using tNav.Common;
-using TNav = tNav.API;
+using tNav.ProjectManager;
 
 namespace BuildNetworkExample;
 
@@ -110,42 +110,35 @@ public class LikePython1_3_NewAPI
 
         var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
 
-        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: TNav.CaseType.MD, project_type: TNav.ProjectType.MD);
+        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
         var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
         Console.WriteLine("Done");
 
         Console.Write("Requesting licenses...");
-        var input = """
-request_license_features (requested_features=[
-    {"feature" : "FEAT_MODEL_DESIGNER"}, 
-    {"feature" : "FEAT_NETWORK_DESIGNER"}, 
-    {"feature" : "FEAT_WELL_DESIGNER"}, 
-    {"feature" : "FEAT_PVT_DESIGNER"}])
-""";
-        MD_proj.RunPyCode(code: input);
+
+        MD_proj.RequestLicenseFeatures(
+            LicenseFeature.ModelDesiner,
+            LicenseFeature.NetworkDesigner,
+            LicenseFeature.WellDesigne,
+            LicenseFeature.PvtDesigner);
         Console.WriteLine("Done");
 
         Console.Write("Importing BO variant...");
-        input = """
-pvt_import_e1_format (
-    file_name = "../Init_Data/Blackoil.inc", 
-    region_count = 1, 
-    units = "METRIC", 
-    clear_tables = True)
-""";
-        MD_proj.RunPyCode(code: input);
+        MD_proj.PvtImportElFoFormat(new()
+        {
+            FileName = "../Init_Data/Blackoil.inc",
+            RegionCount = 1,
+            ClearTables=true
+        });
         Console.WriteLine("Done");
 
         Console.Write("Creating Network Designer (ND) and Well Designer(WD) subprojects...");
-        input = """
-project_manager_create_project (
-    projects_table = [ 
-        {"project_type" : "vfp_project", "project_name" : "Well_Project"}, 
-        {"project_type" : "nd_project", "project_name" : "standalone_network"}
-    ])
-""";
-        MD_proj.RunPyCode(code: input);
+
+        MD_proj.CreateProject(
+            (CreateProjectType.vfp_project, "Well_Project"),
+            (CreateProjectType.nd_project, "standalone_network"));
+
         Console.WriteLine("Done");
 
         Console.Write("Running WD calculations...");
@@ -163,12 +156,21 @@ project_manager_create_project (
               "well_head_x = 0, well_head_y = 0, well_head_z = 0, sc_pressure = 0, " +
               "sc_temperature = 0, use_concentric_tubings = False, " +
               "use_segment_graph = False, use_bottomhole_depth_unification = False)");
-        Console.Write("wd_trajectories_import...");
 
-        var importText = """
-wd_trajectories_import ( imported_object="well", format="Well Path / Deviation Text", file_names=["../../../../Init_Data/Well.dev"], input_data_type="wid_md_x_y_z", las_header_1="", las_header_2="", las_header_3="", las_header_4="", method="tangent", units_system_xy="METRIC", units_system_z="METRIC", use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True, txt_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=1, columns=["md", "x", "y", "z"]), gwtd_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=0, columns=["md", "x", "y", "z"]), vert_well_table_format=TableFormat (separator="all spaces", comment="", skip_lines=1, columns=["well", "x", "y", "kb", "last_point_md", "last_point_tvdss", "well_code"]), well_name=None, wellbore_name=None, dst_branch_num=0)
-""";
-        WD_proj.RunPyCode(code: importText);
+        Console.Write("wd_trajectories_import...");
+        WD_proj.RunPyCode(code: """
+wd_trajectories_import ( 
+    imported_object="well", format="Well Path / Deviation Text", 
+    file_names=["../../../../Init_Data/Well.dev"], 
+    input_data_type="wid_md_x_y_z", las_header_1="", las_header_2="", las_header_3="", las_header_4="", method="tangent", 
+    units_system_xy="METRIC", units_system_z="METRIC", use_oem_encoding=False, 
+    add_md_zero_point=False, invert_z=True, use_keywords=True, 
+    txt_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=1, columns=["md", "x", "y", "z"]), 
+    gwtd_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=0, columns=["md", "x", "y", "z"]), 
+    vert_well_table_format=TableFormat (separator="all spaces", comment="", skip_lines=1, 
+    columns=["well", "x", "y", "kb", "last_point_md", "last_point_tvdss", "well_code"]), 
+    well_name=None, wellbore_name=None, dst_branch_num=0)
+""");
 
         WD_proj.RunPyCode(code: $"well_designer_object_casing (branch_num=0, objects_table=[{obj(df_data["Casing"])}])");
         WD_proj.RunPyCode(code: $"well_designer_object_tubing (branch_num=0, objects_table=[{obj(df_data["Tubing"])}])");
@@ -180,8 +182,11 @@ wd_trajectories_import ( imported_object="well", format="Well Path / Deviation T
         WD_proj.RunPyCode(code: """
 vfp_table_create_select_pvt (table=[
     {
-    "vfp_table" : "VFP1", "pvt_project" : "PVT Data", "variant_type" : "blackoil",
-    "variant_name" : "Blackoil.inc 1", "compos_name" : ""}])
+    "vfp_table" : "VFP1", 
+    "pvt_project" : "PVT Data", 
+    "variant_type" : "blackoil",
+    "variant_name" : "Blackoil.inc 1", 
+    "compos_name" : ""}])
 
 vfp_table_adjust_correlation_parameters(table = [
     {
@@ -197,7 +202,6 @@ vfp_table_adjust_correlation_parameters(table = [
         Console.Write("VFP Correlation Plotting Points...");
         var src = df_data["VFP Correlation Plotting Points"];
         List<string> vfp_points = src.Columns.Select(col => "[" + string.Join(", ", col.DropNulls().Cast<Single>()) + "]").ToList();
-        //List<string> vfp_points = src.columns.Select(col => "[" + string.Join(", ", src.loc[src[col].notnull()][col].ToList()) + "]");
         WD_proj.RunPyCode(code: $"""
 vfp_adjust_correlation_plotting_points (table_name="VFP1", 
   thp ={vfp_points[0]}, 

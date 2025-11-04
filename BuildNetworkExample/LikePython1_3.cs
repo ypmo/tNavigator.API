@@ -1,12 +1,10 @@
-using BuildNetworkExample;
 using Microsoft.Data.Analysis;
 using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using tNav.API;
+using tNav;
 using tNav.Common;
-using TNav = tNav.API;
 
 namespace BuildNetworkExample;
 
@@ -121,7 +119,7 @@ public class LikePython1_3
 
         var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
 
-        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: TNav.CaseType.MD, project_type: TNav.ProjectType.MD);
+        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
         var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
         Console.WriteLine("Done");

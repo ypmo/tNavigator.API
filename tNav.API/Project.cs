@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using tNav.Common;
 
-namespace tNav.API;
+namespace tNav;
 
 public class Project : IProject
 {
