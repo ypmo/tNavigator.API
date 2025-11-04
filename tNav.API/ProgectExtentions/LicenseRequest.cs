@@ -9,9 +9,10 @@ public static class LicenseRequest
         Func<LicenseFeature, string> licFeateFunc = (f) => $"{{\"feature\" : \"{LicenseName(f)}\"}}";
         var command = $"""
 request_license_features (requested_features=[
-{string.Join(",", licenseFeatures.Select(t=>licFeateFunc(t)))}
+{string.Join(",", licenseFeatures.Select(t => licFeateFunc(t)))}
 ])
 """;
+        _ = project.RunPyCode(code: command);
     }
 
     private static string LicenseName(LicenseFeature featuter) => (featuter) switch
