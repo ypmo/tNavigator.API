@@ -22,11 +22,17 @@ Option<string> actionOption = new("--action")
     Description = "автоматическое выполнение пункта меню"
 };
 
+Option<string> helpOption = new("--help")
+{
+    Description = "автоматическое выполнение пункта меню"
+};
+
 var rootCommand = new RootCommand("Example tNavigator Console tool");
 rootCommand.Options.Add(tNavPathOption);
 rootCommand.Options.Add(actionOption);
+rootCommand.Options.Add(helpOption);
 ParseResult parseResult = rootCommand.Parse(args);
-
+ 
 if (parseResult.Errors.Count != 0)
 {
     foreach (ParseError parseError in parseResult.Errors)
@@ -93,5 +99,5 @@ while (variant != "0")
     }
 
 }
-Console.WriteLine("Нажмите любую клавишу для выхода");
-Console.ReadKey();
+Console.WriteLine("Exit");
+  Environment.Exit(0);
