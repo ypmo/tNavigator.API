@@ -379,7 +379,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
-.vscode/*
+.vscode/
 #!.vscode/settings.json
 #!.vscode/tasks.json
 #!.vscode/launch.json
@@ -399,11 +399,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-BuildNetworkExample/SNP/*
-BuildNetworkExample/Result_Tables/*
-BuildNetworkExample/out/*
-BuildNetworkExample/log.txt
+BuildNetworkExample/SNP/
+BuildNetworkExample/Result_Tables/
+BuildNetworkExample/out/
 
-BuildNetworkExample/python/SNP/*
-BuildNetworkExample/python/Result_Tables/*
-BuildNetworkExample/python/log.txt
+BuildNetworkExample/python/SNP/
+BuildNetworkExample/python/Result_Tables/
+log.txt
