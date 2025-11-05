@@ -10,12 +10,16 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/BuildNetworkExample/bin/Debug/net8.0/BuildNetworkExample.dll",
-            "args": [],
+            "args": [
+                "--tNavPath",
+                "~/tNavigator/24.4/tNavigator-con",
+                "--action",
+                "3"
+            ],
             "cwd": "${workspaceFolder}/BuildNetworkExample",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
-
         {
             "name": ".NET Core Launch C#WithDebugger (console)",
             "type": "coreclr",
