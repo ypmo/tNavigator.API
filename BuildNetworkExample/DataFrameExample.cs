@@ -7,9 +7,9 @@ namespace BuildNetworkExample;
 
 public class TestRead
 {
-    public void ReadFrame(tNavSettings settings)
+    public void ReadFrame(FileInfo fileName)
     {
-        string dataPath = Path.Combine(settings.HomePath, "dataframe.txt");
+        string dataPath = fileName.FullName;
         if (!File.Exists(dataPath))
         {
             throw new FileNotFoundException();
@@ -31,7 +31,7 @@ public class TestRead
         var csv = Utils.DataTableToCSV(table);
         var curDir = Directory.GetCurrentDirectory();
 
-        var resultDir = Path.Combine(settings.HomePath, "Result_Tables");
+        var resultDir = Path.Combine(AppContext.BaseDirectory, "Result_Tables");
         if (!Directory.Exists(resultDir))
             Directory.CreateDirectory(resultDir);
         File.WriteAllText(Path.Combine(resultDir, "pipes_table_results.csv"), csv);

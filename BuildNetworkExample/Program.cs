@@ -4,39 +4,51 @@ using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.Data;
 using System.Linq;
-using System.Reflection;
-using System.Xml.Linq;
 
 
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
-string? action = null;
 
-Option<FileInfo> tNavPathOption = new("--tNavPath")
+Option<FileInfo> tNavPathOption = new("--tNav")
 {
     Description = "Путь к приложению 'консоль тНавигатор'"
 };
 
-Option<string> actionOption = new("--action")
+
+Option<string?> actionOption = new("--action")
 {
-    Description = "автоматическое выполнение пункта меню"
+    Description = "автоматическое выполнение пункта меню",
+    DefaultValueFactory = parseResult => null
 };
 
+Option<FileInfo> fileNameOption = new("--file")
+{
+    Description = "FileName",
+    DefaultValueFactory = parseResult => new FileInfo(Path.Combine(AppContext.BaseDirectory, "dataframe.txt"))
+};
 
 var rootCommand = new RootCommand("Example tNavigator Console tool");
-rootCommand.Options.Add(tNavPathOption);
-rootCommand.Options.Add(actionOption);
+Command dialogCommand = new("runExample", "Выполнить тестовый пример")
+ {
+    tNavPathOption,
+    actionOption
+ };
+Command testDataFrameCommand = new("testDataFrame", "Выполнить чтение в DataFrame")
+ {
+    fileNameOption,
+ };
 
-rootCommand.SetAction(parseResult =>
+rootCommand.Subcommands.Add(dialogCommand);
+rootCommand.Subcommands.Add(testDataFrameCommand);
+
+dialogCommand.SetAction(parseResult =>
 {
-    tNavSettings settings = new();
-
-    if (parseResult.GetValue(tNavPathOption) is FileInfo fileInfo)
-        settings.tNavPath = fileInfo.FullName;
-
-    string? action = parseResult.GetValue(actionOption);
-    new Dialog(settings).Run(action);
+    new Dialog(tNavPath: parseResult.GetValue(tNavPathOption)).Run(parseResult.GetValue(actionOption));
     return 0;
+});
+testDataFrameCommand.SetAction(parseResult =>
+{
+
 });
 
 ParseResult parseResult = rootCommand.Parse(args);
