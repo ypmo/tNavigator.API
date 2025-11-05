@@ -7,14 +7,14 @@ namespace BuildNetworkExample;
 
 public class TestRead
 {
-    public void ReadFrame()
+    public void ReadFrame(tNavSettings settings)
     {
-        Console.WriteLine($"Текущая директория {Directory.GetCurrentDirectory()}");
-        if (!File.Exists("dataframe.txt"))
+        string dataPath = Path.Combine(settings.HomePath, "dataframe.txt");
+        if (!File.Exists(dataPath))
         {
             throw new FileNotFoundException();
         }
-        var data = File.ReadAllBytes("dataframe.txt");
+        var data = File.ReadAllBytes(dataPath);
 
         List<byte> bytes = [];
         for (int i = 0; i < data.Length - 1; i += 2)
@@ -29,10 +29,12 @@ public class TestRead
         var frame = obj as DataFrame;
         var table = frame?.ToTable();
         var csv = Utils.DataTableToCSV(table);
-        var curDir=Directory.GetCurrentDirectory();
-        if (!Directory.Exists("Result_Tables"))
-            Directory.CreateDirectory("Result_Tables");
-        File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
+        var curDir = Directory.GetCurrentDirectory();
+
+        var resultDir = Path.Combine(settings.HomePath, "Result_Tables");
+        if (!Directory.Exists(resultDir))
+            Directory.CreateDirectory(resultDir);
+        File.WriteAllText(Path.Combine(resultDir, "pipes_table_results.csv"), csv);
         Console.WriteLine("Done");
     }
 }

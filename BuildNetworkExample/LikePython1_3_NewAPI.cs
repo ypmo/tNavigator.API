@@ -12,15 +12,22 @@ namespace BuildNetworkExample;
 
 public class LikePython1_3_NewAPI
 {
-    public void Run(string? tNpath)
+    public void Run(tNavSettings settings)
     {
-        if (!Path.Exists("Init_Data"))
+        string pathToInitData = Path.Combine(settings.HomePath, "Init_Data");
+        if (!Path.Exists(settings.tNavPath))
+        {
+            Console.WriteLine($"Console tNavigator not found at {settings.tNavPath}!");
+            Environment.Exit(1);
+        }
+
+        if (!Path.Exists(pathToInitData))
         {
             Console.WriteLine($"Init_Data folder not found!");
             Environment.Exit(1);
         }
 
-        List<string> xls_list = ["Init_Data/WD_data.xlsx", "Init_Data/ND_data.xlsx"];
+        List<string> xls_list = [Path.Combine(pathToInitData, "WD_data.xlsx"), Path.Combine(pathToInitData, "ND_data.xlsx")];
 
         var df_data = new Dictionary<string, DataFrame>();
         foreach (var xls in xls_list)
@@ -108,11 +115,12 @@ public class LikePython1_3_NewAPI
         Console.WriteLine("Running script");
         Console.Write("Creating and opening snp project...");
 
-        var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
+        var conn = ConnectionFactory.GetConnection(path_to_exe: settings.tNavPath, license_wait_time_limit__secs: 30);
 
-        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
+        var pathToProject = Path.Combine(pathToInitData, "SNP", "API_BuildND.snp");
+        var snp_new = conn.CreateProject(path: pathToProject, case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
-        var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
+        var MD_proj = conn.OpenProject(path: pathToProject, save_on_close: true);
         Console.WriteLine("Done");
 
         Console.Write("Requesting licenses...");
@@ -127,9 +135,9 @@ public class LikePython1_3_NewAPI
         Console.Write("Importing BO variant...");
         MD_proj.PvtImportElFoFormat(new()
         {
-            FileName = "../Init_Data/Blackoil.inc",
+            FileName = Path.Combine(pathToInitData, "Blackoil.inc"),
             RegionCount = 1,
-            ClearTables=true
+            ClearTables = true
         });
         Console.WriteLine("Done");
 
@@ -158,10 +166,10 @@ public class LikePython1_3_NewAPI
               "use_segment_graph = False, use_bottomhole_depth_unification = False)");
 
         Console.Write("wd_trajectories_import...");
-        WD_proj.RunPyCode(code: """
+        WD_proj.RunPyCode(code: $"""
 wd_trajectories_import ( 
     imported_object="well", format="Well Path / Deviation Text", 
-    file_names=["../../../../Init_Data/Well.dev"], 
+    file_names=["{Path.Combine(pathToInitData, "Well.dev")}"], 
     input_data_type="wid_md_x_y_z", las_header_1="", las_header_2="", las_header_3="", las_header_4="", method="tangent", 
     units_system_xy="METRIC", units_system_z="METRIC", use_oem_encoding=False, 
     add_md_zero_point=False, invert_z=True, use_keywords=True, 
@@ -355,7 +363,7 @@ return pipeline_results
         Console.WriteLine("Done");
 
         Console.Write("Creating results folder...");
-        var new_folder = "Result_Tables";
+        var new_folder = Path.Combine(settings.HomePath, "Result_Tables");
         if (!Directory.Exists(new_folder))
             Directory.CreateDirectory(new_folder);
         else
@@ -365,7 +373,7 @@ return pipeline_results
         Console.Write("Saving to file...");
         var table = df_nd_results?.ToTable();
         var csv = Utils.DataTableToCSV(table);
-        File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
+        File.WriteAllText(Path.Combine(new_folder, "pipes_table_results.csv"), csv);
         Console.WriteLine("Done");
 
         Console.Write("Closing project...");

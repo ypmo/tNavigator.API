@@ -10,26 +10,22 @@ namespace BuildNetworkExample;
 
 public class LikePython1_3
 {
-    public  void Run()
+    public void Run(tNavSettings settings)
     {
-        Console.WriteLine($"Текущая директория {Directory.GetCurrentDirectory()}");
-
-        Console.Write("Путь к консоли tNavigator (~/tNavigator/tNavigator-con)");
-        string tNpath =Console.ReadLine()??"~/tNavigator/tNavigator-con";
-
-        if (!Path.Exists(tNpath))
+        string pathToInitData = Path.Combine(settings.HomePath, "Init_Data");
+        if (!Path.Exists(settings.tNavPath))
         {
-            Console.WriteLine($"Console tNavigator not found at {Path.GetFullPath(tNpath)}!");
+            Console.WriteLine($"Console tNavigator not found at {settings.tNavPath}!");
             Environment.Exit(1);
         }
 
-        if (!Path.Exists("Init_Data"))
+        if (!Path.Exists(pathToInitData))
         {
             Console.WriteLine($"Init_Data folder not found!");
             Environment.Exit(1);
         }
 
-        List<string> xls_list = ["Init_Data/WD_data.xlsx", "Init_Data/ND_data.xlsx"];
+        List<string> xls_list = [Path.Combine(pathToInitData, "WD_data.xlsx"), Path.Combine(pathToInitData, "ND_data.xlsx")];
 
         var df_data = new Dictionary<string, DataFrame>();
         foreach (var xls in xls_list)
@@ -117,11 +113,12 @@ public class LikePython1_3
         Console.WriteLine("Running script");
         Console.Write("Creating and opening snp project...");
 
-        var conn = ConnectionFactory.GetConnection(path_to_exe: tNpath, license_wait_time_limit__secs: 30);
+        var conn = ConnectionFactory.GetConnection(path_to_exe: settings.tNavPath, license_wait_time_limit__secs: 30);
 
-        var snp_new = conn.CreateProject(path: "SNP/API_BuildND.snp", case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
+        var pathToProject = Path.Combine(pathToInitData, "SNP", "API_BuildND.snp");
+        var snp_new = conn.CreateProject(path: pathToProject, case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
-        var MD_proj = conn.OpenProject(path: "SNP/API_BuildND.snp", save_on_close: true);
+        var MD_proj = conn.OpenProject(path: pathToProject, save_on_close: true);
         Console.WriteLine("Done");
 
         Console.Write("Requesting licenses...");
@@ -136,9 +133,9 @@ request_license_features (requested_features=[
         Console.WriteLine("Done");
 
         Console.Write("Importing BO variant...");
-        input = """
+        input = $"""
 pvt_import_e1_format (
-    file_name = "../Init_Data/Blackoil.inc", 
+    file_name = "{Path.Combine(pathToInitData, "Blackoil.inc")}", 
     region_count = 1, 
     units = "METRIC", 
     clear_tables = True)
@@ -174,8 +171,23 @@ project_manager_create_project (
               "use_segment_graph = False, use_bottomhole_depth_unification = False)");
         Console.Write("wd_trajectories_import...");
 
-        var importText = """
-wd_trajectories_import ( imported_object="well", format="Well Path / Deviation Text", file_names=["../../../../Init_Data/Well.dev"], input_data_type="wid_md_x_y_z", las_header_1="", las_header_2="", las_header_3="", las_header_4="", method="tangent", units_system_xy="METRIC", units_system_z="METRIC", use_oem_encoding=False, add_md_zero_point=False, invert_z=True, use_keywords=True, txt_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=1, columns=["md", "x", "y", "z"]), gwtd_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=0, columns=["md", "x", "y", "z"]), vert_well_table_format=TableFormat (separator="all spaces", comment="", skip_lines=1, columns=["well", "x", "y", "kb", "last_point_md", "last_point_tvdss", "well_code"]), well_name=None, wellbore_name=None, dst_branch_num=0)
+        var importText = $"""
+wd_trajectories_import ( imported_object="well", format="Well Path / Deviation Text", 
+file_names=["{Path.Combine(pathToInitData, "Well.dev")}"], input_data_type="wid_md_x_y_z",
+ las_header_1="", las_header_2="", las_header_3="",
+ las_header_4="", method="tangent",
+ units_system_xy="METRIC",
+ units_system_z="METRIC",
+ use_oem_encoding=False,
+ add_md_zero_point=False,
+ invert_z=True, 
+ use_keywords=True, 
+ txt_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=1, columns=["md", "x", "y", "z"]), 
+ gwtd_table_format=TableFormat (separator="all spaces", comment="#", skip_lines=0, columns=["md", "x", "y", "z"]), 
+ vert_well_table_format=TableFormat (
+ separator="all spaces", comment="", skip_lines=1, 
+ columns=["well", "x", "y", "kb", "last_point_md", "last_point_tvdss", "well_code"]), 
+ well_name=None, wellbore_name=None, dst_branch_num=0)
 """;
         WD_proj.RunPyCode(code: importText);
 
@@ -360,7 +372,7 @@ return pipeline_results
         Console.WriteLine("Done");
 
         Console.Write("Creating results folder...");
-        var new_folder = "Result_Tables";
+        var new_folder = Path.Combine(settings.HomePath, "Result_Tables");
         if (!Directory.Exists(new_folder))
             Directory.CreateDirectory(new_folder);
         else
@@ -370,7 +382,7 @@ return pipeline_results
         Console.Write("Saving to file...");
         var table = (df_nd_results as DataFrame)?.ToTable();
         var csv = Utils.DataTableToCSV(table);
-        File.WriteAllText("Result_Tables/pipes_table_results.csv", csv);
+        File.WriteAllText(Path.Combine(new_folder, "pipes_table_results.csv"), csv);
         Console.WriteLine("Done");
 
         Console.Write("Closing project...");
