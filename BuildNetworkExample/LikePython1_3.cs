@@ -13,6 +13,7 @@ public class LikePython1_3
     public void Run(tNavSettings settings)
     {
         string pathToInitData = Path.Combine(settings.HomePath, "Init_Data");
+        
         if (!Path.Exists(settings.tNavPath))
         {
             Console.WriteLine($"Console tNavigator not found at {settings.tNavPath}!");
@@ -115,7 +116,7 @@ public class LikePython1_3
 
         var conn = ConnectionFactory.GetConnection(path_to_exe: settings.tNavPath, license_wait_time_limit__secs: 30);
 
-        var pathToProject = Path.Combine(pathToInitData, "SNP", "API_BuildND.snp");
+        var pathToProject = Path.Combine(settings.HomePath, "SNP", "API_BuildND.snp");
         var snp_new = conn.CreateProject(path: pathToProject, case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
         var MD_proj = conn.OpenProject(path: pathToProject, save_on_close: true);
