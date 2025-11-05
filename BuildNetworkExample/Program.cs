@@ -22,15 +22,10 @@ Option<string> actionOption = new("--action")
     Description = "автоматическое выполнение пункта меню"
 };
 
-Option<string> helpOption = new("--help")
-{
-    Description = "автоматическое выполнение пункта меню"
-};
 
 var rootCommand = new RootCommand("Example tNavigator Console tool");
 rootCommand.Options.Add(tNavPathOption);
 rootCommand.Options.Add(actionOption);
-rootCommand.Options.Add(helpOption);
 
 rootCommand.SetAction(parseResult =>
 {
