@@ -37,16 +37,11 @@ if (parseResult.Errors.Count != 0)
 if (parseResult.GetValue(tNavPathOption) is FileInfo fileInfo)
     settings.tNavPath = fileInfo.FullName;
 
-if (parseResult.GetValue<string>(actionOption) != null)
-    variant = new FileInfo(settings.tNavPath).FullName;
+if (parseResult.GetValue(actionOption) is string action && !string.IsNullOrEmpty(action))
+    variant = action;
 
 
 Console.WriteLine($"Текщая директория: {settings.HomePath}");
-
-if (File.Exists(settings.tNavPath))
-    settings.tNavPath = new FileInfo(settings.tNavPath).FullName;
-else
-    settings.tNavPath = "";
 Console.WriteLine($"Путь к tNavigator-con: {settings.tNavPath}");
 
 

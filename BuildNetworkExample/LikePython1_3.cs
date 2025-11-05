@@ -13,6 +13,7 @@ public class LikePython1_3
     public void Run(tNavSettings settings)
     {
         string pathToInitData = Path.Combine(settings.HomePath, "Init_Data");
+        
         if (!Path.Exists(settings.tNavPath))
         {
             Console.WriteLine($"Console tNavigator not found at {settings.tNavPath}!");
