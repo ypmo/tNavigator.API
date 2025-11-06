@@ -12,12 +12,13 @@ namespace BuildNetworkExample;
 
 public class LikePython1_3_NewAPI
 {
-    public void Run(tNavSettings settings)
+    public void Run(FileInfo tNavPath)
     {
-        string pathToInitData = Path.Combine(settings.HomePath, "Init_Data");
-        if (!Path.Exists(settings.tNavPath))
+
+        string pathToInitData =  Path.Combine(AppContext.BaseDirectory, "Init_Data");
+        if (!Path.Exists(tNavPath.FullName))
         {
-            Console.WriteLine($"Console tNavigator not found at {settings.tNavPath}!");
+            Console.WriteLine($"Console tNavigator not found at {tNavPath.FullName}!");
             Environment.Exit(1);
         }
 
@@ -115,9 +116,9 @@ public class LikePython1_3_NewAPI
         Console.WriteLine("Running script");
         Console.Write("Creating and opening snp project...");
 
-        var conn = ConnectionFactory.GetConnection(path_to_exe: settings.tNavPath, license_wait_time_limit__secs: 30);
+        var conn = ConnectionFactory.GetConnection(path_to_exe: tNavPath.FullName, license_wait_time_limit__secs: 30);
 
-        var pathToProject = Path.Combine(settings.HomePath, "SNP", "API_BuildND.snp");
+        var pathToProject = Path.Combine(AppContext.BaseDirectory, "SNP", "API_BuildND.snp");
         var snp_new = conn.CreateProject(path: pathToProject, case_type: tNav.CaseType.MD, project_type: tNav.ProjectType.MD);
         snp_new.CloseProject();
         var MD_proj = conn.OpenProject(path: pathToProject, save_on_close: true);
@@ -363,7 +364,7 @@ return pipeline_results
         Console.WriteLine("Done");
 
         Console.Write("Creating results folder...");
-        var new_folder = Path.Combine(settings.HomePath, "Result_Tables");
+        var new_folder = Path.Combine(AppContext.BaseDirectory, "Result_Tables");
         if (!Directory.Exists(new_folder))
             Directory.CreateDirectory(new_folder);
         else

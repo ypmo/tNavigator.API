@@ -9,46 +9,70 @@ using System.Linq;
 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
 
-Option<FileInfo> tNavPathOption = new("--tNav")
+Option<FileInfo> tNavOption = new("--tNav")
 {
-    Description = "Путь к приложению 'консоль тНавигатор'"
+    Description = "Путь к приложению 'консоль тНавигатор'",
+    Recursive=true,
 };
 
-
-Option<string?> actionOption = new("--action")
+Option<FileInfo> projectOption = new("--project")
 {
-    Description = "автоматическое выполнение пункта меню",
-    DefaultValueFactory = parseResult => null
+    Description = "Проект тНавигатор",
 };
 
-Option<FileInfo> fileNameOption = new("--file")
+Option<FileInfo> dataFrameOption = new("--dataframe")
 {
-    Description = "FileName",
-    DefaultValueFactory = parseResult => new FileInfo(Path.Combine(AppContext.BaseDirectory, "dataframe.txt"))
+    Description = "Файл",
+    DefaultValueFactory = parseResult => new FileInfo(Path.Combine(AppContext.BaseDirectory, "dataframe.txt")),
 };
 
-var rootCommand = new RootCommand("Example tNavigator Console tool");
-Command dialogCommand = new("runExample", "Выполнить тестовый пример")
+Option<double?> valueOption = new("--value")
+{
+    Description = "Value",
+    DefaultValueFactory = parseResult => 25d
+};
+
+RootCommand rootCommand = new("Example tNavigator Console tool");
+Command runCommand = new("run", "Запусть проект тНавигатор")
+{
+    tNavOption,
+};
+rootCommand.Subcommands.Add(runCommand);
+
+Command exampleCommand = new("example", "Выполнить тестовый пример")
+{
+};
+runCommand.Subcommands.Add(exampleCommand);
+
+Command zpaCommand = new("zpa", "Выполнить расчет до ЗПА")
  {
-    tNavPathOption,
-    actionOption
- };
-Command testDataFrameCommand = new("testDataFrame", "Выполнить чтение в DataFrame")
- {
-    fileNameOption,
- };
+    projectOption,
+    valueOption
+};
 
-rootCommand.Subcommands.Add(dialogCommand);
-rootCommand.Subcommands.Add(testDataFrameCommand);
 
-dialogCommand.SetAction(parseResult =>
+Command testCommand = new("test", "Выполнить чтение в DataFrame")
 {
-    new Dialog(tNavPath: parseResult.GetValue(tNavPathOption)).Run(parseResult.GetValue(actionOption));
+     dataFrameOption,
+};
+rootCommand.Subcommands.Add(testCommand);
+
+exampleCommand.SetAction(parseResult =>
+{
+    new LikePython1_3_NewAPI().Run(parseResult.GetValue(tNavOption)!);
     return 0;
 });
-testDataFrameCommand.SetAction(parseResult =>
+testCommand.SetAction(parseResult =>
 {
+    new TestRead().ReadFrame(parseResult.GetValue(dataFrameOption)!);
+    return 0;
+});
 
+zpaCommand.SetAction(parseResult =>
+{
+    new ZNGKMCalc(tNavPath: parseResult.GetValue(tNavOption)!, model: parseResult.GetValue(projectOption)!)
+        .Run(parseResult.GetValue(valueOption));
+    return 0;
 });
 
 ParseResult parseResult = rootCommand.Parse(args);

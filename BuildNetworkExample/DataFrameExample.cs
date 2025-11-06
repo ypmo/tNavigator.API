@@ -24,12 +24,11 @@ public class TestRead
             bytes.AddRange(b);
         }
         var stream = new MemoryStream(bytes.ToArray());
-        var stremReader = new StreamReader(stream);
+        var stremReader = new StreamReader(stream, new One2OneEncoding() );
         var obj = StreamParser.Unpack_data(stremReader);
         var frame = obj as DataFrame;
         var table = frame?.ToTable();
         var csv = Utils.DataTableToCSV(table);
-        var curDir = Directory.GetCurrentDirectory();
 
         var resultDir = Path.Combine(AppContext.BaseDirectory, "Result_Tables");
         if (!Directory.Exists(resultDir))
