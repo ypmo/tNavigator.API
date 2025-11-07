@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Init_Data/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dataframe.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="Microsoft.Data.Analysis" Version="0.22.2" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../tNav/tNav.csproj" />
+    <ProjectReference Include="../tNav.Extentions/tNav.Extentions.csproj" />
+  </ItemGroup>
+</Project>

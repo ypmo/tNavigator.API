@@ -1,19 +1,23 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.API", "tNav.API\tNav.API.csproj", "{93FB68B4-45A6-4078-8B05-02E48CF9FC9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav", "src\tNav\tNav.csproj", "{93FB68B4-45A6-4078-8B05-02E48CF9FC9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildNetworkExample", "BuildNetworkExample\BuildNetworkExample.csproj", "{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildNetworkExample", "src\BuildNetworkExample\BuildNetworkExample.csproj", "{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.API.Tests", "tNav.API.Tests\tNav.API.Tests.csproj", "{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Tests", "tests\tNav.Tests\tNav.Tests.csproj", "{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common", "tNav.Common\tNav.Common.csproj", "{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common", "src\tNav.Common\tNav.Common.csproj", "{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common.Tests", "tNav.Common.Tests\tNav.Common.Tests.csproj", "{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Common.Tests", "tests\tNav.Common.Tests\tNav.Common.Tests.csproj", "{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.API.Extentions", "tNav.API.Extentions\tNav.API.Extentions.csproj", "{7C855B53-12C5-468D-8752-D68F5A632791}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tNav.Extentions", "src\tNav.Extentions\tNav.Extentions.csproj", "{7C855B53-12C5-468D-8752-D68F5A632791}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1DFADB1C-275C-4462-81C9-5A7DBAF0720B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0F32CE9C-F4B5-46BC-BFD9-CDD895088116}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,7 +53,17 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+		GlobalSection(NestedProjects) = preSolution
+		{93FB68B4-45A6-4078-8B05-02E48CF9FC9D}={1DFADB1C-275C-4462-81C9-5A7DBAF0720B}
+		{0A189301-4A2A-4A53-8515-EDB1F78D2DB9}={1DFADB1C-275C-4462-81C9-5A7DBAF0720B}
+		{AB6BAF69-8468-4C37-A79E-DD8032CC04CE}={1DFADB1C-275C-4462-81C9-5A7DBAF0720B}
+		{7C855B53-12C5-468D-8752-D68F5A632791}={1DFADB1C-275C-4462-81C9-5A7DBAF0720B}
+		{0D6F0FD3-8DC5-4F19-9547-61EEB34CDE16}={0F32CE9C-F4B5-46BC-BFD9-CDD895088116}
+		{5FC908E0-B0BE-45BA-BDC4-C48BDA1F61F3}={0F32CE9C-F4B5-46BC-BFD9-CDD895088116}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D50E781-E9B9-4745-BD2E-E84D698BDC6A}
+
 	EndGlobalSection
+
 EndGlobal

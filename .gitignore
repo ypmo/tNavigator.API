@@ -399,10 +399,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-BuildNetworkExample/SNP/
-BuildNetworkExample/Result_Tables/
-BuildNetworkExample/out/
+src/BuildNetworkExample/SNP/
+src/BuildNetworkExample/Result_Tables/
+src/BuildNetworkExample/out/
 
-BuildNetworkExample/python/SNP/
-BuildNetworkExample/python/Result_Tables/
+src/BuildNetworkExample/python/SNP/
+src/BuildNetworkExample/python/Result_Tables/
 log.txt
