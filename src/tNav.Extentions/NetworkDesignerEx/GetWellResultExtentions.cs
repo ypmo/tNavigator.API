@@ -9,7 +9,7 @@ namespace tNav.NetworkDesignerEx;
 
 public static class GetWellResultExtentions
 {
-    static readonly string[] parametrs = ["pressure", "temperature"];
+    static readonly string[] parametrs = ["length", "pressure", "temperature"];
     public static IEnumerable<WellResult> GetWellResults(this IProject project, DateTime dateTime, string resultName)
     {
         List<WellResult> result = [];
@@ -20,8 +20,9 @@ public static class GetWellResultExtentions
             {
                 result.Add(new WellResult
                 {
-                    Id = (int)row["index"],
+                    Index = (int)row["index"],
                     Name = (string?)row["well_name"],
+                    Length=(double)row["length"],
                     Pressure= (double)row["pressure"],
                     Temperature=(double)row["temperature"],
                 });
@@ -33,8 +34,9 @@ public static class GetWellResultExtentions
 
 public class WellResult
 {
-    public int Id { get; set; }
+    public int Index { get; set; }
     public string? Name { get; set; }
+    public double Length{ get; set; }
     public double Pressure { get; set; }
     public double Temperature { get; set; }
 }

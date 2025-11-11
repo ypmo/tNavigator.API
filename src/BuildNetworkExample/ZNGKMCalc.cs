@@ -78,13 +78,13 @@ object_parameters_change (event_date=datetime (year=2025,
         var pipes = ND_proj.GetPipeResults(timestamps[0], "Result");
         foreach (var p in pipes)
         {
-            Console.WriteLine($"{p.Id}\t{p.Name}\t{p.Pressure}\t{p.Temperature}");
+            Console.WriteLine($"{p.Index}\t{p.Name}\t{p.Length}\t{p.Pressure}\t{p.Temperature}");
         }
         Console.Write("Результаты расчета скважин...");
         var wells = ND_proj.GetWellResults(timestamps[0], "Result");
         foreach (var p in wells)
         {
-            Console.WriteLine($"{p.Id}\t{p.Name}\t{p.Pressure}\t{p.Temperature}");
+            Console.WriteLine($"{p.Index}\t{p.Name}\t{p.Length}\t{p.Pressure}\t{p.Temperature}");
         }
 
         MD_proj.CloseProject();

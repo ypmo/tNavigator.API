@@ -9,7 +9,7 @@ namespace tNav.NetworkDesignerEx;
 
 public static class GetPipeResultExtention
 {
-    static readonly string[] parametrs = ["pressure", "temperature"];
+    static readonly string[] parametrs = ["length", "pressure", "temperature"];
     public static IEnumerable<PipeResult> GetPipeResults(this IProject project, DateTime dateTime, string resultName)
     {
         List<PipeResult> result = [];
@@ -20,8 +20,9 @@ public static class GetPipeResultExtention
             {
                 result.Add(new PipeResult
                 {
-                    Id = (int)row["index"],
+                    Index = (int)row["index"],
                     Name = (string?)row["pipe_name"],
+                    Length = (double)row["length"],
                     Pressure = (double)row["pressure"],
                     Temperature = (double)row["temperature"],
                 });
@@ -33,9 +34,9 @@ public static class GetPipeResultExtention
 
 public class PipeResult
 {
-    public int Id { get; set; }
+    public int Index { get; set; }
     public string? Name { get; set; }
-    
+    public double Length{ get; set; }
     public double Pressure { get; set; }
     public double Temperature { get; set; }
 }
